@@ -1,0 +1,12 @@
+#!/bin/bash
+
+git clone https://github.com/acama/xrop.git
+cd xrop
+git submodule update --init --recursive
+make -j $(nproc)
+cd ..
+
+mkdir bin
+cd bin
+ln -s ../xrop/xrop .
+cd ..

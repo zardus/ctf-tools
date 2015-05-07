@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+#
+# AFL
+#
+
+curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xvz
+mv afl-* afl
+cd afl
+make -j $(nproc)
+cd qemu_mode
+./build_qemu_support.sh
+
+mkdir bin
+cd bin
+ln -s ../afl/{afl-as,afl-cmin,afl-fuzz,afl-gcc,afl-gotcpu,afl-plot,afl-qemu-trace,afl-showmap,afl-tmin,afl-whatsup} .
+cd ..
+
+#
+# AFL-utils
+#
+
+#git clone https://github.com/rc0r/afl-utils
+#sed -i -e "s/env python/env python3/" afl-utils/{afl_multikill,afl_multicore,afl_vcrash,afl_collect}
+#cd bin
+#ln -s ../afl-utils/afl_* .
+#cd ..

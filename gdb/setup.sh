@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#curl http://ftp.gnu.org/gnu/gdb/gdb-7.9.tar.gz | tar xvz
+cd gdb-7.9
+./configure --prefix=$(dirname $PWD) --with-python=python2
+make -j $(nproc)
+make install

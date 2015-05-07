@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#curl http://wiki.qemu-project.org/download/qemu-2.3.0.tar.bz2 | tar xvj
+cd qemu-2.3.0
+./configure --prefix=$(dirname $PWD)
+make -j $(nproc)
+make install
