@@ -36,6 +36,7 @@ Installers for the following tools are included:
 | binary | xrop | Gadget finder. |
 | crypto | cribdrag | Interactive crib dragging tool (for crypto). |
 | crypto | hashpump | A tool for performing hash length extension attaacks. |
+| crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. |
 | crypto | xortool | XOR analysis tool. |
 | web | dirs3arch | Web path scanner. |
 | web | sqlmap | SQL injection automation engine. |
