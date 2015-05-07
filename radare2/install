@@ -5,3 +5,15 @@ cd radare2/
 ./configure --prefix=$(dirname $PWD)
 make -j $(nproc)
 make install
+cd ..
+
+cd bin
+for i in ???*
+do
+	mv $i $i.real
+	cat <<END > $i
+#!/bin/bash
+LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$PWD/../lib \$0.real
+END
+	chmod 755 $i
+done
