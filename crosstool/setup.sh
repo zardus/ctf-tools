@@ -1,20 +1,28 @@
 #!/bin/bash -e
 
-#mkdir src
-#git clone https://github.com/crosstool-ng/crosstool-ng.git
+mkdir -p src
+git clone https://github.com/crosstool-ng/crosstool-ng.git
 cd crosstool-ng
-#./bootstrap
-#./configure --enable-local
-#make -j $(nproc)
-#make install
+./bootstrap
+./configure --enable-local
+make -j $(nproc)
+make install
+cp ../config .config
 
-ALL_SAMPLES="alphaev56-unknown-linux-gnu alphaev67-unknown-linux-gnu"
-BROKEN_SAMPLES="arm-cortex_a15-linux-gnueabi"
-SAMPLES="arm-cortexa5-linux-uclibcgnueabihf arm-cortex_a8-linux-gnueabi arm-cortexa9_neon-linux-gnueabihf armeb-unknown-eabi armeb-unknown-linux-gnueabi armeb-unknown-linux-uclibcgnueabi arm-unknown-eabi arm-unknown-linux-gnueabi arm-unknown-linux-uclibcgnueabi arm-unknown-linux-uclibcgnueabihf armv6-rpi-linux-gnueabi avr32-unknown-none bfin-unknown-linux-uclibc i586-geode-linux-uclibc i586-mingw32msvc,i686-none-linux-gnu i686-nptl-linux-gnu i686-unknown-mingw32 m68k-unknown-elf m68k-unknown-uclinux-uclibc mips64el-n32-linux-uclibc mips64el-n64-linux-uclibc mips-ar2315-linux-gnu mipsel-sde-elf mipsel-unknown-linux-gnu mips-malta-linux-gnu mips-unknown-elf mips-unknown-linux-uclibc nios2-elf-mingw32 powerpc-405-linux-gnu powerpc64-unknown-linux-gnu powerpc-860-linux-gnu powerpc-e300c3-linux-gnu powerpc-e500v2-linux-gnuspe powerpc-unknown-linux-gnu powerpc-unknown-linux-uclibc powerpc-unknown_nofpu-linux-gnu s390-ibm-linux-gnu s390x-ibm-linux-gnu sh4-unknown-linux-gnu sparc-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-unknown-linux-uclibc x86_64-unknown-mingw32"
+SAMPLES="alphaev56-unknown-linux-gnu alphaev67-unknown-linux-gnu arm-bare_newlib_cortex_m3_nommu-eabi arm-cortex_a15-linux-gnueabi arm-cortexa5-linux-uclibcgnueabihf arm-cortex_a8-linux-gnueabi arm-cortexa9_neon-linux-gnueabihf armeb-unknown-eabi armeb-unknown-linux-gnueabi armeb-unknown-linux-uclibcgnueabi arm-unknown-eabi arm-unknown-linux-gnueabi arm-unknown-linux-uclibcgnueabi arm-unknown-linux-uclibcgnueabihf armv6-rpi-linux-gnueabi avr32-unknown-none bfin-unknown-linux-uclibc i586-geode-linux-uclibc i586-mingw32msvc,i686-none-linux-gnu i686-nptl-linux-gnu i686-unknown-mingw32 m68k-unknown-elf m68k-unknown-uclinux-uclibc mips64el-n32-linux-uclibc mips64el-n64-linux-uclibc mips-ar2315-linux-gnu mipsel-sde-elf mipsel-unknown-linux-gnu mips-malta-linux-gnu mips-unknown-elf mips-unknown-linux-uclibc nios2-elf-mingw32 powerpc-405-linux-gnu powerpc64-unknown-linux-gnu powerpc-860-linux-gnu powerpc-e300c3-linux-gnu powerpc-e500v2-linux-gnuspe powerpc-unknown-linux-gnu powerpc-unknown-linux-uclibc powerpc-unknown_nofpu-linux-gnu s390-ibm-linux-gnu s390x-ibm-linux-gnu sh4-unknown-linux-gnu sparc-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-unknown-linux-uclibc x86_64-unknown-mingw32"
 
+mkdir -p ../x-tools
 for sample in $SAMPLES
 do
-	HOME=$(dirname $PWD) CT_PREFIX=$(dirname $PWD)/toolchains ./ct-ng $sample
-	yes '' | HOME=$(dirname $PWD) CT_PREFIX=$(dirname $PWD)/toolchains ./ct-ng build.$(nproc)
-	rm -rf .build/$sample
+	../build-sample.sh $sample || echo "$sample" >> ../x-tools/broken
 done
+cd ..
+
+mkdir -p bin
+cd bin
+for sample in $SAMPLES
+do
+	ln -sf ../x-tools/$sample/bin/* .
+	rm -f '*'
+done
+cd ..
