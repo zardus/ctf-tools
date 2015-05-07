@@ -33,6 +33,7 @@ Installers for the following tools are included:
 | binary | qemu | Latest version of qemu! |
 | binary | radare2 | Some crazy thing crowell likes. |
 | binary | shellnoob | Shellcode writing helper. |
+| binary | [qira](http://qira.me) | Parallel, timeless debugger. |
 | binary | xrop | Gadget finder. |
 | forensics | firmware-mod-kit | Tools for firmware packing/unpacking. |
 | forensics | testdisk | Testdisk and photorec for file recovery. |
