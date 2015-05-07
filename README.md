@@ -27,13 +27,14 @@ Installers for the following tools are included:
 | binary | afl | State-of-the-art fuzzer. |
 | binary | checksec | Check binary hardening settings. |
 | binary | crosstool | Cross-compilers and cross-architecture tools. |
-| binary | firmware-mod-kit | Tools for firmware packing/unpacking. |
 | binary | gdb | Up-to-date gdb with python2 bindings. |
 | binary | peda | Enhanced environment for gdb. |
 | binary | preeny | A collection of helpful preloads (compiled for many architectures!). |
 | binary | qemu | Latest version of qemu! |
 | binary | shellnoob | Shellcode writing helper. |
 | binary | xrop | Gadget finder. |
+| forensics | firmware-mod-kit | Tools for firmware packing/unpacking. |
+| forensics | testdisk | Testdisk and photorec for file recovery. |
 | crypto | cribdrag | Interactive crib dragging tool (for crypto). |
 | crypto | hashpump | A tool for performing hash length extension attaacks. |
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. |
