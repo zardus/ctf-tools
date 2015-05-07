@@ -6,9 +6,9 @@ cd firmware-mod-kit/src
 make
 cd ../..
 
-mkdir bin
+mkdir -p bin
 for i in firmware-mod-kit/*.sh
 do
-	echo "$(dirname $0)/$i \"\$@\"" > bin/$(basename $i)
+	echo "$(dirname $(readlink -m $0))/$i \"\$@\"" > bin/$(basename $i)
 	chmod 755 bin/$(basename $i)
 done

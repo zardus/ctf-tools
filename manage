@@ -1,0 +1,46 @@
+#!/bin/bash -e
+
+ACTION=$1
+TOOL=$2
+
+case $ACTION in
+	bin)
+		if [ -n "$TOOL" ]
+		then
+			cd bin
+			ln -sf ../$TOOL/bin/* .
+			echo "TOOLS | $TOOL | bin symlinks updated"
+			cd ..
+		else
+			for t in *
+			do
+				[ ! -e "$t/install" ] && continue
+				$0 $ACTION $t
+			done
+		fi
+
+		;;
+	install)
+		cd $TOOL
+
+		echo "TOOLS | $TOOL | starting install"
+		[ -x ./install-root ] && ./install-root
+		./install
+		echo "TOOLS | $TOOL | install finished"
+
+		cd ..
+		$0 bin $TOOL
+		;;
+	uninstall)
+		cd $TOOL
+
+		[ -x ./uninstall ] && ./uninstall
+		git clean -dffx .
+		echo "TOOLS | $TOOL | uninstall finished"
+
+		cd ..
+		;;
+	*)
+		echo "TOOLS | ERROR | unknown action $ACTION"
+		;;
+esac
