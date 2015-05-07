@@ -31,6 +31,7 @@ Installers for the following tools are included:
 | binary | peda | Enhanced environment for gdb. |
 | binary | preeny | A collection of helpful preloads (compiled for many architectures!). |
 | binary | qemu | Latest version of qemu! |
+| binary | radare2 | Some crazy thing crowell likes. |
 | binary | shellnoob | Shellcode writing helper. |
 | binary | xrop | Gadget finder. |
 | forensics | firmware-mod-kit | Tools for firmware packing/unpacking. |
