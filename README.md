@@ -1,13 +1,39 @@
 # ctf-tool
 
 This is a collection of setup scripts to create an install of various security research tools.
-To set up a tool, do:
+Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
+To use, do:
 
 ```bash
-(cd toolname; bash -e setup.sh)
+# list the available tools
+manage-tools list
+
+# install gdb
+manage-tools install gdb
+
+# uninstall gdb
+manage-tools uninstall gdb
+
+# uninstall all tools
+manage-tools uninstall all
 ```
 
-To uninstall, do:
-```bash
-(cd toolname; bash -e clean.sh)
-```
+Installers for the following tools are included:
+
+| Category | Tool | Description |
+|----------|------|-------------|
+| binary | afl | State-of-the-art fuzzer. |
+| binary | checksec | Check binary hardening settings. |
+| binary | crosstool | Cross-compilers and cross-architecture tools. |
+| binary | firmware-mod-kit | Tools for firmware packing/unpacking. |
+| binary | gdb | Up-to-date gdb with python2 bindings. |
+| binary | peda | Enhanced environment for gdb. |
+| binary | preeny | A collection of helpful preloads (compiled for many architectures!). |
+| binary | qemu | Latest version of qemu! |
+| binary | shellnoob | Shellcode writing helper. |
+| binary | xrop | Gadget finder. |
+| crypto | cribdrag | Interactive crib dragging tool (for crypto). |
+| crypto | hashpump | A tool for performing hash length extension attaacks. |
+| crypto | xortool | XOR analysis tool. |
+| web | dirs3arch | Web path scanner. |
+| web | sqlmap | SQL injection automation engine. |
