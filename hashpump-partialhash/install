@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+git clone https://github.com/mheistermann/HashPump-partialhash.git
+cd HashPump-partialhash
+make -j $(nproc)
+cd ..
+
+mkdir bin
+cd bin
+ln -s ../HashPump-partialhash/hashpump .
+cd ..
