@@ -1,0 +1,11 @@
+#!/bin/bash
+
+curl http://hivelocity.dl.sourceforge.net/project/reveng/1.3.0/reveng-1.3.0.tar.gz | tar xvz
+cd reveng-1.3.0
+sed -i -e "s/^#define BMP_BIT.*/#define BMP_BIT 64/" config.h
+sed -i -e "s/^#define BMP_SUB.*/#define BMP_SUB 32/" config.h
+make -j $(nproc)
+cd ..
+
+mkdir -p bin
+cp reveng-1.3.0/reveng bin
