@@ -31,32 +31,32 @@ Installers for the following tools are included:
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| binary | afl | State-of-the-art fuzzer. |
-| binary | checksec | Check binary hardening settings. |
-| binary | crosstool | Cross-compilers and cross-architecture tools. |
-| binary | gdb | Up-to-date gdb with python2 bindings. |
-| binary | peda | Enhanced environment for gdb. |
-| binary | preeny | A collection of helpful preloads (compiled for many architectures!). |
-| binary | qemu | Latest version of qemu! |
+| binary | [afl](http://lcamtuf.coredump.cx/afl/) | State-of-the-art fuzzer. |
+| binary | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. |
+| binary | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. |
+| binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. |
+| binary | [peda](https://github.com/longld/peda) | Enhanced environment for gdb. |
+| binary | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). |
+| binary | [qemu](http://qemu.org) | Latest version of qemu! |
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. |
-| binary | radare2 | Some crazy thing crowell likes. |
-| binary | shellnoob | Shellcode writing helper. |
+| binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
+| binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. |
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. |
-| binary | xrop | Gadget finder. |
+| binary | [xrop](https://github.com/acama/xrop) | Gadget finder. |
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
-| forensics | firmware-mod-kit | Tools for firmware packing/unpacking. |
-| forensics | testdisk | Testdisk and photorec for file recovery. |
-| crypto | cribdrag | Interactive crib dragging tool (for crypto). |
-| crypto | hashpump | A tool for performing hash length extension attaacks. |
+| forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. |
+| forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
+| crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). |
+| crypto | [hashpump](https://github.com/bwall/HashPump) | A tool for performing hash length extension attaacks. |
 | crypto | [littleblackbox](https://github.com/devttys0/littleblackbox) | Database of private SSL/SSH keys for embedded devices. |
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. |
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. |
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. |
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. |
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | XOR analysis tool. |
-| crypto | xortool | XOR analysis tool. |
-| web | dirs3arch | Web path scanner. |
-| web | sqlmap | SQL injection automation engine. |
+| crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
+| web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
+| web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
 
 ## Adding Tools
 
