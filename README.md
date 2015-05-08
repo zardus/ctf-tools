@@ -43,6 +43,7 @@ Installers for the following tools are included:
 | binary | shellnoob | Shellcode writing helper. |
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. |
 | binary | xrop | Gadget finder. |
+| forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
 | forensics | firmware-mod-kit | Tools for firmware packing/unpacking. |
 | forensics | testdisk | Testdisk and photorec for file recovery. |
 | crypto | cribdrag | Interactive crib dragging tool (for crypto). |

@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+git clone https://github.com/devttys0/binwalk.git
+pip install -e binwalk
+
+mkdir -p bin
+ln -s $VIRTUAL_ENV/bin/binwalk bin
