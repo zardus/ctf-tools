@@ -43,3 +43,20 @@ Installers for the following tools are included:
 | crypto | xortool | XOR analysis tool. |
 | web | dirs3arch | Web path scanner. |
 | web | sqlmap | SQL injection automation engine. |
+
+## Adding Tools
+
+To add a tool (say, named *toolname*), do the following:
+
+1. Create a `toolname` directory.
+2. Create an `install` script.
+3. (optional) if special uninstall steps are reuired, create an `uninstall` script.
+
+### Install Scripts
+
+The install script will be run with `$PWD` being `toolname`. It should install the tool into this directory, in as contained a manner as possible.
+Ideally, full uninstallation should be possible with a `git clean`.
+
+The install script should create a `bin` directory and put its executables there.
+These executables will be automatically linked into the main `bin` directory for the repo.
+They could be launched from any directory, so don't make assumptions about the location of `$0`!
