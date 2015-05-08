@@ -12,3 +12,5 @@ do
 	echo "$(dirname $(readlink -m $0))/$i \"\$@\"" > bin/$(basename $i)
 	chmod 755 bin/$(basename $i)
 done
+
+sed -i -e "s/SUDO=\"sudo\"/SUDO=\"\"/" firmware-mod-kit/*.sh
