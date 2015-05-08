@@ -1,11 +1,36 @@
 #!/bin/bash -e
 
+ALLOW_SUDO=0
+while [[ $1 == -* ]]
+do
+	case $1 in
+		-h)
+			cat <<END
+Usage: $0 [-s] (list|setup|install|uninstall|bin) tool
+Where:
+	-s		allow running things with sudo (i.e., to install debs)
+	tool		the name of the tool
+END
+			exit
+			;;
+		-s)
+			ALLOW_SUDO=1
+			;;
+		*)
+			;;
+	esac
+	shift
+done
+
 ACTION=$1
 TOOL=$2
 
 cd $(dirname "${BASH_SOURCE[0]}")/..
 
 case $ACTION in
+	setup)
+		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
+		;;
 	list)
 		for t in *
 		do
@@ -32,7 +57,7 @@ case $ACTION in
 		cd $TOOL
 
 		echo "TOOLS | $TOOL | starting install"
-		[ -x ./install-root ] && ./install-root
+		[ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ] && sudo ./install-root
 		./install
 		echo "TOOLS | $TOOL | install finished"
 

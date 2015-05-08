@@ -5,11 +5,18 @@ Of course, this isn't a hard problem, but it's really nice to have them in one p
 To use, do:
 
 ```bash
+# set up the path
+manage-tools setup
+source ~/.bashrc
+
 # list the available tools
 manage-tools list
 
-# install gdb
-manage-tools install gdb
+# install gdb, allowing it to try to sudo install dependencies
+manage-tools -s install gdb
+
+# install pwntools, but don't let it sudo install dependencies
+manage-tools install pwntools
 
 # uninstall gdb
 manage-tools uninstall gdb
