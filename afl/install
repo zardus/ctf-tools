@@ -10,6 +10,7 @@ cd afl
 make -j $(nproc)
 cd qemu_mode
 ./build_qemu_support.sh
+cd ../../
 
 mkdir bin
 cd bin
