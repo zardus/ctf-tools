@@ -6,7 +6,7 @@ To use, do:
 
 ```bash
 # set up the path
-manage-tools setup
+/path/to/ctf-tools/manage-tools setup
 source ~/.bashrc
 
 # list the available tools
