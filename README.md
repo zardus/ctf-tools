@@ -42,6 +42,7 @@ Installers for the following tools are included:
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. |
 | binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
 | binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. |
+| binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | A valgrind taint analysis tool. |
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. |
 | binary | [xrop](https://github.com/acama/xrop) | Gadget finder. |
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
