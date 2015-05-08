@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-2.14-71313-gcc.4.4.7-linux.tar.gz | tar xvz
+export PIN_ROOT=$PWD/pin-2.14-71313-gcc.4.4.7-linux
+
+git clone https://github.com/wapiflapi/villoc
+cd villoc/pintool
+make PIN_ROOT=$PIN_ROOT
+cd ../
+chmod 755 villoc.py
+cd ..
+
+mkdir -p bin
+cd bin
+ln -s ../villoc/villoc.py .
+cd ..
