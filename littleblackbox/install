@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+git clone https://github.com/devttys0/littleblackbox.git
+INST_DIR=$PWD
+cd littleblackbox/src
+./configure --prefix=$INST_DIR
+make -j $(nproc)
+
+mkdir -p $INST_DIR/share/man/man1 $INST_DIR/bin
+make -i install
+cp lbb.db $INST_DIR
+
+cd $INST_DIR/bin
+mv littleblackbox littleblackbox.real
+cat <<END > littleblackbox
+#!/bin/bash
+cd $INST_DIR
+bin/littleblackbox.real "\$@"
+END
+chmod 755 littleblackbox

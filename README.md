@@ -48,6 +48,7 @@ Installers for the following tools are included:
 | forensics | testdisk | Testdisk and photorec for file recovery. |
 | crypto | cribdrag | Interactive crib dragging tool (for crypto). |
 | crypto | hashpump | A tool for performing hash length extension attaacks. |
+| crypto | [littleblackbox](https://github.com/devttys0/littleblackbox) | Database of private SSL/SSH keys for embedded devices. |
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. |
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | XOR analysis tool. |
 | crypto | xortool | XOR analysis tool. |
