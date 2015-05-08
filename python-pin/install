@@ -1,0 +1,19 @@
+#!/bin/bash -e
+
+curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-2.14-71313-gcc.4.4.7-linux.tar.gz | tar xvz
+export PIN_ROOT=$PWD/pin-2.14-71313-gcc.4.4.7-linux
+
+git clone https://github.com/blankwall/Python_Pin.git
+cd Python_Pin
+make PIN_ROOT=$PIN_ROOT
+cd ..
+
+mkdir -p bin
+cat <<END > bin/python-pin
+#!/bin/bash -e
+
+SCRIPT=\$1
+shift
+$PWD/pin-2.14-71313-gcc.4.4.7-linux/pin.sh -t $PWD/Python_Pin/obj-intel64/Python_Pin.so -m \$SCRIPT -- "\$@"
+END
+chmod 755 bin/python-pin
