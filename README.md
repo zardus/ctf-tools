@@ -47,6 +47,7 @@ Installers for the following tools are included:
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. |
 | binary | [xrop](https://github.com/acama/xrop) | Gadget finder. |
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
+| forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. |
 | forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). |
@@ -61,6 +62,7 @@ Installers for the following tools are included:
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
+| stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
 
 ## Adding Tools
 
