@@ -6,7 +6,7 @@ To use, do:
 
 ```bash
 # set up the path
-manage-tools setup
+/path/to/ctf-tools/manage-tools setup
 source ~/.bashrc
 
 # list the available tools
@@ -47,6 +47,7 @@ Installers for the following tools are included:
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. |
 | binary | [xrop](https://github.com/acama/xrop) | Gadget finder. |
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
+| forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. |
 | forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). |
@@ -57,10 +58,12 @@ Installers for the following tools are included:
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. |
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. |
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. |
-| crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | XOR analysis tool. |
+| crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
+| stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
+| stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. |
 
 ## Adding Tools
 
