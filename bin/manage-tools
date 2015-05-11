@@ -1,22 +1,26 @@
 #!/bin/bash -e
 
+function usage()
+{
+	cat <<END
+Usage: $(basename $0) [-s] (list|setup|install|uninstall|bin) tool
+Where:
+	-s		allow running things with sudo (i.e., to install debs)
+	tool		the name of the tool. if "all", does the action on all tools
+
+END
+}
+
 ALLOW_SUDO=0
 while [[ $1 == -* ]]
 do
 	case $1 in
-		-h)
-			cat <<END
-Usage: $0 [-s] (list|setup|install|uninstall|bin) tool
-Where:
-	-s		allow running things with sudo (i.e., to install debs)
-	tool		the name of the tool
-END
-			exit
-			;;
 		-s)
 			ALLOW_SUDO=1
 			;;
 		*)
+			usage
+			exit
 			;;
 	esac
 	shift
@@ -24,6 +28,20 @@ done
 
 ACTION=$1
 TOOL=$2
+
+if [ "$TOOL" == "all" ]
+then
+	for t in $($0 list)
+	do
+		[ "$ALLOW_SUDO" -eq 1 ] && $0 -s $ACTION $t
+		[ "$ALLOW_SUDO" -eq 0 ] && $0 $ACTION $t
+	done
+	exit
+elif [ -z "$TOOL" -a "$ACTION" != "list" ]
+then
+	usage
+	exit
+fi
 
 cd $(dirname "${BASH_SOURCE[0]}")/..
 
