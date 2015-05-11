@@ -50,6 +50,7 @@ Installers for the following tools are included:
 | forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. |
 | forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
+| forensics | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files |
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). |
 | crypto | [hashpump](https://github.com/bwall/HashPump) | A tool for performing hash length extension attaacks. |
 | crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. |
@@ -65,7 +66,7 @@ Installers for the following tools are included:
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. |
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
-
+| android | [APKTool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs |
 ## Adding Tools
 
 To add a tool (say, named *toolname*), do the following:
