@@ -58,7 +58,7 @@ Installers for the following tools are included:
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. |
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. |
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. |
-| crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | XOR analysis tool. |
+| crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
