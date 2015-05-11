@@ -62,8 +62,9 @@ Installers for the following tools are included:
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
-| stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
+| stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. |
+| stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
 
 ## Adding Tools
 
