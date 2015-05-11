@@ -63,6 +63,7 @@ Installers for the following tools are included:
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
+| stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. |
 
 ## Adding Tools
 

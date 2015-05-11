@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+curl http://www.caesum.com/handbook/steganabara-1.1.1.tar.gz | tar xvz
+mkdir -p bin
+cat <<END > bin/steganabara
+#!/bin/bash -e
+java -cp $PWD/Steganabara/bin steganabara.Steganabara
+END
+chmod 755 bin/steganabara
