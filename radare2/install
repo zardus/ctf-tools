@@ -13,7 +13,7 @@ do
 	mv $i $i.real
 	cat <<END > $i
 #!/bin/bash
-LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$PWD/../lib \$0.real
+LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$PWD/../lib $PWD/$i.real "\$@"
 END
 	chmod 755 $i
 done
