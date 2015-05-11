@@ -4,9 +4,20 @@ function usage()
 {
 	cat <<END
 Usage: $(basename $0) [-s] (list|setup|install|uninstall|bin) tool
+
 Where:
 	-s		allow running things with sudo (i.e., to install debs)
-	tool		the name of the tool. if "all", does the action on all tools
+	tool		the name of the tool. if "all", does the action on all
+			tools
+
+Actions:
+	setup		set up the environment (adds ctf-tools/bin to your
+			\$PATH in .bashrc)
+	list		list all tools (-i: only installed, -u: only
+			uninstalled)
+	install		installs a tool
+	uninstall	uninstalls a tool
+	bin		re-links tool binaries into ctf-tools/bin
 
 END
 }
@@ -57,19 +68,10 @@ case $ACTION in
 		done
 		;;
 	bin)
-		if [ -n "$TOOL" ]
-		then
-			cd bin
-			ln -sf ../$TOOL/bin/* .
-			echo "TOOLS | $TOOL | bin symlinks updated"
-			cd ..
-		else
-			for t in $(bin/manage-tools list)
-			do
-				bin/manage-tools bin $t
-			done
-		fi
-
+		cd bin
+		ln -sf ../$TOOL/bin/* .
+		echo "TOOLS | $TOOL | bin symlinks updated"
+		cd ..
 		;;
 	install)
 		cd $TOOL
