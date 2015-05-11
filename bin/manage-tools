@@ -55,6 +55,11 @@ case $ACTION in
 		;;
 	install)
 		cd $TOOL
+		if git status --ignored . | egrep -q 'Untracked|Ignored'
+		then
+			echo "TOOLS | $TOOL | appears to already be installed. Uninstall first?"
+			exit 0
+		fi
 
 		echo "TOOLS | $TOOL | starting install"
 		[ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ] && sudo ./install-root
