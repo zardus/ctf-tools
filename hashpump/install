@@ -5,6 +5,8 @@ cd HashPump
 make -j $(nproc)
 cd ..
 
+pip install -e HashPump
+
 mkdir bin
 cd bin
 ln -s ../HashPump/hashpump .
