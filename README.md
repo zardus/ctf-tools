@@ -22,6 +22,7 @@ Installers for the following tools are included:
 | binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | A valgrind taint analysis tool. |
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. |
 | binary | [xrop](https://github.com/acama/xrop) | Gadget finder. |
+| binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. |
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
 | forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. |
