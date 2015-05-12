@@ -98,6 +98,18 @@ case $ACTION in
 
 		cd ..
 		;;
+	upgrade)
+		cd $TOOL
+		if [ -x ./upgrade ]
+		then
+			./upgrade
+			echo "TOOLS | $TOOL | upgrade complete!"
+		else
+			echo "TOOLS | $TOOL | no upgrade script -- reinstalling"
+			$0 uninstall $TOOL
+			$0 install $TOOL
+		fi
+		;;
 	*)
 		echo "TOOLS | ERROR | unknown action $ACTION"
 		;;
