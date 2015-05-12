@@ -48,7 +48,7 @@ then
 		[ "$ALLOW_SUDO" -eq 0 ] && $0 $ACTION $t
 	done
 	exit
-elif [ -z "$TOOL" -a "$ACTION" != "list" ]
+elif [ -z "$TOOL" -a "$ACTION" != "list" -a "$ACTION" != "setup" ]
 then
 	usage
 	exit
