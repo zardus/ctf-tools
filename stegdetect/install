@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+INST_DIR="$PWD"
+
+#wget -O - http://www.outguess.org/stegdetect-0.6.tar.gz | tar xvz
+#cd stegdetect-0.6
+git clone https://github.com/abeluck/stegdetect stegdetect-0.6
+wget -O - http://archive.debian.org/debian-archive/debian/pool/main/s/stegdetect/stegdetect_0.6-3.tar.gz | tar xvz stegdetect-0.6/file/Magdir/varied.out
+
+mkdir -p bin etc man/man1 share/stegbreak
+cd stegdetect-0.6
+linux32 ./configure --prefix="$INST_DIR"
+linux32 make
+linux32 make install
+cd ..
+
+wget https://launchpadlibrarian.net/16697277/rules.ini -O share/stegbreak/rules.ini

@@ -41,6 +41,7 @@ Installers for the following tools are included:
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
+| stego | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. |
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. |
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
 | android | [APKTool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs |
