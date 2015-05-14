@@ -1,0 +1,10 @@
+#!/bin/bash
+
+wget -O - http://www.bay12games.com/dwarves/df_40_24_linux.tar.bz2 | tar xj
+
+mkdir -p bin
+cat <<END > bin/df
+cd $PWD/df_linux
+./df
+END
+chmod 755 bin/df
