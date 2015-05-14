@@ -48,6 +48,12 @@ Installers for the following tools are included:
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. |
 | android | [APKTool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs |
 
+There are also some installers for non-CTF stuff to break the monotony!
+
+| Category | Tool | Description |
+|----------|------|-------------|
+| game | [Dwarf Fortress](http://www.bay12games.com/dwarves/) | Something to help you relax after a CTF! |
+
 ## Usage
 
 To use, do:
