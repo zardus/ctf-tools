@@ -40,6 +40,7 @@ Installers for the following tools are included:
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. |
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
+| web | [burp](http://portswigger.net/burp) | Web proxy to do naughty web stuff. |
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
