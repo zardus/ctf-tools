@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pip uninstall -y barf pyasmjit
+rm -f $VIRTUAL_ENV/bin/BARFgadgets

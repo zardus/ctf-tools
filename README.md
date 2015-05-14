@@ -8,6 +8,7 @@ Installers for the following tools are included:
 | Category | Tool | Description |
 |----------|------|-------------|
 | binary | [afl](http://lcamtuf.coredump.cx/afl/) | State-of-the-art fuzzer. |
+| binary | [barf](https://github.com/programa-stic/barf-project) | Binary Analysis and Reverse-engineering Framework. |
 | binary | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. |
 | binary | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. |
 | binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. |
