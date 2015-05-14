@@ -10,6 +10,7 @@ cd ..
 [ -e p9 ] || git clone https://bitbucket.org/mihaila/p9.git
 cd p9
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre ./build.sh
+unzip p9.zip
 cd ..
 
 mkdir -p bin
