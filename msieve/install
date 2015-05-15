@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+mkdir bin
+wget -O msieve.tar.gz http://sourceforge.net/projects/msieve/files/latest/download
+tar -xf msieve.tar.gz
+
+cd msieve-*
+make all
+cp msieve ../bin
