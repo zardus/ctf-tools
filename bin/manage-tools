@@ -58,7 +58,7 @@ cd $(dirname "${BASH_SOURCE[0]}")/..
 
 case $ACTION in
 	setup)
-		if [ $(dpkg -l build-essential libtool g++ gcc texinfo | grep "^ii" | wc -l) -ne 6 ]
+		if [ $(dpkg -l build-essential libtool g++ gcc texinfo | grep "^ii" | wc -l) -ne 5 ]
 		then
 			if [ "$ALLOW_SUDO" -eq 1 ]
 			then
@@ -69,6 +69,10 @@ case $ACTION in
 		fi
 
 		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
+        if [ -e ~/.zshrc ]
+        then
+            echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
+        fi
 		;;
 	list)
 		for t in *
