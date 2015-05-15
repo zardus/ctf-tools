@@ -58,6 +58,16 @@ cd $(dirname "${BASH_SOURCE[0]}")/..
 
 case $ACTION in
 	setup)
+		if [ $(dpkg -l build-essential libtool g++ gcc | grep "^ii" | wc -l) -ne 4 ]
+		then
+			if [ "$ALLOW_SUDO" -eq 1 ]
+			then
+				sudo apt-get install build-essential libtool g++ gcc
+			else
+				echo "Please install the following packages: build-essential libtool g++ gcc"
+			fi
+		fi
+
 		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
 		;;
 	list)
