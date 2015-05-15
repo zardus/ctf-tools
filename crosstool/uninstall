@@ -1,3 +1,3 @@
 #!/bin/bash
 
-chmod -R u+w x-tools
+[ -e x-tools ] && chmod -R u+w x-tools
