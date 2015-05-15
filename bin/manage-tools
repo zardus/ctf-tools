@@ -58,13 +58,13 @@ cd $(dirname "${BASH_SOURCE[0]}")/..
 
 case $ACTION in
 	setup)
-		if [ $(dpkg -l build-essential libtool g++ gcc | grep "^ii" | wc -l) -ne 4 ]
+		if [ $(dpkg -l build-essential libtool g++ gcc texinfo | grep "^ii" | wc -l) -ne 6 ]
 		then
 			if [ "$ALLOW_SUDO" -eq 1 ]
 			then
-				sudo apt-get install build-essential libtool g++ gcc
+				sudo apt-get install build-essential libtool g++ gcc texinfo
 			else
-				echo "Please install the following packages: build-essential libtool g++ gcc"
+				echo "Please install the following packages: build-essential libtool g++ gcc texinfo"
 			fi
 		fi
 
