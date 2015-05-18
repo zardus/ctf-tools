@@ -2,4 +2,4 @@
 
 apt-get -y install python-pip libssl-dev build-essential python-dev python-pip debootstrap libjpeg-dev zlib1g-dev unzip wget graphviz software-properties-common libgmp-dev llvm-3.4-dev time clang-3.4 ocaml ocaml-native-compilers camlp4-extra opam clang
 apt-get -y install libssl-dev:i386 libc6:i386 libncurses5:i386 libstdc++6:i386 libglib2.0-0:i386 libfreetype6:i386 libsm6:i386 libxrender1:i386 libfontconfig1:i386 libxext-dev:i386 libssl1.0.0:i386 valac-0.22 libvala-0.22-dev
-apt-get build-dep qemu
+apt-get -y build-dep qemu
