@@ -1,14 +1,15 @@
 #!/bin/bash -e 
 
-cat <<END > sudo
+mkdir nosudo
+cat <<END > nosudo/sudo
 #!/bin/bash
 echo SUDO BLOCKED: "\$@"
 END
-chmod 755 sudo
+chmod 755 nosudo/sudo
 
 git clone https://github.com/BinaryAnalysisPlatform/qira.git
 #export HOME=$PWD
-export PATH=$PWD:$PATH
+export PATH=$PWD/nosudo:$PATH
 cd qira
 
 # pip install bap, indeed...
