@@ -12,10 +12,16 @@ cd qemu_mode
 ./build_qemu_support.sh
 cd ../../
 
-mkdir bin
+mkdir -p bin
 cd bin
-ln -s ../afl/{afl-as,afl-cmin,afl-fuzz,afl-gcc,afl-gotcpu,afl-plot,afl-qemu-trace,afl-showmap,afl-tmin,afl-whatsup} .
+ln -sf ../afl/{afl-as,afl-cmin,afl-gcc,afl-gotcpu,afl-plot,afl-qemu-trace,afl-showmap,afl-tmin,afl-whatsup} .
 cd ..
+
+cat <<END > bin/afl-fuzz
+#!/bin/bash
+$PWD/afl/afl-fuzz "\$@"
+END
+chmod 755 bin/afl-fuzz
 
 #
 # AFL-utils
