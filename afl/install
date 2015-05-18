@@ -24,11 +24,10 @@ END
 chmod 755 bin/afl-fuzz
 
 #
-# AFL-utils
+# multiafl
 #
 
-#git clone https://github.com/rc0r/afl-utils
-#sed -i -e "s/env python/env python3/" afl-utils/{afl_multikill,afl_multicore,afl_vcrash,afl_collect}
-#cd bin
-#ln -s ../afl-utils/afl_* .
-#cd ..
+git clone https://github.com/zardus/multiafl
+cd bin
+ln -s ../multiafl/multiafl
+cd ..
