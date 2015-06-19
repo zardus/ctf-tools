@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+git clone https://github.com/trailofbits/codereason
+cd codereason
+./make.sh
+cd ..
+
+mkdir -p bin
+cd bin
+ln -s ../codereason/build/bin/* .
+cd ..
