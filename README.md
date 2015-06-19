@@ -18,6 +18,7 @@ Installers for the following tools are included:
 | binary | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). |
 | binary | [villoc](https://github.com/wapiflapi/villoc) | Visualization of heap operations. |
 | binary | [qemu](http://qemu.org) | Latest version of qemu! |
+| binary | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. |
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. |
 | binary | [python-pin](https://github.com/blankwall/Python_Pin) | Python bindings for pin. |
 | binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
