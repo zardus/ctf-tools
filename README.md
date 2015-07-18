@@ -101,3 +101,7 @@ Ideally, full uninstallation should be possible with a `git clean`.
 The install script should create a `bin` directory and put its executables there.
 These executables will be automatically linked into the main `bin` directory for the repo.
 They could be launched from any directory, so don't make assumptions about the location of `$0`!
+
+# See Also
+
+There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/awesome-ctf.
