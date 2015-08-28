@@ -46,6 +46,7 @@ Installers for the following tools are included:
 | web | [burp](http://portswigger.net/burp) | Web proxy to do naughty web stuff. |
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. |
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
+| web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. |
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
 | stego | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. |
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. |
