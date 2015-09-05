@@ -1,0 +1,5 @@
+#!/bin/bash
+
+wget "https://gist.githubusercontent.com/bcse/1834878/raw/7483fb72abbb32aa69b853fdcc9f6f72e7568677/scrdec18.c"
+mkdir -p bin
+gcc -o bin/scrdec18 scrdec18.c
