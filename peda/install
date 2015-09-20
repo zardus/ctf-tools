@@ -1,3 +1,4 @@
 #!/bin/bash
 
 git clone https://github.com/longld/peda.git
+echo "source ~/ctf-tools/peda/peda/peda.py" >> ~/.gdbinit
