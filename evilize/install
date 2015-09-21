@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+wget http://www.mscs.dal.ca/~selinger/md5collision/downloads/evilize-0.2.tar.gz
+tar zvxf evilize-0.2.tar.gz
+cd evilize-0.2
+make -j $(nproc)
+cd ..
+mkdir bin
+cd bin
+ln -s ../evilize-0.2/evilize .
+ln -s ../evilize-0.2/md5coll .

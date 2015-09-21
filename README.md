@@ -13,6 +13,7 @@ Installers for the following tools are included:
 | binary | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. |
 | binary | [codereason](https://github.com/trailofbits/codereason) | Semantic Binary Code Analysis Framework. |
 | binary | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. |
+| binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries |
 | binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. |
 | binary | [peda](https://github.com/longld/peda) | Enhanced environment for gdb. |
 | binary | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). |
