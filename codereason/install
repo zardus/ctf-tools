@@ -2,6 +2,7 @@
 
 git clone https://github.com/trailofbits/codereason
 cd codereason
+./install_vex.sh
 ./make.sh
 cd ..
 
