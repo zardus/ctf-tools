@@ -2,7 +2,7 @@
 
 INST_DIR=$PWD
 
-wget --no-check-certificate https://code.soundsoftware.ac.uk/attachments/download/1185/sonic-visualiser-2.4.1.tar.gz | tar xz
+wget --no-check-certificate -O - https://code.soundsoftware.ac.uk/attachments/download/1185/sonic-visualiser-2.4.1.tar.gz | tar xz
 cd sonic-visualiser-2.4.1
 ./configure --prefix=$INST_DIR
 make -j
