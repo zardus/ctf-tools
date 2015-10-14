@@ -106,6 +106,14 @@ The install script should create a `bin` directory and put its executables there
 These executables will be automatically linked into the main `bin` directory for the repo.
 They could be launched from any directory, so don't make assumptions about the location of `$0`!
 
+## License
+
+The individual tools are all licensed under their own licenses.
+As for ctf-tools itself, it is "starware".
+If you find it useful, star it on github (https://github.com/zardus/ctf-tools).
+
+Good luck!
+
 # See Also
 
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/awesome-ctf.
