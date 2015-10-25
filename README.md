@@ -31,17 +31,20 @@ Installers for the following tools are included:
 | binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. |
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. |
 | forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
+| forensics | [exetractor](https://github.com/kholia/exetractor-clone) | Unpacker for packed Python executables. Supports PyInstaller and py2exe. |
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. |
 | forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
 | forensics | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files |
 | forensics | [scrdec](https://gist.github.com/bcse/1834878) | A decoder for encoded Windows Scripts. |
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). |
+| crypto | [foresight](https://github.com/ALSchwalm/foresee) | A tool for predicting the output of random number generators. To run, launch "foresee". |
 | crypto | [hashpump](https://github.com/bwall/HashPump) | A tool for performing hash length extension attaacks. |
 | crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. |
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. |
 | crypto | [littleblackbox](https://github.com/devttys0/littleblackbox) | Database of private SSL/SSH keys for embedded devices. |
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. |
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. |
+| crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. |
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. |
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
@@ -105,6 +108,14 @@ Ideally, full uninstallation should be possible with a `git clean`.
 The install script should create a `bin` directory and put its executables there.
 These executables will be automatically linked into the main `bin` directory for the repo.
 They could be launched from any directory, so don't make assumptions about the location of `$0`!
+
+## License
+
+The individual tools are all licensed under their own licenses.
+As for ctf-tools itself, it is "starware".
+If you find it useful, star it on github (https://github.com/zardus/ctf-tools).
+
+Good luck!
 
 # See Also
 

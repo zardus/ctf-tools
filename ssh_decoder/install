@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+git clone https://github.com/jjyg/ssh_decoder.git
+chmod 755 ssh_decoder/ssh_decoder.rb
+
+mkdir bin
+cd bin
+ln -s ../ssh_decoder/ssh_decoder.rb ssh_decoder
+cd ..
