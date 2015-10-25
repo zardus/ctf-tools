@@ -43,6 +43,7 @@ Installers for the following tools are included:
 | crypto | [littleblackbox](https://github.com/devttys0/littleblackbox) | Database of private SSL/SSH keys for embedded devices. |
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. |
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. |
+| crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. |
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. |
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. |
