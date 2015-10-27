@@ -49,9 +49,9 @@ Installers for the following tools are included:
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. | <!--tool-->
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool-->
 | web | [burp](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool-->
+| web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool-->
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool-->
-| web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool-->
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool-->
 | stego | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. | <!--tool-->
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. | <!--tool-->
