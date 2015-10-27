@@ -52,6 +52,7 @@ Installers for the following tools are included:
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool-->
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool-->
+| web | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool-->
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool-->
 | stego | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. | <!--tool-->
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. | <!--tool-->
