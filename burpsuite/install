@@ -4,5 +4,5 @@ wget -O ./burp.jar 'https://portswigger.net/DownloadUpdate.ashx?Product=Free'
 chmod 755 ./burp.jar
 mkdir -p bin
 cd bin
-ln -s ../burp.jar burp
+ln -s ../burp.jar burpsuite
 cd ..

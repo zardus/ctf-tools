@@ -48,7 +48,7 @@ Installers for the following tools are included:
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. | <!--tool-->
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. | <!--tool-->
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool-->
-| web | [burp](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool-->
+| web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool-->
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool-->
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool-->
