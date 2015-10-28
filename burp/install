@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-wget http://portswigger.net/burp/burpsuite_free_v1.6.01.jar
-chmod 755 burpsuite_free_v1.6.01.jar
+wget http://mirror.exonetric.net/pub/OpenBSD/distfiles/burpsuite_free_v1.6.30.jar
+chmod 755 burpsuite_free_v1.6.30.jar
 mkdir -p bin
 cd bin
-ln -s ../burpsuite_free_v1.6.01.jar burp
+ln -s ../burpsuite_free_v1.6.30.jar burp
 cd ..
