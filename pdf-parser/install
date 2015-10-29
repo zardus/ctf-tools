@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-wget http://didierstevens.com/files/software/pdf-parser_V0_6_3.zip
-unzip pdf-parser_V0_6_3.zip
+wget https://didierstevens.com/files/software/pdf-parser_V0_6_4.zip
+unzip pdf-parser_V0_6_4.zip
 mkdir -p bin
 mv pdf-parser.py bin/pdf-parser
 chmod 755 bin/pdf-parser
