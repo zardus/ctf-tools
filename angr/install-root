@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+apt-get -y install python-dev libffi-dev build-essential
+
+# for angr-management
+apt-get -y install python-qt4 python-sip python-pygraphviz

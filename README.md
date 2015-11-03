@@ -8,6 +8,7 @@ Installers for the following tools are included:
 | Category | Tool | Description |
 |----------|------|-------------|
 | binary | [afl](http://lcamtuf.coredump.cx/afl/) | State-of-the-art fuzzer. | <!--tool-->
+| binary | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool-->
 | binary | [barf](https://github.com/programa-stic/barf-project) | Binary Analysis and Reverse-engineering Framework. | <!--tool-->
 | binary | [bindead](https://bitbucket.org/mihaila/bindead/wiki/Home) | A static analysis tool for binaries. | <!--tool-->
 | binary | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. | <!--tool-->
