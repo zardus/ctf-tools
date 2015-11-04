@@ -51,7 +51,7 @@ Installers for the following tools are included:
 | crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. | <!--tool--><!--test-->
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool--><!--test-->
 | crypto | [yafu](http://sourceforge.net/projects/yafu/) | Automated integer factorization. | <!--tool--><!--test-->
-| web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--test-->
+| web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--failing-->
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool--><!--test-->
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool--><!--test-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
