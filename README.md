@@ -98,6 +98,24 @@ manage-tools search preload
 Where possible, the tools keep the installs very self-contained (i.e., in to tool/ directory), and most uninstalls are just calls to `git clean` (**NOTE**, this is **NOT** careful; everything under the tool directory, including whatever you were working on, is blown away during an uninstall).
 To support python dependencies, however, make sure to create a virtualenv before installing and using tools (i.e., `mkvirtualenv ctf`).
 
+## Docker/Vagrant
+
+By popular demand, a Dockerfile has been included.
+You can build a docker image with:
+
+```bash
+git clone https://github.com/zardus/ctf-tools
+docker build -t ctf-tools
+```
+
+And run it with:
+
+```bash
+docker run -it ctf-tools
+```
+
+A Vagrantfile is on the TODO list :-)
+
 ## Adding Tools
 
 To add a tool (say, named *toolname*), do the following:
