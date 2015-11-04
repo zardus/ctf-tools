@@ -128,7 +128,26 @@ case $ACTION in
 		fi
 		;;
 	search)
-		cat README.md | grep "<\!--tool-->" | sed "s/<\!--tool-->//g" | grep -i "$TOOL"
+		cat README.md | grep "<\!--tool-->" | sed "s/<\!--[^-]*-->//g" | grep -i "$TOOL"
+		;;
+	test)
+		if ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
+		then
+			echo "TOOLS | $TOOL | Tests not enabled."
+		else
+			[ "$ALLOW_SUDO" -eq 1 ] && $0 -s install $TOOL
+			[ "$ALLOW_SUDO" -eq 0 ] && $0 install $TOOL
+
+			cd $TOOL
+			if [ -f ./test ]
+			then
+				echo "TOOLS | $TOOL | Running test script."
+				./test
+				echo "TOOLS | $TOOL | test script succeeded!"
+			else
+				echo "TOOLS | $TOOL | Install succeeded. No test script!"
+			fi
+		fi
 		;;
 	*)
 		echo "TOOLS | ERROR | unknown action $ACTION"
