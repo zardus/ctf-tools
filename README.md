@@ -105,7 +105,7 @@ You can build a docker image with:
 
 ```bash
 git clone https://github.com/zardus/ctf-tools
-docker build -t ctf-tools
+docker build -t ctf-tools .
 ```
 
 And run it with:
@@ -114,6 +114,7 @@ And run it with:
 docker run -it ctf-tools
 ```
 
+The built image will have ctf-tools cloned and ready to go, but you will still need to install the tools themselves (see above).
 A Vagrantfile is on the TODO list :-)
 
 ## Adding Tools
