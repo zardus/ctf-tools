@@ -144,8 +144,10 @@ case $ACTION in
 				echo "TOOLS | $TOOL | Running test script."
 				./test
 				echo "TOOLS | $TOOL | test script succeeded!"
+				exit 0
 			else
 				echo "TOOLS | $TOOL | Install succeeded. No test script!"
+				exit 0
 			fi
 		fi
 		;;
