@@ -48,7 +48,7 @@ then
 		[ "$ALLOW_SUDO" -eq 1 ] && $0 -s $ACTION $t
 		[ "$ALLOW_SUDO" -eq 0 ] && $0 $ACTION $t
 	done
-	exit
+	exit 0
 elif [ -z "$TOOL" -a "$ACTION" != "list" -a "$ACTION" != "setup" ]
 then
 	usage
