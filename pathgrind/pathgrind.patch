@@ -16,3 +16,16 @@ index 946baa8..6775185 100644
       darwin)
  	AC_MSG_RESULT(Darwin)
  	AC_DEFINE([DARWIN_LIBC], 1, [Define to 1 if you're using Darwin])
+diff --git a/valgrind-r12356/coregrind/m_debuginfo/readstabs.c b/valgrind-r12356/coregrind/m_debuginfo/readstabs.c
+index e62721b..1865f71 100644
+--- a/valgrind-r12356/coregrind/m_debuginfo/readstabs.c
++++ b/valgrind-r12356/coregrind/m_debuginfo/readstabs.c
+@@ -52,7 +52,7 @@
+ 
+ /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
+ #if defined(VGO_linux)
+-#  include <a.out.h> /* stabs defns */
++#  include <linux/a.out.h> /* stabs defns */
+ #elif defined(VGO_darwin)
+ #  include <mach-o/nlist.h>
+ #  define n_other n_sect

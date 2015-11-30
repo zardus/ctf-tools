@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+RESULT=$(./bin/yafu 'factor(10)' | grep "^P" | tr -d '\n')
+[ "$RESULT" == "P1 = 2P1 = 5" ] || exit 1
+
+./bin/yafu 'factor(427836528347651349523452345)' | grep "^P" | grep -q 3290292219611
