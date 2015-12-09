@@ -2,8 +2,10 @@
 
 INST_DIR=$PWD
 
-[ -e snowman ] || git clone https://github.com/yegord/snowman
-cd snowman
+#[ -e snowman ] || git clone --depth 1 https://github.com/yegord/snowman
+[ -e v1.0.tar.gz ] || wget https://github.com/nihilus/snowman/archive/v1.0.tar.gz
+tar xvzf v1.0.tar.gz
+cd snowman-1.0
 rm -rf build
 mkdir build
 cd build
