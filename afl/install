@@ -4,7 +4,7 @@
 # AFL
 #
 
-curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xvz
+curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xz
 mv afl-* afl
 cd afl
 make -j $(nproc)

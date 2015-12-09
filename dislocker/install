@@ -1,7 +1,7 @@
 #!/bin/bash
 
 wget http://www.hsc.fr/ressources/outils/dislocker/download/dislocker.tar.bz2
-tar xvjf dislocker.tar.bz2
+tar xjf dislocker.tar.bz2
 cd dislocker/src
 sed 's?override LDFLAGS.*?& -Wl,-rpath,'`pwd`'?' < Makefile > Makefile.tmp && mv Makefile.tmp Makefile
 make -j $(nproc)
