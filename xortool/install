@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/hellman/xortool.git
+git clone --depth 1 https://github.com/hellman/xortool.git
 pip install -e ./xortool
 
 mkdir -p bin

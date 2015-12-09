@@ -9,7 +9,7 @@ cd valgrind-3.11.0
 make -j $(nproc)
 make install
 
-git clone https://github.com/wmkhoo/taintgrind.git
+git clone --depth 1 https://github.com/wmkhoo/taintgrind.git
 cd taintgrind
 ../autogen.sh
 ./configure --prefix=$INST_DIR

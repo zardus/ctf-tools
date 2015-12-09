@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/mheistermann/HashPump-partialhash.git
+git clone --depth 1 https://github.com/mheistermann/HashPump-partialhash.git
 cd HashPump-partialhash
 make -j $(nproc)
 cd ..

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/jjyg/ssh_decoder.git
+git clone --depth 1 https://github.com/jjyg/ssh_decoder.git
 chmod 755 ssh_decoder/ssh_decoder.rb
 
 mkdir bin

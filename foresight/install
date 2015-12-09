@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/ALSchwalm/foresight.git
+git clone --depth 1 https://github.com/ALSchwalm/foresight.git
 
 # python3 virtualenv
 virtualenv -p $(which python3) python3

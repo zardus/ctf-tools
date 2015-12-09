@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
-git clone https://github.com/mwielgoszewski/python-paddingoracle.git
+git clone --depth 1 https://github.com/mwielgoszewski/python-paddingoracle.git
 pip install -e python-paddingoracle

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # pwnutils
-git clone https://github.com/Gallopsled/pwntools.git
+git clone --depth 1 https://github.com/Gallopsled/pwntools.git
 cd pwntools
 pip install -r requirements.txt
 cd ..

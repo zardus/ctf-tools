@@ -1,5 +1,5 @@
 #!/bin/bash
 
-git clone https://github.com/longld/peda.git
+git clone --depth 1 https://github.com/longld/peda.git
 cd peda
 echo "source $PWD/peda.py" >> ~/.gdbinit

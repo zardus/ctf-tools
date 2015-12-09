@@ -27,7 +27,7 @@ chmod 755 bin/afl-fuzz
 # multiafl
 #
 
-git clone https://github.com/zardus/multiafl
+git clone --depth 1 https://github.com/zardus/multiafl
 cd bin
 ln -s ../multiafl/multiafl
 cd ..

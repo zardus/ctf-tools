@@ -4,13 +4,13 @@
 pip install https://github.com/zardus/z3/archive/pypy-and-setup.zip
 
 # pybfd can't be installed with pip
-git clone https://github.com/Groundworkstech/pybfd
+git clone --depth 1 https://github.com/Groundworkstech/pybfd
 cd pybfd/
 python setup.py install
 cd ..
 
 # install barf
-git clone https://github.com/programa-stic/barf-project
+git clone --depth 1 https://github.com/programa-stic/barf-project
 cd barf-project/
 pip install -e pyasmjit/
 pip install -e barf/

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/codelion/pathgrind.git
+git clone --depth 1 https://github.com/codelion/pathgrind.git
 cd pathgrind
 git apply ../pathgrind.patch
 ./install.sh
