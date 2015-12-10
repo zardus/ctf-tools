@@ -2,14 +2,14 @@
 
 INST_DIR=$PWD
 
-curl http://valgrind.org/downloads/valgrind-3.11.0.tar.bz2 | tar xvj
+curl http://valgrind.org/downloads/valgrind-3.11.0.tar.bz2 | tar xj
 cd valgrind-3.11.0
 ./autogen.sh
 ./configure --prefix=$INST_DIR
 make -j $(nproc)
 make install
 
-git clone https://github.com/wmkhoo/taintgrind.git
+git clone --depth 1 https://github.com/wmkhoo/taintgrind.git
 cd taintgrind
 ../autogen.sh
 ./configure --prefix=$INST_DIR

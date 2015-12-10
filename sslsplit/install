@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/droe/sslsplit
+git clone --depth 1 https://github.com/droe/sslsplit
 cd sslsplit
 make -j $(nproc)
 cd ..

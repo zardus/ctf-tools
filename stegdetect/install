@@ -2,10 +2,10 @@
 
 INST_DIR="$PWD"
 
-#wget -O - http://www.outguess.org/stegdetect-0.6.tar.gz | tar xvz
+#wget -O - http://www.outguess.org/stegdetect-0.6.tar.gz | tar xz
 #cd stegdetect-0.6
-git clone https://github.com/abeluck/stegdetect stegdetect-0.6
-wget -O - http://archive.debian.org/debian-archive/debian/pool/main/s/stegdetect/stegdetect_0.6-3.tar.gz | tar xvz stegdetect-0.6/file/Magdir/varied.out
+git clone --depth 1 https://github.com/abeluck/stegdetect stegdetect-0.6
+wget -O - http://archive.debian.org/debian-archive/debian/pool/main/s/stegdetect/stegdetect_0.6-3.tar.gz | tar xz stegdetect-0.6/file/Magdir/varied.out
 
 mkdir -p bin etc man/man1 share/stegbreak
 cd stegdetect-0.6

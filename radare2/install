@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/radare/radare2.git
+git clone --depth 1 https://github.com/radare/radare2.git
 cd radare2/
 ./configure --prefix=$(dirname $PWD)
 make -j $(nproc)

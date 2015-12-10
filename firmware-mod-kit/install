@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://code.google.com/p/firmware-mod-kit/
+git clone --depth 1 https://code.google.com/p/firmware-mod-kit/
 cd firmware-mod-kit/src
 ./configure
 make

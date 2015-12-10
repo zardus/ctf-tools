@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone https://github.com/sqlmapproject/sqlmap.git
+git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git
 pip install pymysql psycopg2 pysqlite2 python-ntlm
 mkdir bin
 cd bin

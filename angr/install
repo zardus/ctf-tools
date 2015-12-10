@@ -4,7 +4,7 @@
 [ -e $VIRTUAL_ENV/lib/python2.7/site-packages/sip.so ] || ln -s /usr/lib/python2.7/dist-packages/sip.so $VIRTUAL_ENV/lib/python2.7/site-packages/
 [ -e $VIRTUAL_ENV/lib/python2.7/site-packages/pygraphviz ] || ln -s /usr/lib/pymodules/python2.7/pygraphviz $VIRTUAL_ENV/lib/python2.7/site-packages/
 
-git clone https://github.com/angr/angr-dev
+git clone --depth 1 https://github.com/angr/angr-dev
 cd angr-dev
 ./setup.sh
 cd ..

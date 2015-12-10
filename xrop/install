@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone https://github.com/acama/xrop.git
+git clone --depth 1 https://github.com/acama/xrop.git
 cd xrop
 git submodule update --init --recursive
 make -j $(nproc)

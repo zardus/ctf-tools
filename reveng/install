@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl http://jaist.dl.sourceforge.net/project/reveng/1.3.1/reveng-1.3.1.tar.gz | tar xvz
+curl http://jaist.dl.sourceforge.net/project/reveng/1.3.1/reveng-1.3.1.tar.gz | tar xz
 cd reveng-1.3.1
 sed -i -e "s/^#define BMP_BIT.*/#define BMP_BIT 64/" config.h
 sed -i -e "s/^#define BMP_SUB.*/#define BMP_SUB 32/" config.h

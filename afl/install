@@ -4,7 +4,7 @@
 # AFL
 #
 
-curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xvz
+curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xz
 mv afl-* afl
 cd afl
 make -j $(nproc)
@@ -27,7 +27,7 @@ chmod 755 bin/afl-fuzz
 # multiafl
 #
 
-git clone https://github.com/zardus/multiafl
+git clone --depth 1 https://github.com/zardus/multiafl
 cd bin
 ln -s ../multiafl/multiafl
 cd ..

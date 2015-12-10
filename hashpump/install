@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/bwall/HashPump.git
+git clone --depth 1 https://github.com/bwall/HashPump.git
 cd HashPump
 make -j $(nproc)
 cd ..
