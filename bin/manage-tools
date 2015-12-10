@@ -106,8 +106,9 @@ case $ACTION in
 		fi
 
 		tool_log "starting install, logging to $PWD/install.log..."
-		[ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ] && sudo ./install-root
-		if ./install >install.log 2>&1
+		rm -f install.log
+		[ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ] && sudo ./install-root >> install.log 2>&1
+		if ./install >>install.log 2>&1
 		then
 			tool_log "install finished"
 		else
