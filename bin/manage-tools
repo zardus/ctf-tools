@@ -17,6 +17,8 @@ Actions:
 			uninstalled)
 	install		installs a tool
 	uninstall	uninstalls a tool
+	reinstall	reinstalls a tool
+	upgrade		upgrades a tool
 	bin		re-links tool binaries into ctf-tools/bin
 	search		search description and name of tools
 
@@ -126,6 +128,10 @@ case $ACTION in
 			$0 uninstall $TOOL
 			$0 install $TOOL
 		fi
+		;;
+	reinstall)
+		$0 uninstall $TOOL
+		$0 install $TOOL
 		;;
 	search)
 		cat README.md | grep "<\!--tool-->" | sed "s/<\!--[^-]*-->//g" | grep -i "$TOOL"
