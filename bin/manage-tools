@@ -25,6 +25,11 @@ Actions:
 END
 }
 
+function tool_log()
+{
+	echo "$(tput setaf 4 2>/dev/null)TOOLS | $TOOL |$(tput sgr0 2>/dev/null) $@"
+}
+
 ALLOW_SUDO=0
 while [[ $1 == -* ]]
 do
@@ -89,21 +94,27 @@ case $ACTION in
 	bin)
 		cd bin
 		ln -sf ../$TOOL/bin/* .
-		echo "TOOLS | $TOOL | bin symlinks updated"
+		tool_log "bin symlinks updated"
 		cd ..
 		;;
 	install)
 		cd $TOOL
 		if git status --ignored . | egrep -q 'Untracked|Ignored'
 		then
-			echo "TOOLS | $TOOL | appears to already be installed. Uninstall first?"
+			tool_log "appears to already be installed. Uninstall first?"
 			exit 0
 		fi
 
-		echo "TOOLS | $TOOL | starting install"
+		tool_log "starting install, logging to $PWD/install.log..."
 		[ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ] && sudo ./install-root
-		./install
-		echo "TOOLS | $TOOL | install finished"
+		if ./install >install.log 2>&1
+		then
+			tool_log "install finished"
+		else
+			tool_log "INSTALL FAILED"
+			cat install.log >&2
+			exit 1
+		fi
 
 		cd ..
 		$0 bin $TOOL
@@ -113,7 +124,7 @@ case $ACTION in
 
 		[ -x ./uninstall ] && ./uninstall
 		git clean -dffx .
-		echo "TOOLS | $TOOL | uninstall finished"
+		tool_log "uninstall finished"
 
 		cd ..
 		;;
@@ -122,9 +133,9 @@ case $ACTION in
 		if [ -x ./upgrade ]
 		then
 			./upgrade
-			echo "TOOLS | $TOOL | upgrade complete!"
+			tool_log "upgrade complete!"
 		else
-			echo "TOOLS | $TOOL | no upgrade script -- reinstalling"
+			tool_log "no upgrade script -- reinstalling"
 			$0 uninstall $TOOL
 			$0 install $TOOL
 		fi
@@ -139,7 +150,7 @@ case $ACTION in
 	test)
 		if ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
 		then
-			echo "TOOLS | $TOOL | Tests not enabled."
+			tool_log "Tests not enabled."
 		else
 			[ "$ALLOW_SUDO" -eq 1 ] && $0 -s install $TOOL
 			[ "$ALLOW_SUDO" -eq 0 ] && $0 install $TOOL
@@ -147,12 +158,12 @@ case $ACTION in
 			cd $TOOL
 			if [ -f ./test ]
 			then
-				echo "TOOLS | $TOOL | Running test script."
+				tool_log "Running test script."
 				./test
-				echo "TOOLS | $TOOL | test script succeeded!"
+				tool_log "test script succeeded!"
 				exit 0
 			else
-				echo "TOOLS | $TOOL | Install succeeded. No test script!"
+				tool_log "Install succeeded. No test script!"
 				exit 0
 			fi
 		fi
