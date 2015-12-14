@@ -151,4 +151,4 @@ Good luck!
 
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/awesome-ctf.
 
-There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/ctf-vagrant-64
+There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
