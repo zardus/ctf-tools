@@ -65,8 +65,8 @@ cd $(dirname "${BASH_SOURCE[0]}")/..
 
 case $ACTION in
 	setup)
-		PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python-dev"
-		PACKAGE_COUNT=10
+		PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python-dev git subversion"
+		PACKAGE_COUNT=12
 		if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
 		then
 			if [ "$ALLOW_SUDO" -eq 1 ]
