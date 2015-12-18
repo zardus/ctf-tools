@@ -1,5 +1,6 @@
 # ctf-tools
 [![Build Status](https://travis-ci.org/zardus/ctf-tools.svg?branch=master)](https://travis-ci.org/zardus/ctf-tools)
+[![IRC](https://img.shields.io/badge/freenode-%23ctf--tools-green.svg)](http://webchat.freenode.net/?channels=#ctf-tools)
 
 This is a collection of setup scripts to create an install of various security research tools.
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
@@ -107,7 +108,7 @@ To support python dependencies, however, make sure to create a virtualenv before
 ## Help!
 
 Something not working?
-I didn't write (almost) any of these tools, but hit up #ctf-tools on freenode if you're desperate.
+I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
 Maybe some kind soul will help!
 
 ## Docker/Vagrant
