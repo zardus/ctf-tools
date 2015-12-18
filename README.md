@@ -1,5 +1,6 @@
 # ctf-tools
 [![Build Status](https://travis-ci.org/zardus/ctf-tools.svg?branch=master)](https://travis-ci.org/zardus/ctf-tools)
+[![IRC](https://img.shields.io/badge/freenode-%23ctf--tools-green.svg)](http://webchat.freenode.net/?channels=#ctf-tools)
 
 This is a collection of setup scripts to create an install of various security research tools.
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
@@ -16,6 +17,7 @@ Installers for the following tools are included:
 | binary | [codereason](https://github.com/trailofbits/codereason) | Semantic Binary Code Analysis Framework. | <!--tool--><!--failing-->
 | binary | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
 | binary | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | A set of utilities for working with ELF files. | <!--tool--><!--test-->
+| binary | [elfparser](http://www.elfparser.com/) | Quickly determine the capabilities of an ELF binary through static analysis. | <!--tool--><!--test-->
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool--><!--test-->
 | binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--failing-->
 | binary | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. | <!--tool--><!--test-->
@@ -103,7 +105,13 @@ manage-tools search preload
 Where possible, the tools keep the installs very self-contained (i.e., in to tool/ directory), and most uninstalls are just calls to `git clean` (**NOTE**, this is **NOT** careful; everything under the tool directory, including whatever you were working on, is blown away during an uninstall).
 To support python dependencies, however, make sure to create a virtualenv before installing and using tools (i.e., `mkvirtualenv --system-site-packages ctf`. The `--system-site-packages` is there for easier reuse of apt-gotten python packages where necessary).
 
-## Docker/Vagrant
+## Help!
+
+Something not working?
+I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
+Maybe some kind soul will help!
+
+## Docker
 
 By popular demand, a Dockerfile has been included.
 You can build a docker image with:
@@ -120,7 +128,21 @@ docker run -it ctf-tools
 ```
 
 The built image will have ctf-tools cloned and ready to go, but you will still need to install the tools themselves (see above).
-A Vagrantfile is on the TODO list :-)
+
+## Vagrant
+
+You can build a Vagrant VM with:
+
+```bash
+wget https://raw.githubusercontent.com/zardus/ctf-tools/master/Vagrantfile
+vagrant up
+```
+
+And connect to it via:
+
+```bash
+vagrant ssh
+```
 
 ## Adding Tools
 
@@ -151,4 +173,20 @@ Good luck!
 
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/awesome-ctf.
 
-There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/ctf-vagrant-64
+There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
+
+## Tools in the official Debian/Ubuntu repos
+
+These tools are present in the Debian or Ubuntu repos (in an adequately new version).
+They're not included in ctf-tools, but are included here as notes for the author.
+
+| Category | Package | Description | Package |
+|----------|---------|-------------|---------|
+| forensics | [foremost](http://foremost.sourceforge.net/) | File carver. | `foremost` | <!--deb-tool-->
+| dsniff | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | dsniff | <!--deb-tool-->
+
+## Tools with unofficial Debian/Ubuntu repos or debs
+
+| Category | Package | Description | Repo/deb |
+|----------|---------|-------------|----------|
+| stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | [deb](http://www.sonicvisualiser.org/download.html) | <!--deb-tool-->
