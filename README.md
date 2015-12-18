@@ -111,7 +111,7 @@ Something not working?
 I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
 Maybe some kind soul will help!
 
-## Docker/Vagrant
+## Docker
 
 By popular demand, a Dockerfile has been included.
 You can build a docker image with:
@@ -128,7 +128,21 @@ docker run -it ctf-tools
 ```
 
 The built image will have ctf-tools cloned and ready to go, but you will still need to install the tools themselves (see above).
-A Vagrantfile is on the TODO list :-)
+
+## Vagrant
+
+You can build a Vagrant VM with:
+
+```bash
+wget https://raw.githubusercontent.com/zardus/ctf-tools/master/Vagrantfile
+vagrant up
+```
+
+And connect to it via:
+
+```bash
+vagrant ssh
+```
 
 ## Adding Tools
 
