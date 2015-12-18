@@ -15,6 +15,7 @@ mkdir -p ../x-tools
 for sample in $SAMPLES
 do
 	../build-sample.sh $sample || echo "$sample" >> ../x-tools/broken
+	./ct-ng clean
 done
 cd ..
 
