@@ -160,3 +160,19 @@ Good luck!
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/awesome-ctf.
 
 There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
+
+## Tools in the official Debian/Ubuntu repos
+
+These tools are present in the Debian or Ubuntu repos (in an adequately new version).
+They're not included in ctf-tools, but are included here as notes for the author.
+
+| Category | Package | Description | Package |
+|----------|---------|-------------|---------|
+| forensics | [foremost](http://foremost.sourceforge.net/) | File carver. | `foremost` | <!--deb-tool-->
+| dsniff | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | dsniff | <!--deb-tool-->
+
+## Tools with unofficial Debian/Ubuntu repos or debs
+
+| Category | Package | Description | Repo/deb |
+|----------|---------|-------------|----------|
+| stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | [deb](http://www.sonicvisualiser.org/download.html) | <!--deb-tool-->
