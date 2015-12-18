@@ -104,6 +104,12 @@ manage-tools search preload
 Where possible, the tools keep the installs very self-contained (i.e., in to tool/ directory), and most uninstalls are just calls to `git clean` (**NOTE**, this is **NOT** careful; everything under the tool directory, including whatever you were working on, is blown away during an uninstall).
 To support python dependencies, however, make sure to create a virtualenv before installing and using tools (i.e., `mkvirtualenv --system-site-packages ctf`. The `--system-site-packages` is there for easier reuse of apt-gotten python packages where necessary).
 
+## Help!
+
+Something not working?
+I didn't write (almost) any of these tools, but hit up #ctf-tools on freenode if you're desperate.
+Maybe some kind soul will help!
+
 ## Docker/Vagrant
 
 By popular demand, a Dockerfile has been included.
