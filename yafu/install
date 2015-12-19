@@ -3,7 +3,7 @@
 mkdir yafu
 mkdir bin
 cd yafu
-wget "http://downloads.sourceforge.net/project/yafu/1.34/yafu-1.34.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fyafu%2F&ts=1446080941&use_mirror=skylineservers" -O yafu.zip
+wget "https://downloads.sourceforge.net/project/yafu/1.34/yafu-1.34.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fyafu%2F&ts=1446080941&use_mirror=skylineservers" -O yafu.zip
 unzip yafu.zip
 chmod 755 yafu
 mv yafu ../bin
