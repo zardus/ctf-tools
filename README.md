@@ -75,6 +75,12 @@ There are also some installers for non-CTF stuff to break the monotony!
 |----------|------|-------------|
 | game | [Dwarf Fortress](http://www.bay12games.com/dwarves/) | Something to help you relax after a CTF! | <!--tool-->
 
+And some helpers on tasty meals!
+
+| Category | Tool | Description |
+|----------|------|-------------|
+| meal (restaraunt) | [Chipotle Burrito Bowl](https://order.chipotle.com) | A tasty meal! | <!--meal-->
+
 ## Usage
 
 To use, do:

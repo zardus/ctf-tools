@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+touch rice
+touch black_beans
+touch chicken
+touch guacamole
+touch jalopeños
+touch pico
+touch onions
