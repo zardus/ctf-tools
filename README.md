@@ -151,7 +151,7 @@ To add a tool (say, named *toolname*), do the following:
 
 1. Create a `toolname` directory.
 2. Create an `install` script.
-3. (optional) if special uninstall steps are reuired, create an `uninstall` script.
+3. (optional) if special uninstall steps are required, create an `uninstall` script.
 
 ### Install Scripts
 
