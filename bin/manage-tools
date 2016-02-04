@@ -73,7 +73,18 @@ case $ACTION in
 			then
 				sudo apt-get -y install $PACKAGE_REQS
 			else
-				echo "Please install the following packages: $PACKAGE_REQS"
+				TOOL=SETUP tool_log "Please install the following packages: $PACKAGE_REQS"
+			fi
+		fi
+
+		if ! dpkg --print-foreign-architectures | grep -q i386
+		then
+			if [ "$ALLOW_SUDO" -eq 1 ]
+			then
+				sudo dpkg --add-architecture i386
+				sudo apt-get update
+			else
+				TOOL=SETUP tool_log "Certain tools need i386 libraries (enable with 'dpkg --add-architecture i386; apt-get update')."
 			fi
 		fi
 
