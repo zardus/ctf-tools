@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+apt-get -y install libssl-dev
