@@ -1,2 +1,6 @@
-*/*/
+*/*
 bin/*
+!*/install
+!*/install-root
+!*/upgrade
+!*/test
