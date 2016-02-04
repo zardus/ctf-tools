@@ -14,3 +14,13 @@ sed -i -e "s|#makeopt=.*|makeopt='-j'|" config.sh
 sed -i -e "s|install_dir.*|install_dir=\"$INSTALL_DIR\"|" config.sh
 cd build
 ./build-install-clean-all.sh
+
+mkdir -p bin
+cd bin
+for i in ../*/bin/*
+do
+	F=$(basename $i)
+	D=$(basename $(dirname $(dirname $i)))
+	[ -f $D-$F ] || ln -s $i $D-$F
+done
+cd ..
