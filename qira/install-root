@@ -4,4 +4,4 @@ apt-get -y install python-pip libssl-dev build-essential python-dev python-pip d
 apt-get -y build-dep qemu
 
 # plugin deps
-apt-get -y libssl1.0.0:i386
+apt-get -y install libssl1.0.0:i386
