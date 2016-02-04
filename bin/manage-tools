@@ -89,10 +89,11 @@ case $ACTION in
 		fi
 
 		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
-        if [ -e ~/.zshrc ]
-        then
-            echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
-        fi
+        	if [ -e ~/.zshrc ]
+        	then
+			echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
+        	fi
+
 		;;
 	list)
 		for t in *
