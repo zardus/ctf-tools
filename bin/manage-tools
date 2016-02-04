@@ -177,6 +177,9 @@ case $ACTION in
 			fi
 		fi
 		;;
+	dockertest)
+		docker run --entrypoint bash ctf-tools -c "source /etc/bash_completion.d/virtualenvwrapper && workon ctf && ~/tools/bin/manage-tools -s test $TOOL"
+		;;
 	*)
 		echo "TOOLS | ERROR | unknown action $ACTION"
 		;;
