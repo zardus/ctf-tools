@@ -1,4 +1,16 @@
 #!/bin/bash -e
 
-apt-get -y build-dep qemu
-apt-get -y install bison
+case "$DISTRI" in
+    "debian")
+        apt-get -y build-dep qemu
+        apt-get -y install bison
+        ;;
+    "archlinux")
+        pacman -Syu --noconfirm bison
+        pacman -Syu --noconfirm qemu
+        ;;
+    *)
+        echo "Unkown distribution"
+        exit 1
+        ;;
+esac
