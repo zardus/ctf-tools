@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e -o pipefail
+#set -x
 
+# let's stick with python 2 as default
 PY_VERSION=2
-if [[ "$0" =~ \.+pip3 ]]; then
+# check this scripts file ending
+if [[ "$0" =~ pip3 ]]; then
     PY_VERSION=3
 fi
-if [[ "$0" =~ \.+pip2 ]]; then
+if [[ "$0" =~ pip2 ]]; then
     PY_VERSION=2
 fi
 
