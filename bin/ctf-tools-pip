@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e -o pipefail
+
+PY_VERSION=2
+if [[ "$0" =~ \.+pip3 ]]; then
+    PY_VERSION=3
+fi
+if [[ "$0" =~ \.+pip2 ]]; then
+    PY_VERSION=2
+fi
+
+CTF_TOOLS_VE="ctftools"
+if [[ "PY_VERSION" -eq 3 ]]; then
+    CTF_TOOLS_VE="${CTF_TOOLS_VE}3"
+fi
+
+export WORKON_HOME=~/.virtualenvs
+if [[ ! -d "$WORKON_HOME" ]]; then
+    mkdir -p "$WORKON_HOME"
+fi
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+
+source $(which virtualenvwrapper.sh)
+
+if ! workon "$CTF_TOOLS_VE" 2>&1 1>/dev/null; then
+    echo "#### Creating python#PY_VERSION virtualenv '$CTF_TOOLS_VE' ####" >&2
+    # for some reason mkvirtualenv returns non-zero even if it
+    # succeeds?
+    mkvirtualenv -p $(which "python$PY_VERSION") "$CTF_TOOLS_VE" || true
+    echo "#### Switching to '$CTF_TOOLS_VE' virtualenv" >&2
+    workon "$CTF_TOOLS_VE" || (deactivate && workon "$CTF_TOOLS_VE")
+fi
+
+exec pip "$@"
