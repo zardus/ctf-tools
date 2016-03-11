@@ -82,7 +82,7 @@ case $ACTION in
 			if [ "$ALLOW_SUDO" -eq 1 ]
 			then
 				sudo dpkg --add-architecture i386
-				sudo apt-get update
+				sudo apt-get update || true
 			else
 				TOOL=SETUP tool_log "Certain tools need i386 libraries (enable with 'dpkg --add-architecture i386; apt-get update')."
 			fi
