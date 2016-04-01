@@ -108,13 +108,16 @@ EOF
 
 function base_build_setup()
 {
-	 if which apt-get; then
-		  base_build_setup_ubuntu
-	 elif which pacman; then
-		  base_build_setup_arch
-	 else
-		  TOOL=SETUP tool_log "Cannot detect or unsupported distribution"
-	 fi
+	case "$1" in
+		"ubuntu")
+			base_build_setup_ubuntu
+			;;
+		"archlinux")
+			base_build_setup_arch
+			;;
+		*)
+			TOOL=SETUP tool_log "Cannot detect or unsupported distribution"
+	esac
 }
 
 
@@ -157,13 +160,17 @@ cd $(dirname "${BASH_SOURCE[0]}")/..
 case $ACTION in
 	setup)
 
-		  base_build_setup
+		base_build_setup "$DISTRI"
 
 		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
-        	if [ -e ~/.zshrc ]
-        	then
+		if [ -e ~/.zshrc ]
+		then
 			echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
-        	fi
+		fi
+
+		if [ -e ~/.config/fish/config.fish ]; then
+			echo "set -x PATH $PATH $PWD/bin" >> ~/.config/fish/config.fish
+		fi
 
 		;;
 	list)
