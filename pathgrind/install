@@ -24,7 +24,7 @@ END
 cat <<END > bin/pathgrind-plot
 #!/bin/sh
 cd "$PWD/pathgrind/"
-python fuzz/plot.py "\$@"
+python fuzz/plotfuzz.py "\$@"
 END
 
 chmod 755 bin/pathgrind-*

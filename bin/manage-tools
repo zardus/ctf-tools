@@ -162,15 +162,10 @@ case $ACTION in
 
 		base_build_setup "$DISTRI"
 
-		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
-		if [ -e ~/.zshrc ]
-		then
+        	if [ -e ~/.zshrc ]
+        	then
 			echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
-		fi
-
-		if [ -e ~/.config/fish/config.fish ]; then
-			echo "set -x PATH $PATH $PWD/bin" >> ~/.config/fish/config.fish
-		fi
+        	fi
 
 		;;
 	list)

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-curl https://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.gz | tar xz
-cd gdb-7.10
+curl https://ftp.gnu.org/gnu/gdb/gdb-7.11.tar.gz | tar xz
+cd gdb-7.11
 ./configure --prefix=$(dirname $PWD) --with-python=python2 --enable-targets=all
 make -j $(nproc)
 make install
