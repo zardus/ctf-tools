@@ -6,7 +6,7 @@ git clone --depth 1 https://github.com/longld/peda.git
 mkdir bin
 cat > bin/gdb-peda <<EOF
 #!/bin/sh
-exec gdb -q -ex init-peda $@
+exec gdb -q -ex init-peda "$@"
 EOF
 chmod +rx bin/gdb-peda
 
