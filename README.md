@@ -50,6 +50,7 @@ Installers for the following tools are included:
 | forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. | <!--tool--><!--test-->
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). | <!--tool--><!--test-->
 | crypto | [foresight](https://github.com/ALSchwalm/foresight) | A tool for predicting the output of random number generators. To run, launch "foresee". | <!--tool--><!--test-->
+| crypto | [hashkill](https://github.com/gat3way/hashkill) | Hash cracker. | <!--tool--><!--test-->
 | crypto | [hashpump](https://github.com/bwall/HashPump) | A tool for performing hash length extension attaacks. | <!--tool--><!--test-->
 | crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool--><!--test-->
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. | <!--tool--><!--test-->
