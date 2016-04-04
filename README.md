@@ -62,6 +62,7 @@ Installers for the following tools are included:
 | crypto | [yafu](http://sourceforge.net/projects/yafu/) | Automated integer factorization. | <!--tool--><!--test-->
 | web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--failing-->
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool--><!--test-->
+| web | [dirb](http://dirb.sourceforge.net/) | Web path scanner. | <!--tool--><!--test-->
 | web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool--><!--test-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
 | web | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
