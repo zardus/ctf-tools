@@ -120,7 +120,7 @@ Something not working?
 I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
 Maybe some kind soul will help!
 
-## Docker
+## Docker (version 1.7+)
 
 By popular demand, a Dockerfile has been included.
 You can build a docker image with:
