@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+[ -e honggfuzz ] || git clone --depth 1 https://github.com/google/honggfuzz
+cd honggfuzz
+make -j
+mkdir -p ../bin
+cp honggfuzz ../bin

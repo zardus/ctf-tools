@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+[ -e peepdf ] || git clone --depth 1 https://github.com/jesparza/peepdf
+
+mkdir -p bin
+cd bin
+ln -s ../peepdf/peepdf.py .
+ln -s ../peepdf/jjdecode .
+cd ..
