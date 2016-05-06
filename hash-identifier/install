@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-svn checkout http://hash-identifier.googlecode.com/svn/trunk/ hash-identifier-read-only
+svn checkout https://hash-identifier.googlecode.com/svn/trunk/ hash-identifier-read-only
 chmod 755 hash-identifier-read-only/Hash_ID_v1.1/Hash_ID.py
 fromdos hash-identifier-read-only/Hash_ID_v1.1/Hash_ID.py || dos2unix hash-identifier-read-only/Hash_ID_v1.1/Hash_ID.py
 
