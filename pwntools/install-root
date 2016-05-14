@@ -2,5 +2,4 @@
 
 apt-add-repository -y ppa:pwntools/binutils
 apt-get update
-apt-get -y install binutils-.*-linux-gnu
-
+apt-get -y install binutils-.*-linux-gnu libffi-dev libssl-dev
