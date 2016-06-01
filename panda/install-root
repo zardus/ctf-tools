@@ -1,1 +1,19 @@
-apt-get -y install nasm libssl-dev libpcap-dev subversion curl autoconf libtool libc++-dev llvm-3.3-dev clang-3.3 unzip
+#!/bin/bash
+set -eu -o pipefail
+
+case "$DISTRI" in
+    "debian")
+
+        apt-get -y install nasm libssl-dev libpcap-dev subversion curl \
+            autoconf libtool libc++-dev llvm-3.3-dev clang-3.3 unzip
+        ;;
+    "archlinux")
+        echo "archlinux is currently not supported!"
+        echo "Update install-root and do a pull-request ;)"
+        exit 1
+        ;;
+    *)
+        echo "Unsupported distribution: ''"
+        exit 1
+        ;;
+esac

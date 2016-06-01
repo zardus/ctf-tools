@@ -1,3 +1,18 @@
 #!/bin/bash
+set -eu -o pipefail
 
-apt-get -y install maven libprotobuf-dev openjdk-7-jre openjdk-7-jdk
+case "$DISTRI" in
+    "debian")
+
+        apt-get -y install maven libprotobuf-dev openjdk-7-jre openjdk-7-jdk
+        ;;
+    "archlinux")
+        echo "archlinux is currently not supported!"
+        echo "Update install-root and do a pull-request ;)"
+        exit 1
+        ;;
+    *)
+        echo "Unsupported distribution: ''"
+        exit 1
+        ;;
+esac

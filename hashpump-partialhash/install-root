@@ -1,3 +1,15 @@
-#!/bin/bash -e
+#!/bin/bash
+set -eu -o pipefail
 
-apt-get -y install libssl-dev
+case "$DISTRI" in
+    debian)
+        apt-get -y install libssl-dev
+        ;;
+    archlinux)
+        pacman -Syu --noconfirm openssl
+        ;;
+    *)
+        echo "Unsupported distribution"
+        exit 1
+        ;;
+esac

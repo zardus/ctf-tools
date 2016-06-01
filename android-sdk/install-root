@@ -1,1 +1,15 @@
-apt-get -y install openjdk-7-jre openjdk-7-jdk
+#!/bin/bash
+set -eu -o pipefail
+
+case "$DISTRI" in
+    "debian")
+        apt-get -y install openjdk-7-jre openjdk-7-jdk
+        ;;
+    "archlinux")
+        pacman -Syu --noconfirm --needed jre7-openjdk jdk7-openjdk
+        ;;
+    *)
+        echo "Unsupported distribution: ''"
+        exit 1
+        ;;
+esac

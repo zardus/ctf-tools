@@ -1,3 +1,15 @@
 #!/bin/bash
+set -eu -o pipefail
 
-apt-get -y install libsqlite3-dev
+case "$DISTRI" in
+    "debian")
+        apt-get -y install libsqlite3-dev
+        ;;
+    "archlinux")
+        pacman -Syu --noconfirm --needed sqlite
+        ;;
+    *)
+        echo "Unsupported distribution: ''"
+        exit 1
+        ;;
+esac

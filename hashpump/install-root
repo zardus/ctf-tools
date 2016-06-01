@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash
+set -eu -o pipefail
 
 case "$DISTRI" in
     debian)

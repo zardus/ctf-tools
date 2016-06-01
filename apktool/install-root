@@ -1,2 +1,15 @@
-apt-get update
-apt-get install -y default-jre
+#!/bin/bash
+set -eu -o pipefail
+
+case "$DISTRI" in
+    "debian")
+        apt-get install -y default-jre
+        ;;
+    "archlinux")
+        pacman -Syu --noconfirm --needed jre8-openjdk
+        ;;
+    *)
+        echo "Unsupported distribution: ''"
+        exit 1
+        ;;
+esac
