@@ -4,10 +4,10 @@ case "$DISTRI" in
     "debian")
         apt-add-repository -y ppa:pwntools/binutils
         apt-get update
-        apt-get -y install binutils-.*-linux-gnu
+        apt-get -y install binutils-.*-linux-gnu libffi-dev libssl-dev
         ;;
     "archlinux")
-        pacman -Syu --noconfirm binutils
+        pacman -Syu --noconfirm --needed binutils openssl libffi
         ;;
     *)
         echo "Unknown distribution"
