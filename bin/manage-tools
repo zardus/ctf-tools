@@ -162,14 +162,10 @@ case $ACTION in
 
 		base_build_setup "$DISTRI"
 
-<<<<<<< HEAD
 		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
+
 		if [ -e ~/.zshrc ]
 		then
-=======
-        	if [ -e ~/.zshrc ]
-        	then
->>>>>>> 82571b6917b6dbb212e722d35c6f7d2d99b7e0cb
 			echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
 		fi
 
