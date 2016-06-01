@@ -1,7 +1,0 @@
-#!/bin/bash
-
-mkdir bin
-git clone --depth 1 https://github.com/maurosoria/dirs3arch.git
-
-cd bin
-ln -s ../dirs3arch/dirs3arch.py .
