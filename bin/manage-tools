@@ -196,7 +196,12 @@ case $ACTION in
 		tool_log "starting install, logging to $PWD/install.log"
 		rm -f install.log
 		if [ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ]; then
-			sudo env DISTRI=$DISTRI ./install-root >> install.log 2>&1
+			if ! sudo env DISTRI=$DISTRI ./install-root >> install.log 2>&1;
+			then
+				tool_log "INSTALL FAILED"
+				cat install.log >&2
+				exit 1
+			fi
 		fi
 		if env DISTRI=$DISTRI ./install >>install.log 2>&1
 		then
