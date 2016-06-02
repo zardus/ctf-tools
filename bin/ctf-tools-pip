@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -o pipefail
+set -eu -o pipefail
 #set -x
 
 # let's stick with python 2 as default
@@ -12,27 +12,32 @@ if [[ "$0" =~ pip2 ]]; then
     PY_VERSION=2
 fi
 
+PY_INTERPRETER=$(which "python$PY_VERSION" || which python)
+
 CTF_TOOLS_VE="ctftools"
-if [[ "PY_VERSION" -eq 3 ]]; then
+if [[ $PY_VERSION -eq 3 ]]; then
     CTF_TOOLS_VE="${CTF_TOOLS_VE}3"
 fi
 
-export WORKON_HOME=~/.virtualenvs
+if [[ -z "${WORKON_HOME+x}" ]]; then
+    export WORKON_HOME="$HOME/.virtualenvs"
+fi
 if [[ ! -d "$WORKON_HOME" ]]; then
     mkdir -p "$WORKON_HOME"
 fi
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 
-source /etc/bash_completion.d/virtualenvwrapper \
-    || source $(which virtualenvwrapper.sh)
+VE_DIR="$WORKON_HOME/$CTF_TOOLS_VE"
 
-if ! workon "$CTF_TOOLS_VE" 2>&1 1>/dev/null; then
-    echo "#### Creating python#PY_VERSION virtualenv '$CTF_TOOLS_VE' ####" >&2
-    # for some reason mkvirtualenv returns non-zero even if it
-    # succeeds?
-    mkvirtualenv -p $(which "python$PY_VERSION") "$CTF_TOOLS_VE" || true
-    echo "#### Switching to '$CTF_TOOLS_VE' virtualenv" >&2
-    workon "$CTF_TOOLS_VE" || (deactivate && workon "$CTF_TOOLS_VE")
+if [[ ! -d "$VE_DIR" || ! -e "$VE_DIR/bin/activate" ]]; then
+    echo "#### Creating python$PY_VERSION virtualenv '$CTF_TOOLS_VE' ####" >&2
+    virtualenv --system-site-packages -p "$PY_INTERPRETER"  "$VE_DIR"
+fi
+
+if [[ -z "${VIRTUAL_ENV+x}" || "$VIRTUAL_ENV" != "$VE_DIR" ]]; then
+    if [[ -n "${VIRTUAL_ENV+x}" ]]; then
+        deactivate
+    fi
+    source "$VE_DIR/bin/activate"
 fi
 
 exec pip "$@"
