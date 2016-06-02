@@ -114,10 +114,27 @@ function base_build_setup()
 			;;
 		"archlinux")
 			base_build_setup_arch
+			export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 			;;
 		*)
 			TOOL=SETUP tool_log "Cannot detect or unsupported distribution"
 	esac
+
+	## setup PATH for several shells
+
+	echo "export PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
+
+	if [ -e ~/.zshrc ]
+	then
+		echo "export PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
+	fi
+
+	if [ -e ~/.config/fish/config.fish ]; then
+		echo "set -x PATH $PWD/bin \$PATH " >> ~/.config/fish/config.fish
+	fi
+
+	# create the py2 virtualenv
+	"$PWD/bin/ctf-tools-pip" freeze 2>&1 >/dev/null || true
 }
 
 
@@ -171,18 +188,6 @@ case $ACTION in
 	setup)
 
 		base_build_setup "$DISTRI"
-
-		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
-
-		if [ -e ~/.zshrc ]
-		then
-			echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
-		fi
-
-		if [ -e ~/.config/fish/config.fish ]; then
-			echo "set -x PATH $PATH $PWD/bin" >> ~/.config/fish/config.fish
-		fi
-
 		;;
 	list)
 		for t in *
