@@ -14,9 +14,7 @@ USER ctf
 WORKDIR /home/ctf/tools
 RUN git checkout .
 RUN bin/manage-tools -s setup
+RUN echo "workon ctftools" >> /home/ctf/.bashrc
 
 WORKDIR /home/ctf
-RUN bash -c "source /etc/bash_completion.d/virtualenvwrapper && mkvirtualenv ctf"
-RUN echo "workon ctf" >> /home/ctf/.bashrc
-
 ENTRYPOINT bash -i

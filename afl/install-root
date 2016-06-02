@@ -1,6 +1,9 @@
-#!/bin/bash -e
+#!/bin/bash
+set -eu -o pipefail
 
 case "$DISTRI" in
+    "ubuntu")
+        ;&  # fallthrough
     "debian")
         apt-get -y build-dep qemu
         apt-get -y install bison

@@ -2,6 +2,8 @@
 set -eu -o pipefail
 
 case "$DISTRI" in
+    "ubuntu")
+        ;&  # fallthrough
     "debian")
 
         apt-get install -y libqt5widgets5

@@ -42,9 +42,9 @@ function detect_distribution()
 }
 
 
-function base_build_setup_ubuntu()
+function base_build_setup_debian()
 {
-	PACKAGE_REQS="build-essential libtool g++ gcc linuxtexinfo curl wget automake autoconf python-dev git subversion unzip"
+	PACKAGE_REQS="build-essential libtool g++ gcc linuxtexinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper"
 	PACKAGE_COUNT=$(echo $PACKAGE_REQS | tr ' ' '\n' | wc -l)
 	if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
 	then
@@ -70,7 +70,7 @@ function base_build_setup_ubuntu()
 
 function base_build_setup_arch()
 {
-	PACKAGE_REQS="curl wget python2 python3 git subversion unzip"
+	PACKAGE_REQS="curl wget python2 python3 git subversion unzip python-virtualenvwrapper"
 	if [ "$ALLOW_SUDO" -eq 1 ]; then
 		sudo pacman -Syu --noconfirm $PACKAGE_REQS
 		sudo pacman -Syu --noconfirm base-devel || true
@@ -108,7 +108,9 @@ function base_build_setup()
 {
 	case "$1" in
 		"ubuntu")
-			base_build_setup_ubuntu
+				;&  # fallthrough
+		"debian")
+			base_build_setup_debian
 			;;
 		"archlinux")
 			base_build_setup_arch

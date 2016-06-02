@@ -2,6 +2,8 @@
 set -eu -o pipefail
 
 case "$DISTRI" in
+    "ubuntu")
+        ;&  # fallthrough
     "debian")
 
         apt-get -y install maven libprotobuf-dev openjdk-7-jre openjdk-7-jdk
