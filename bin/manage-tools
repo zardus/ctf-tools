@@ -235,8 +235,9 @@ case $ACTION in
 	uninstall)
 		cd $TOOL
 
-		[ -x ./uninstall ] && ./uninstall
-		git clean -dffx .
+		tool_log "starting uninstall, logging to $PWD/uninstall.log"
+		[ -x ./uninstall ] && ./uninstall >> uninstall.log 2>&1
+		git clean -dffx . >/dev/null 2>&1
 		tool_log "uninstall finished"
 
 		cd ..
