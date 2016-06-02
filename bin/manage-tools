@@ -72,8 +72,8 @@ function base_build_setup_arch()
 {
 	PACKAGE_REQS="curl wget python2 python3 git subversion unzip python-virtualenvwrapper"
 	if [ "$ALLOW_SUDO" -eq 1 ]; then
-		sudo pacman -Syu --noconfirm $PACKAGE_REQS
-		sudo pacman -Syu --noconfirm base-devel || true
+		sudo pacman -Syu --noconfirm --needed $PACKAGE_REQS
+		sudo pacman -Syu --noconfirm --needed base-devel || true
 	else
 		TOOL=SETUP tool_log "Please install the following packages: $PACKAGE_REQS"
 	fi
@@ -108,7 +108,7 @@ function base_build_setup()
 {
 	case "$1" in
 		"ubuntu")
-				;&  # fallthrough
+			;&  # fallthrough
 		"debian")
 			base_build_setup_debian
 			;;
@@ -121,6 +121,10 @@ function base_build_setup()
 }
 
 
+if [[ $# -eq 0 ]]; then
+	usage
+	exit 1
+fi
 
 DISTRI=$(detect_distribution)
 
@@ -140,8 +144,14 @@ done
 
 [ -z "$ALLOW_SUDO" ] && export ALLOW_SUDO=0
 
-ACTION=$1
-TOOL=$2
+if [[ $# -ge 1 ]]; then
+	ACTION="$1"
+fi
+if [[ $# -eq 2 ]]; then
+	TOOL="$2"
+else
+	TOOL=""
+fi
 
 if [ "$TOOL" == "all" ]
 then
