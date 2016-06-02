@@ -159,7 +159,7 @@ do
 	shift
 done
 
-[ -z "$ALLOW_SUDO" ] && export ALLOW_SUDO=0
+[[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
 
 if [[ $# -ge 1 ]]; then
 	ACTION="$1"
