@@ -23,7 +23,8 @@ if [[ ! -d "$WORKON_HOME" ]]; then
 fi
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 
-source $(which virtualenvwrapper.sh)
+source /etc/bash_completion.d/virtualenvwrapper \
+    || source $(which virtualenvwrapper.sh)
 
 if ! workon "$CTF_TOOLS_VE" 2>&1 1>/dev/null; then
     echo "#### Creating python#PY_VERSION virtualenv '$CTF_TOOLS_VE' ####" >&2
