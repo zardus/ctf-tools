@@ -44,7 +44,7 @@ function detect_distribution()
 
 function base_build_setup_debian()
 {
-	PACKAGE_REQS="build-essential libtool g++ gcc linuxtexinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper"
+	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper"
 	PACKAGE_COUNT=$(echo $PACKAGE_REQS | tr ' ' '\n' | wc -l)
 	if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
 	then
