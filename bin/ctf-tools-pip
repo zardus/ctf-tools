@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
+set -e -o pipefail
 #set -x
 
 # let's stick with python 2 as default
