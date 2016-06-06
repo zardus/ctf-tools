@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y build-essential libtool g++ gcc \
     texinfo curl wget automake autoconf python python-dev git subversion \
     unzip virtualenvwrapper
 
-RUN adduser ctf
+RUN useradd -m ctf
 COPY .git /home/ctf/tools/.git
 RUN chown -R ctf.ctf /home/ctf/tools
 
