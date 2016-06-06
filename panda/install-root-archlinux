@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu -o pipefail
+
+pacman -Syu --needed --noconfirm nasm openssl libpcap subversion curl \
+    autoconf libtool libc++ unzip clang llvm

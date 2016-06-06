@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu -o pipefail
+
+pacman -Syu --noconfirm --needed jre7-openjdk jdk7-openjdk

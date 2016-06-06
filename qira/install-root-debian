@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get -y install python-pip libssl-dev build-essential python-dev python-pip debootstrap libjpeg-dev zlib1g-dev unzip wget graphviz software-properties-common libgmp-dev llvm-3.4-dev time clang-3.4 ocaml ocaml-native-compilers camlp4-extra opam clang python-virtualenv wget flex bison libtool automake autoconf autotools-dev pkg-config libglib2.0-dev libevent-2.0-5
+apt-get -y build-dep qemu
+
+# plugin deps
+apt-get -y install libssl1.0.0:i386

@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+pacman -Syu --noconfirm --needed \
+    ruby python2 ruby-bundler \
+    git make gcc openssl patch readline \
+    zlib libyaml libffi bzip2 autoconf automake \
+    libtool bison sqlite
