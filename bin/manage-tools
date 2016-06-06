@@ -35,11 +35,11 @@ function detect_distribution()
 	if which pacman 2>&1 >/dev/null; then
 		echo "archlinux"
 	elif which apt-get 2>&1 >/dev/null; then
-        if lsb_release -a | grep -i ubuntu; then
-            echo "ubuntu"
-        else
-            echo "debian"
-        fi
+		if lsb_release -a | grep -i ubuntu 2>&1 >/dev/null; then
+			echo "ubuntu"
+		else
+			echo "debian"
+		fi
 	else
 		echo ""
 	fi
@@ -217,30 +217,30 @@ case $ACTION in
 		tool_log "starting install, logging to $PWD/install.log"
 		rm -f install.log
 
-        # first get distri specific dependencies
-        if [[ $(find . -name 'install-root*' | wc -l) -ge 1 ]]; then
-            INSTALL_ROOT_SCRIPT="./install-root-$DISTRI"
-            # use debian install script if we are on ubuntu and no ubuntu
-            # specific install script exists
-            if [[ "$DISTRI" == "ubuntu" \
-                  && ! -x "$INSTALL_ROOT_SCRIPT" \
-                  && -x "./install-root-debian" ]]
-            then
-                INSTALL_ROOT_SCRIPT="./install-root-debian"
-            fi
-            if [[ -x "$INSTALL_ROOT_SCRIPT" && "$ALLOW_SUDO" -eq 1 ]]; then
-                if ! sudo env DISTRI=$DISTRI "$INSTALL_ROOT_SCRIPT" >> install.log 2>&1;
-                then
-                    tool_log "INSTALL FAILED"
-                    cat install.log >&2
-                    exit 1
-                fi
-            else
-                tool_log "Warning: make sure build dependencies are installed!"
-            fi
-        fi
+		# first get distri specific dependencies
+		if [[ $(find . -name 'install-root*' | wc -l) -ge 1 ]]; then
+			INSTALL_ROOT_SCRIPT="./install-root-$DISTRI"
+			# use debian install script if we are on ubuntu and no ubuntu
+			# specific install script exists
+			if [[ "$DISTRI" == "ubuntu" \
+				&& ! -x "$INSTALL_ROOT_SCRIPT" \
+				&& -x "./install-root-debian" ]]
+			then
+				INSTALL_ROOT_SCRIPT="./install-root-debian"
+			fi
+			if [[ -x "$INSTALL_ROOT_SCRIPT" && "$ALLOW_SUDO" -eq 1 ]]; then
+				if ! sudo env DISTRI=$DISTRI "$INSTALL_ROOT_SCRIPT" >> install.log 2>&1;
+				then
+					tool_log "INSTALL FAILED"
+					cat install.log >&2
+					exit 1
+				fi
+			else
+				tool_log "Warning: make sure build dependencies are installed!"
+			fi
+		fi
 
-        # execute install script
+		# execute install script
 		if env DISTRI=$DISTRI ./install >>install.log 2>&1
 		then
 			tool_log "install finished"
