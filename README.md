@@ -13,6 +13,7 @@ Installers for the following tools are included:
 | binary | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool--> <!--no-test-->
 | binary | [barf](https://github.com/programa-stic/barf-project) | Binary Analysis and Reverse-engineering Framework. | <!--tool--><!--times-out-->
 | binary | [bindead](https://bitbucket.org/mihaila/bindead/wiki/Home) | A static analysis tool for binaries. | <!--tool--><!--failing-->
+| binary | [binjitsu](https://github.com/binjitsu/binjitsu) | Useful CTF utilities. pwntools fork. | <!--tool--><!--no-test-->
 | binary | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. | <!--tool--><!--test-->
 | binary | [codereason](https://github.com/trailofbits/codereason) | Semantic Binary Code Analysis Framework. | <!--tool--><!--failing-->
 | binary | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
@@ -21,11 +22,13 @@ Installers for the following tools are included:
 | binary | [elfparser](http://www.elfparser.com/) | Quickly determine the capabilities of an ELF binary through static analysis. | <!--tool--><!--test-->
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool--><!--test-->
 | binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--failing-->
+| binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
 | binary | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
 | binary | [panda](https://github.com/moyix/panda) | Platform for Architecture-Neutral Dynamic Analysis. | <!--tool--><!--no-test-->
 | binary | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. | <!--tool--><!--test-->
 | binary | [peda](https://github.com/longld/peda) | Enhanced environment for gdb. | <!--tool--><!--test-->
 | binary | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). | <!--tool--><!--no-test-->
+| binary | [pwndbg](https://github.com/zachriggle/pwndbg) | Enhanced environment for gdb. Especially for pwning. | <!--tool--><!--no-test-->
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool--><!--no-test-->
 | binary | [python-pin](https://github.com/blankwall/Python_Pin) | Python bindings for pin. | <!--tool--><!--test-->
 | binary | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--times-out-->
@@ -67,7 +70,8 @@ Installers for the following tools are included:
 | web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--failing-->
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool--><!--test-->
 | web | [dirb](http://dirb.sourceforge.net/) | Web path scanner. | <!--tool--><!--test-->
-| web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool--><!--test-->
+| web | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. | <!--tool--><!--test-->
+| web | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
 | web | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool--><!--failing-->
@@ -114,7 +118,10 @@ manage-tools search preload
 ```
 
 Where possible, the tools keep the installs very self-contained (i.e., in to tool/ directory), and most uninstalls are just calls to `git clean` (**NOTE**, this is **NOT** careful; everything under the tool directory, including whatever you were working on, is blown away during an uninstall).
-To support python dependencies, however, make sure to create a virtualenv before installing and using tools (i.e., `mkvirtualenv --system-site-packages ctf`. The `--system-site-packages` is there for easier reuse of apt-gotten python packages where necessary).
+One exception to this are python tools, which are installed using the `pip`
+package manager if possible. A `ctftools` virtualenv is created during the
+`manage-tools setup` command and can be accessed using the command
+`workon ctftools`.
 
 ## Help!
 

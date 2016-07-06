@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+pacman -Syu --noconfirm gperf flex bison help2man gawk ncurses

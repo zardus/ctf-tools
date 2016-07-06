@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+ctf-tools-pip3 uninstall -y foresight || true

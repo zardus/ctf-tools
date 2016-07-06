@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get install -y libqt5widgets5

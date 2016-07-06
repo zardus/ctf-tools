@@ -5,7 +5,7 @@ cd HashPump
 make -j $(nproc)
 cd ..
 
-pip install -e HashPump
+ctf-tools-pip install --upgrade -e HashPump
 
 mkdir bin
 cd bin

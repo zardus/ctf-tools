@@ -1,6 +1,7 @@
 */*
 bin/*
 !*/install
-!*/install-root
+!*/uninstall
+!*/install-root-*
 !*/upgrade
 !*/test

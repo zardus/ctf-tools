@@ -1,3 +1,0 @@
-#!/bin/bash
-
-apt-get -y install libboost-dev cmake libqt4-dev

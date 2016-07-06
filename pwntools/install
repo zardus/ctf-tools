@@ -1,30 +1,4 @@
 #!/bin/bash -e
 
-# pwnutils
-git clone --depth 1 https://github.com/Gallopsled/pwntools.git
-cd pwntools
-pip install -r requirements.txt
-cd ..
-
-# binutils
-#curl https://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.gz | tar xz
-#mkdir binutils-build
-#cd binutils-build
-#export AR=ar
-#export AS=as
-#../binutils-2.25/configure --prefix=$(dirname $PWD)/binutils-inst --enable-multilib
-#make -j $(nproc)
-#make install
-
-mkdir -p bin
-cd bin
-for i in $(yes n | pip uninstall pwntools | grep bin)
-do
-	mv $i $(basename $i).real
-	cat <<END > $(basename $i)
-#!/bin/bash
-PATH=/usr/bin:\$PATH $PWD/$(basename $i).real "\$@"
-END
-	chmod 755 $(basename $i)
-done
-cd ..
+git clone --depth=1 https://github.com/Gallopsled/pwntools.git
+ctf-tools-pip install --upgrade -e pwntools

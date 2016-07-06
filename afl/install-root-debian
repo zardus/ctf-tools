@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get -y build-dep qemu
+apt-get -y install bison

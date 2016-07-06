@@ -1,3 +1,0 @@
-#!/bin/bash
-
-apt-get -y install liblzma-dev python-magic zlib1g-dev

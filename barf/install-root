@@ -1,3 +1,0 @@
-#!/bin/bash
-
-apt-get -y install binutils-multiarch-dev

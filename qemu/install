@@ -2,6 +2,10 @@
 
 curl http://wiki.qemu-project.org/download/qemu-2.4.1.tar.bz2 | tar xvj
 cd qemu-2.4.1
-./configure --prefix=$(dirname $PWD)
+if [[ "$(python --version 2>&1)" =~ Python\ 3 ]]; then
+    ./configure "--prefix=$(dirname $PWD)" "--python=$(which python2)"
+else
+    ./configure "--prefix=$(dirname $PWD)"
+fi
 make -j $(nproc)
 make install
