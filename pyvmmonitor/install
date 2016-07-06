@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+wget https://bbc5a801c67991bd078f7f789065e318bdf9d509.googledrive.com/host/0BwwQN8QrgsRpOGpyc2syWkVYVkE/PyVmMonitor%201.0.1/pyvmmonitor_1.0.1_linux.x86_64.tar.gz -O - | tar xvz
+
+mkdir -p bin
+cat <<END > bin/pyvmmonitor-ui
+#!/bin/bash -e
+cd $PWD/pyvmmonitor
+exec ./pyvmmonitor-ui "\$@"
+END
+chmod 755 bin/pyvmmonitor-ui
