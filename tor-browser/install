@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+REL_PATH=$(curl https://www.torproject.org/projects/torbrowser.html.en#downloads | grep -i tor-browser-linux | grep hardened | grep td  | sed -e 's/.*href="//' -e 's/">.*//')
+wget https://www.torproject.org/projects/$REL_PATH -O - | tar xvJ
+
+mkdir -p bin
+cd bin
+ln -s ../tor-browser/start-tor-browser.desktop tor-browser
+cd ..
