@@ -83,6 +83,7 @@ There are also some installers for non-CTF stuff to break the monotony!
 |----------|------|-------------|
 | game | [Dwarf Fortress](http://www.bay12games.com/dwarves/) | Something to help you relax after a CTF! | <!--tool-->
 | tor-browser | [tor-browser](https://www.torproject.org/projects/torbrowser.html.en) | Useful when you need to hit a web challenge from different IPs. | <!--tool--><!--test-->
+| pyvmmonitor | [pyvmmonitor](http://www.pyvmmonitor.com/) | PyVmMonitor is a profiler with a simple goal: being the best way to profile a Python program. | <!--tool--><!--test-->
 
 ## Usage
 
