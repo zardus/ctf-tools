@@ -6,7 +6,7 @@ git clone --depth 1 https://github.com/hugsy/gef.git
 mkdir bin
 cat > bin/gdb-gef <<EOF
 #!/bin/sh
-exec gdb -q -ex init-gef "$@"
+exec gdb -q -ex init-gef "\$@"
 EOF
 chmod +rx bin/gdb-gef
 
