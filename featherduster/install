@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+git clone --depth=1 https://github.com/nccgroup/featherduster.git
+ctf-tools-pip install --upgrade -e featherduster
+
+mkdir bin || true
+cd bin
+cat > featherduster <<EOF
+#!/bin/sh
+exec python $(realpath ../featherduster/featherduster.py) "\$@"
+EOF
+chmod +x featherduster

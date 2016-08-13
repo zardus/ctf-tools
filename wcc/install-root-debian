@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get install clang libbfd-dev uthash-dev \
+    libelf-dev libcapstone-dev \
+    libreadline6 libreadline6-dev \
+    libiberty-dev libgsl-dev
