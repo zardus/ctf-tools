@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+set -eu -o pipefail
+# set -x
 
 function usage()
 {
@@ -6,29 +8,152 @@ function usage()
 Usage: $(basename $0) [-s] (list|setup|install|uninstall|bin|search) tool
 
 Where:
-	-s		allow running things with sudo (i.e., to install debs)
-	tool		the name of the tool. if "all", does the action on all
-			tools
+    -s      allow running things with sudo (i.e., to install debs)
+    tool    the name of the tool. if "all", does the action on all tools
 
 Actions:
-	setup		set up the environment (adds ctf-tools/bin to your
-			\$PATH in .bashrc)
-	list		list all tools (-i: only installed, -u: only
-			uninstalled)
-	install		installs a tool
-	uninstall	uninstalls a tool
-	bin		re-links tool binaries into ctf-tools/bin
-	search		search description and name of tools
+    setup       set up the environment (adds ctf-tools/bin to your \$PATH in .bashrc)
+    list        list all tools (-i: only installed, -u: only uninstalled)
+    install     installs a tool
+    uninstall   uninstalls a tool
+    reinstall   reinstalls a tool
+    upgrade     upgrades a tool
+    bin         re-links tool binaries into ctf-tools/bin
+    search      search description and name of tools
 
 END
 }
 
-ALLOW_SUDO=0
+function tool_log()
+{
+	echo "$(tput setaf 4 2>/dev/null)TOOLS | $TOOL |$(tput sgr0 2>/dev/null) $@"
+}
+
+
+function detect_distribution()
+{
+	if which pacman 2>&1 >/dev/null; then
+		echo "archlinux"
+	elif which apt-get 2>&1 >/dev/null; then
+		if lsb_release -a | grep -i ubuntu 2>&1 >/dev/null; then
+			echo "ubuntu"
+		else
+			echo "debian"
+		fi
+	else
+		echo ""
+	fi
+}
+
+
+function base_build_setup_debian()
+{
+	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper"
+	PACKAGE_COUNT=$(echo $PACKAGE_REQS | tr ' ' '\n' | wc -l)
+	if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
+	then
+		if [ "$ALLOW_SUDO" -eq 1 ]; then
+			sudo apt-get -y install $PACKAGE_REQS
+		else
+			TOOL=SETUP tool_log "Please install the following packages: $PACKAGE_REQS"
+		fi
+	fi
+
+	if ! dpkg --print-foreign-architectures | grep -q i386
+	then
+		if [ "$ALLOW_SUDO" -eq 1 ]
+		then
+			sudo dpkg --add-architecture i386
+			sudo apt-get update
+		else
+			TOOL=SETUP tool_log "Certain tools need i386 libraries (enable with 'dpkg --add-architecture i386; apt-get update')."
+		fi
+	fi
+}
+
+
+function base_build_setup_arch()
+{
+	PACKAGE_REQS="curl wget python2 python3 git subversion unzip python-virtualenvwrapper"
+	if [ "$ALLOW_SUDO" -eq 1 ]; then
+		sudo pacman -Syu --noconfirm --needed $PACKAGE_REQS
+		sudo pacman -Syu --noconfirm --needed base-devel || true
+	else
+		TOOL=SETUP tool_log "Please install the following packages: $PACKAGE_REQS"
+	fi
+
+	if ! grep "^\[multilib\]$" /etc/pacman.conf >/dev/null; then
+		if [ "$ALLOW_SUDO" -eq 1 ]; then
+			sudo sh -c 'cat >> /etc/pacman.conf' <<EOF
+
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+EOF
+		else
+			TOOL=SETUP tool_log "Certain tools need i386 libraries (enable multilib in /etc/pacman.conf')."
+			return
+		fi
+	fi
+
+	if [ "$ALLOW_SUDO" -eq 1 ] \
+		&& grep "^\[multilib\]$" /etc/pacman.conf >/dev/null \
+		&& ! sudo pacman -Qk gcc-multilib >/dev/null
+	then
+		sudo pacman -Syy --noconfirm
+		#sudo pacman -Syu --noconfirm multilib-devel
+		# unfortunately we cannot do --noconfirm if we might choose to replace
+		# a package such as gcc with gcc-multilib, therefore this workaround
+		printf "\ny\ny\ny\n" | sudo pacman -Syu multilib-devel
+	fi
+}
+
+
+function base_build_setup()
+{
+	case "$1" in
+		"ubuntu")
+			;&  # fallthrough
+		"debian")
+			base_build_setup_debian
+			;;
+		"archlinux")
+			base_build_setup_arch
+			export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+			;;
+		*)
+			TOOL=SETUP tool_log "Cannot detect or unsupported distribution"
+	esac
+
+	## setup PATH for several shells
+
+	echo "export PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
+
+	if [ -e ~/.zshrc ]
+	then
+		echo "export PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
+	fi
+
+	if [ -e ~/.config/fish/config.fish ]; then
+		echo "set -x PATH $PWD/bin \$PATH " >> ~/.config/fish/config.fish
+	fi
+
+	# create the py2 virtualenv
+	"$PWD/bin/ctf-tools-pip" freeze 2>&1 >/dev/null
+}
+
+
+if [[ $# -eq 0 ]]; then
+	usage
+	exit 1
+fi
+
+DISTRI=$(detect_distribution)
+
 while [[ $1 == -* ]]
 do
 	case $1 in
 		-s)
-			ALLOW_SUDO=1
+			export ALLOW_SUDO=1
 			;;
 		*)
 			usage
@@ -38,17 +163,23 @@ do
 	shift
 done
 
-ACTION=$1
-TOOL=$2
+[[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
+
+if [[ $# -ge 1 ]]; then
+	ACTION="$1"
+fi
+if [[ $# -eq 2 ]]; then
+	TOOL="$2"
+else
+	TOOL=""
+fi
 
 if [ "$TOOL" == "all" ]
 then
 	for t in $($0 list)
 	do
-		[ "$ALLOW_SUDO" -eq 1 ] && $0 -s $ACTION $t
-		[ "$ALLOW_SUDO" -eq 0 ] && $0 $ACTION $t
+		$0 $ACTION $t
 	done
-	exit 0
 elif [ -z "$TOOL" -a "$ACTION" != "list" -a "$ACTION" != "setup" ]
 then
 	usage
@@ -59,23 +190,8 @@ cd $(dirname "${BASH_SOURCE[0]}")/..
 
 case $ACTION in
 	setup)
-		PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python-dev"
-		PACKAGE_COUNT=10
-		if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
-		then
-			if [ "$ALLOW_SUDO" -eq 1 ]
-			then
-				sudo apt-get -y install $PACKAGE_REQS
-			else
-				echo "Please install the following packages: $PACKAGE_REQS"
-			fi
-		fi
 
-		echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
-        if [ -e ~/.zshrc ]
-        then
-            echo "PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
-        fi
+		base_build_setup "$DISTRI"
 		;;
 	list)
 		for t in *
@@ -87,21 +203,52 @@ case $ACTION in
 	bin)
 		cd bin
 		ln -sf ../$TOOL/bin/* .
-		echo "TOOLS | $TOOL | bin symlinks updated"
+		tool_log "bin symlinks updated"
 		cd ..
 		;;
 	install)
 		cd $TOOL
 		if git status --ignored . | egrep -q 'Untracked|Ignored'
 		then
-			echo "TOOLS | $TOOL | appears to already be installed. Uninstall first?"
+			tool_log "appears to already be installed. Uninstall first?"
 			exit 0
 		fi
 
-		echo "TOOLS | $TOOL | starting install"
-		[ -x ./install-root -a "$ALLOW_SUDO" -eq 1 ] && sudo ./install-root
-		./install
-		echo "TOOLS | $TOOL | install finished"
+		tool_log "starting install, logging to $PWD/install.log"
+		rm -f install.log
+
+		# first get distri specific dependencies
+		if [[ $(find . -name 'install-root*' | wc -l) -ge 1 ]]; then
+			INSTALL_ROOT_SCRIPT="./install-root-$DISTRI"
+			# use debian install script if we are on ubuntu and no ubuntu
+			# specific install script exists
+			if [[ "$DISTRI" == "ubuntu" \
+				&& ! -x "$INSTALL_ROOT_SCRIPT" \
+				&& -x "./install-root-debian" ]]
+			then
+				INSTALL_ROOT_SCRIPT="./install-root-debian"
+			fi
+			if [[ -x "$INSTALL_ROOT_SCRIPT" && "$ALLOW_SUDO" -eq 1 ]]; then
+				if ! sudo env DISTRI=$DISTRI "$INSTALL_ROOT_SCRIPT" >> install.log 2>&1;
+				then
+					tool_log "INSTALL FAILED"
+					cat install.log >&2
+					exit 1
+				fi
+			else
+				tool_log "Warning: make sure build dependencies are installed!"
+			fi
+		fi
+
+		# execute install script
+		if env DISTRI=$DISTRI ./install >>install.log 2>&1
+		then
+			tool_log "install finished"
+		else
+			tool_log "INSTALL FAILED"
+			cat install.log >&2
+			exit 1
+		fi
 
 		cd ..
 		$0 bin $TOOL
@@ -109,9 +256,10 @@ case $ACTION in
 	uninstall)
 		cd $TOOL
 
-		[ -x ./uninstall ] && ./uninstall
-		git clean -dffx .
-		echo "TOOLS | $TOOL | uninstall finished"
+		tool_log "starting uninstall, logging to $PWD/uninstall.log"
+		[ -x ./uninstall ] && ./uninstall >> uninstall.log 2>&1
+		git clean -dffx . >/dev/null 2>&1
+		tool_log "uninstall finished"
 
 		cd ..
 		;;
@@ -120,12 +268,16 @@ case $ACTION in
 		if [ -x ./upgrade ]
 		then
 			./upgrade
-			echo "TOOLS | $TOOL | upgrade complete!"
+			tool_log "upgrade complete!"
 		else
-			echo "TOOLS | $TOOL | no upgrade script -- reinstalling"
+			tool_log "no upgrade script -- reinstalling"
 			$0 uninstall $TOOL
 			$0 install $TOOL
 		fi
+		;;
+	reinstall)
+		$0 uninstall $TOOL
+		$0 install $TOOL
 		;;
 	search)
 		cat README.md | grep "<\!--tool-->" | sed "s/<\!--[^-]*-->//g" | grep -i "$TOOL"
@@ -133,21 +285,18 @@ case $ACTION in
 	test)
 		if ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
 		then
-			echo "TOOLS | $TOOL | Tests not enabled."
+			tool_log "Tests not enabled."
 		else
-			[ "$ALLOW_SUDO" -eq 1 ] && $0 -s install $TOOL
-			[ "$ALLOW_SUDO" -eq 0 ] && $0 install $TOOL
+			$0 install $TOOL
 
 			cd $TOOL
 			if [ -f ./test ]
 			then
-				echo "TOOLS | $TOOL | Running test script."
+				tool_log "Running test script."
 				./test
-				echo "TOOLS | $TOOL | test script succeeded!"
-				exit 0
+				tool_log "test script succeeded!"
 			else
-				echo "TOOLS | $TOOL | Install succeeded. No test script!"
-				exit 0
+				tool_log "Install succeeded. No test script!"
 			fi
 		fi
 		;;

@@ -1,9 +1,3 @@
 #!/bin/bash -e
 
-git clone https://github.com/hellman/xortool.git
-pip install -e ./xortool
-
-mkdir -p bin
-cd bin
-ln -s ../xortool/xortool/{xortool,xortool-xor} .
-cd ..
+ctf-tools-pip install --upgrade 'git+https://github.com/hellman/xortool.git'

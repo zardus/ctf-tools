@@ -7,7 +7,7 @@ echo SUDO BLOCKED: "\$@"
 END
 chmod 755 nosudo/sudo
 
-git clone https://github.com/BinaryAnalysisPlatform/qira.git
+git clone --depth 1 https://github.com/BinaryAnalysisPlatform/qira.git
 #export HOME=$PWD
 export PATH=$PWD/nosudo:$PATH
 cd qira

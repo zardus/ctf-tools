@@ -1,0 +1,26 @@
+#!/bin/bash -e
+
+FILE=cross2-20130826.tgz
+INSTALL_DIR=$PWD
+
+[ ! -e $FILE ] && wget http://kozos.jp/books/asm/$FILE
+tar xf $FILE
+
+cd cross2/toolchain
+./fetch.sh
+./setup.sh
+cd ..
+sed -i -e "s|#makeopt=.*|makeopt='-j'|" config.sh
+sed -i -e "s|install_dir.*|install_dir=\"$INSTALL_DIR\"|" config.sh
+cd build
+./build-install-all.sh
+
+mkdir -p bin
+cd bin
+for i in ../*/bin/*
+do
+	F=$(basename $i)
+	D=$(basename $(dirname $(dirname $i)))
+	[ -f $D-$F ] || ln -s $i $D-$F
+done
+cd ..

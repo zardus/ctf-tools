@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+ctf-tools-pip uninstall -y featherduster || true
+
+rm ../bin/featherduster

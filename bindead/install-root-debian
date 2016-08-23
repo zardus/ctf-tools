@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get -y install maven libprotobuf-dev openjdk-7-jre openjdk-7-jdk

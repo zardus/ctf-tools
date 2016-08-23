@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/trailofbits/codereason
+git clone --depth 1 https://github.com/trailofbits/codereason
 cd codereason
 ./install_vex.sh
 ./make.sh

@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+#ctf-tools-pip install --upgrade 'git+https://github.com/binjitsu/binjitsu.git'
+git clone --depth=1 'https://github.com/binjitsu/binjitsu.git'
+ctf-tools-pip install --upgrade -e binjitsu

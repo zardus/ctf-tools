@@ -1,3 +1,0 @@
-#!/bin/bash
-
-apt-get -y install maven libprotobuf-dev openjdk-7-jre openjdk-7-jdk

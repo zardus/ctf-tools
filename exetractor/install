@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/kholia/exetractor-clone.git
+git clone --depth 1 https://github.com/kholia/exetractor-clone.git
 
 mkdir bin
 cd bin

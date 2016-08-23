@@ -4,11 +4,16 @@
 # AFL
 #
 
-curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xvz
+curl http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz | tar xz
 mv afl-* afl
 cd afl
 make -j $(nproc)
 cd qemu_mode
+# try to detect if python2 and 3 are installed
+if which python2 >/dev/null; then
+    sed -i 's/python/python2/' ./build_qemu_support.sh
+    sed -i 's!configure!configure --python=\$(which python2)!' ./build_qemu_support.sh
+fi
 ./build_qemu_support.sh
 cd ../../
 
@@ -27,7 +32,7 @@ chmod 755 bin/afl-fuzz
 # multiafl
 #
 
-git clone https://github.com/zardus/multiafl
+git clone --depth 1 https://github.com/zardus/multiafl
 cd bin
 ln -s ../multiafl/multiafl
 cd ..

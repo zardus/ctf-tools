@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/codelion/pathgrind.git
+git clone --depth 1 https://github.com/codelion/pathgrind.git
 cd pathgrind
 git apply ../pathgrind.patch
 ./install.sh
@@ -24,7 +24,7 @@ END
 cat <<END > bin/pathgrind-plot
 #!/bin/sh
 cd "$PWD/pathgrind/"
-python fuzz/plot.py "\$@"
+python fuzz/plotfuzz.py "\$@"
 END
 
 chmod 755 bin/pathgrind-*

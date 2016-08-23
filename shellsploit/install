@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+git clone https://github.com/b3mb4m/shellsploit-framework.git
+cd shellsploit-framework
+python easyinstall.py install
+cd ..
+
+mkdir -p bin
+cd bin
+ln -sf $VIRTUAL_ENV/bin/shellsploit .
+cd ..

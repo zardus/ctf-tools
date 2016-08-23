@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/BR903/ELFkickers
+git clone --depth 1 https://github.com/BR903/ELFkickers
 cd ELFkickers
 make -j
 cd ..

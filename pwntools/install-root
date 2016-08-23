@@ -1,6 +1,0 @@
-#!/bin/bash -e
-
-apt-add-repository -y ppa:pwntools/binutils
-apt-get update
-apt-get -y install binutils-.*-linux-gnu
-

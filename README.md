@@ -1,5 +1,6 @@
 # ctf-tools
 [![Build Status](https://travis-ci.org/zardus/ctf-tools.svg?branch=master)](https://travis-ci.org/zardus/ctf-tools)
+[![IRC](https://img.shields.io/badge/freenode-%23ctf--tools-green.svg)](http://webchat.freenode.net/?channels=#ctf-tools)
 
 This is a collection of setup scripts to create an install of various security research tools.
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
@@ -12,35 +13,49 @@ Installers for the following tools are included:
 | binary | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool--> <!--no-test-->
 | binary | [barf](https://github.com/programa-stic/barf-project) | Binary Analysis and Reverse-engineering Framework. | <!--tool--><!--times-out-->
 | binary | [bindead](https://bitbucket.org/mihaila/bindead/wiki/Home) | A static analysis tool for binaries. | <!--tool--><!--failing-->
+| binary | [binjitsu](https://github.com/binjitsu/binjitsu) | Useful CTF utilities. pwntools fork. | <!--tool--><!--no-test-->
 | binary | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. | <!--tool--><!--test-->
 | binary | [codereason](https://github.com/trailofbits/codereason) | Semantic Binary Code Analysis Framework. | <!--tool--><!--failing-->
 | binary | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
+| binary | [cross2](http://kozos.jp/books/asm/asm.html) | A set of cross-compilation tools from a Japanese book on C. | <!--tool--><!--no-test-->
 | binary | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | A set of utilities for working with ELF files. | <!--tool--><!--test-->
+| binary | [elfparser](http://www.elfparser.com/) | Quickly determine the capabilities of an ELF binary through static analysis. | <!--tool--><!--test-->
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool--><!--test-->
 | binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--failing-->
+| binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
+| binary | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
+| binary | [panda](https://github.com/moyix/panda) | Platform for Architecture-Neutral Dynamic Analysis. | <!--tool--><!--no-test-->
+| binary | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. | <!--tool--><!--test-->
 | binary | [peda](https://github.com/longld/peda) | Enhanced environment for gdb. | <!--tool--><!--test-->
 | binary | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). | <!--tool--><!--no-test-->
-| binary | [villoc](https://github.com/wapiflapi/villoc) | Visualization of heap operations. | <!--tool--><!--test-->
-| binary | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--times-out-->
-| binary | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. | <!--tool--><!--test-->
-| binary | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. | <!--tool--><!--test-->
-| binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool--><!--test-->
+| binary | [pwndbg](https://github.com/zachriggle/pwndbg) | Enhanced environment for gdb. Especially for pwning. | <!--tool--><!--no-test-->
+| binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool--><!--no-test-->
 | binary | [python-pin](https://github.com/blankwall/Python_Pin) | Python bindings for pin. | <!--tool--><!--test-->
-| binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. | <!--tool--><!--test-->
-| binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. | <!--tool--><!--test-->
-| binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | A valgrind taint analysis tool. | <!--tool--><!--test-->
+| binary | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--times-out-->
 | binary | [qira](http://qira.me) | Parallel, timeless debugger. | <!--tool--><!--test-->
-| binary | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
+| binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. | <!--tool--><!--test-->
+| binary | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool--><!--test-->
 | binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool--><!--test-->
+| binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. | <!--tool--><!--test-->
+| binary | [shellsploit](https://github.com/b3mb4m/shellsploit-framework) | Shellcode development kit. | <!--tool--><!--test-->
+| binary | [snowman](https://github.com/yegord/snowman) | Cross-architecture decompiler. | <!--tool--><!--test-->
+| binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | A valgrind taint analysis tool. | <!--tool--><!--test-->
+| binary | [villoc](https://github.com/wapiflapi/villoc) | Visualization of heap operations. | <!--tool--><!--test-->
+| binary | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. | <!--tool--><!--test-->
+| binary | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. | <!--tool--><!--no-test-->
+| binary | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. | <!--tool--><!--test-->
 | forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. | <!--tool--><!--test-->
 | forensics | [exetractor](https://github.com/kholia/exetractor-clone) | Unpacker for packed Python executables. Supports PyInstaller and py2exe. | <!--tool--><!--test-->
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. | <!--tool--><!--test-->
-| forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. | <!--tool--><!--test-->
 | forensics | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool--><!--test-->
+| forensics | [peepdf](https://github.com/jesparza/peepdf) | Powerful Python tool to analyze PDF documents. | <!--tool--><!--test-->
 | forensics | [scrdec](https://gist.github.com/bcse/1834878) | A decoder for encoded Windows Scripts. | <!--tool--><!--test-->
+| forensics | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. | <!--tool--><!--test-->
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). | <!--tool--><!--test-->
 | crypto | [foresight](https://github.com/ALSchwalm/foresight) | A tool for predicting the output of random number generators. To run, launch "foresee". | <!--tool--><!--test-->
+| crypto | [featherduster](https://github.com/nccgroup/featherduster) |  An automated, modular cryptanalysis tool. | <!--tool--><!--no-test-->
+| crypto | [hashkill](https://github.com/gat3way/hashkill) | Hash cracker. | <!--tool--><!--test-->
 | crypto | [hashpump](https://github.com/bwall/HashPump) | A tool for performing hash length extension attaacks. | <!--tool--><!--test-->
 | crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool--><!--test-->
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. | <!--tool--><!--test-->
@@ -48,28 +63,33 @@ Installers for the following tools are included:
 | crypto | [msieve](http://sourceforge.net/projects/msieve/) | Msieve is a C library implementing a suite of algorithms to factor large integers. | <!--tool--><!--test-->
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. | <!--tool--><!--test-->
 | crypto | [pkcrack](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) | PkZip encryption cracker. | <!--tool--><!--test-->
+| crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. | <!--tool--><!--test-->
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. | <!--tool--><!--test-->
 | crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. | <!--tool--><!--test-->
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. | <!--tool--><!--test-->
-| crypto | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. | <!--tool--><!--test-->
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool--><!--test-->
 | crypto | [yafu](http://sourceforge.net/projects/yafu/) | Automated integer factorization. | <!--tool--><!--test-->
 | web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--failing-->
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool--><!--test-->
-| web | [dirs3arch](https://github.com/maurosoria/dirs3arch) | Web path scanner. | <!--tool--><!--test-->
+| web | [dirb](http://dirb.sourceforge.net/) | Web path scanner. | <!--tool--><!--test-->
+| web | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. | <!--tool--><!--test-->
+| web | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
 | web | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool--><!--failing-->
+| stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image steganography solver. | <!--tool--><!--test-->
 | stego | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. | <!--tool--><!--test-->
-| stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Antoher image steganography solver. | <!--tool--><!--test-->
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. | <!--tool--><!--test-->
 | android | [apktool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs | <!--tool--><!--test-->
+| android | [android-sdk](http://developer.android.com/sdk) | The android SDK (adb, emulator, etc). | <!--tool--><!--no-test-->
 
 There are also some installers for non-CTF stuff to break the monotony!
 
 | Category | Tool | Description |
 |----------|------|-------------|
 | game | [Dwarf Fortress](http://www.bay12games.com/dwarves/) | Something to help you relax after a CTF! | <!--tool-->
+| tor-browser | [tor-browser](https://www.torproject.org/projects/torbrowser.html.en) | Useful when you need to hit a web challenge from different IPs. | <!--tool--><!--test-->
+| pyvmmonitor | [pyvmmonitor](http://www.pyvmmonitor.com/) | PyVmMonitor is a profiler with a simple goal: being the best way to profile a Python program. | <!--tool--><!--test-->
 
 ## Usage
 
@@ -100,9 +120,18 @@ manage-tools search preload
 ```
 
 Where possible, the tools keep the installs very self-contained (i.e., in to tool/ directory), and most uninstalls are just calls to `git clean` (**NOTE**, this is **NOT** careful; everything under the tool directory, including whatever you were working on, is blown away during an uninstall).
-To support python dependencies, however, make sure to create a virtualenv before installing and using tools (i.e., `mkvirtualenv --system-site-packages ctf`. The `--system-site-packages` is there for easier reuse of apt-gotten python packages where necessary).
+One exception to this are python tools, which are installed using the `pip`
+package manager if possible. A `ctftools` virtualenv is created during the
+`manage-tools setup` command and can be accessed using the command
+`workon ctftools`.
 
-## Docker/Vagrant
+## Help!
+
+Something not working?
+I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
+Maybe some kind soul will help!
+
+## Docker (version 1.7+)
 
 By popular demand, a Dockerfile has been included.
 You can build a docker image with:
@@ -119,7 +148,21 @@ docker run -it ctf-tools
 ```
 
 The built image will have ctf-tools cloned and ready to go, but you will still need to install the tools themselves (see above).
-A Vagrantfile is on the TODO list :-)
+
+## Vagrant
+
+You can build a Vagrant VM with:
+
+```bash
+wget https://raw.githubusercontent.com/zardus/ctf-tools/master/Vagrantfile
+vagrant up
+```
+
+And connect to it via:
+
+```bash
+vagrant ssh
+```
 
 ## Adding Tools
 
@@ -127,7 +170,7 @@ To add a tool (say, named *toolname*), do the following:
 
 1. Create a `toolname` directory.
 2. Create an `install` script.
-3. (optional) if special uninstall steps are reuired, create an `uninstall` script.
+3. (optional) if special uninstall steps are required, create an `uninstall` script.
 
 ### Install Scripts
 
@@ -150,4 +193,20 @@ Good luck!
 
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/awesome-ctf.
 
-There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/ctf-vagrant-64
+There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
+
+## Tools in the official Debian/Ubuntu repos
+
+These tools are present in the Debian or Ubuntu repos (in an adequately new version).
+They're not included in ctf-tools, but are included here as notes for the author.
+
+| Category | Package | Description | Package |
+|----------|---------|-------------|---------|
+| forensics | [foremost](http://foremost.sourceforge.net/) | File carver. | `foremost` | <!--deb-tool-->
+| dsniff | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | dsniff | <!--deb-tool-->
+
+## Tools with unofficial Debian/Ubuntu repos or debs
+
+| Category | Package | Description | Repo/deb |
+|----------|---------|-------------|----------|
+| stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | [deb](http://www.sonicvisualiser.org/download.html) | <!--deb-tool-->

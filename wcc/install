@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+git clone --depth 1 https://github.com/endrazine/wcc
+pushd wcc
+git submodule init
+git submodule update
+
+make
+mv bin/ ../
+popd
+pushd bin/
+sed -i "s&/usr/bin/wsh&$(pwd)/wsh&" ./wcch

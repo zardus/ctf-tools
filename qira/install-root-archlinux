@@ -1,0 +1,6 @@
+#!/bin/bash
+set -eu -o pipefail
+
+pacman -Syu --noconfirm --needed python2-pip openssl libjpeg-turbo zlib \
+    unzip wget graphviz gmp llvm clang ocaml llvm-ocaml python2-virtualenv \
+    wget flex bison libtool automake autoconf pkg-config libevent glib2

@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+wget http://www.elfparser.com/release/elfparser_x86_64_1.4.0.deb
+dpkg -x elfparser_x86_64_1.4.0.deb .
+mkdir -p bin
+mv usr/local/bin/elfparser bin/
+rm -rf usr

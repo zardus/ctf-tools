@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git clone https://github.com/reyammer/shellnoob
+git clone --depth 1 https://github.com/reyammer/shellnoob
 
 mkdir -p bin
 cd bin

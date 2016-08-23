@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+INST_DIR=$PWD
+
+#[ -e snowman ] || git clone --depth 1 --depth 1 https://github.com/yegord/snowman
+[ -e v1.0.tar.gz ] || wget https://github.com/nihilus/snowman/archive/v1.0.tar.gz
+tar xzf v1.0.tar.gz
+cd snowman-1.0
+rm -rf build
+mkdir build
+cd build
+cmake -D CMAKE_INSTALL_PREFIX=$INST_DIR ../src
+cmake --build .
+cmake --build . --target install

@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get install libbfd-dev libunwind8-dev
+pacman -Syu --noconfirm --needed libunwind binutils

@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
-git clone https://github.com/bwall/HashPump.git
+git clone --depth 1 https://github.com/bwall/HashPump.git
 cd HashPump
 make -j $(nproc)
 cd ..
 
-pip install -e HashPump
+ctf-tools-pip install --upgrade -e HashPump
 
 mkdir bin
 cd bin

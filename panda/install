@@ -1,0 +1,34 @@
+#!/bin/bash -e
+
+[ -e panda ] || git clone --depth 1 https://github.com/moyix/panda
+
+curl -O http://ragestorm.net/distorm/distorm3.3-package.zip
+rm -rf distorm3
+unzip distorm3.3-package.zip
+make -C distorm3/make/linux -j
+mkdir -p lib
+cp distorm3/make/linux/*.so distorm3/*.a lib
+mkdir -p include
+cp distorm3/include/*.h include
+
+pip install -U pycparser
+
+sed -i -e "s|/usr/local|$PWD|" panda/qemu/build.sh
+export QEMU_CFLAGS="-I $PWD/include -L $PWD/lib"
+export QEMU_CXXFLAGS="-I $PWD/include -L $PWD/lib"
+#export LDFLAGS="-L $PWD/lib"
+cd panda/qemu
+./build.sh
+cd ../../
+
+# link binaries
+mkdir -p bin
+cd bin
+ln -s ../panda/qemu/i386-softmmu/qemu-system-i386 ./panda-qemu-system-i386
+ln -s ../panda/qemu/arm-softmmu/qemu-system-arm ./panda-qemu-system-arm
+ln -s ../panda/qemu/x86_64-softmmu/qemu-system-x86_64 ./panda-qemu-system-x86_64
+for i in ../panda/scripts/*.py
+do
+	ln -s $i ./panda-$(basename $i)
+done
+cd ..

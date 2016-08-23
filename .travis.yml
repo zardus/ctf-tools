@@ -2,5 +2,5 @@ language: python
 python: 2.7
 sudo: required
 dist: trusty
-install: sudo apt-get update && bin/manage-tools setup
+install: (sudo apt-get update || true) && bin/manage-tools -s setup
 script: bin/manage-tools -s test all

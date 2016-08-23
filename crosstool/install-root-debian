@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+apt-get install -y gperf flex bison help2man gawk libncurses5-dev
