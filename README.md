@@ -164,6 +164,13 @@ And connect to it via:
 vagrant ssh
 ```
 
+## Kali Linux
+
+Kali Linux (Sana and Rolling), due to manually setting certain libraries to not use the latest version available (sometimes being out of date by years) causes some tools to not install at all, or fail in strange ways. AFL and Panda comes to mind, in fact any tool that uses QEMU 2.30 will probably fail during compilation under Kali.
+Overriding these libraries breaks other tools included in Kali so your only solution is to either live with some of Kali's tools being broken, or running another distribution seperately such as Ubuntu. 
+
+Most tools aren't affected though.
+
 ## Adding Tools
 
 To add a tool (say, named *toolname*), do the following:
