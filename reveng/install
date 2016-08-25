@@ -1,11 +1,11 @@
 #!/bin/bash
 
-curl http://jaist.dl.sourceforge.net/project/reveng/1.4.0/reveng-1.4.0.tar.gz | tar xz
-cd reveng-1.4.0
+curl http://jaist.dl.sourceforge.net/project/reveng/1.4.4/reveng-1.4.4.tar.gz | tar xz
+cd reveng-1.4.4
 sed -i -e "s/^#define BMP_BIT.*/#define BMP_BIT 64/" config.h
 sed -i -e "s/^#define BMP_SUB.*/#define BMP_SUB 32/" config.h
 make -j $(nproc)
 cd ..
 
 mkdir -p bin
-cp reveng-1.4.0/reveng bin
+cp reveng-1.4.4/reveng bin
