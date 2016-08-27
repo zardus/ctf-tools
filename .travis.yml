@@ -1,6 +1,6 @@
 language: python
 python: 2.7
 sudo: required
-dist: trusty
+dist: xenial
 install: (sudo apt-get update || true) && bin/manage-tools -s setup
 script: bin/manage-tools -s test all
