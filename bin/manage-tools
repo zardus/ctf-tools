@@ -202,8 +202,10 @@ case $ACTION in
 		;;
 	bin)
 		cd bin
-		ln -sf ../$TOOL/bin/* .
-		tool_log "bin symlinks updated"
+		if [ -d ../$TOOL/bin ]; then
+			ln -sf ../$TOOL/bin/* .
+			tool_log "bin symlinks updated"
+		fi
 		cd ..
 		;;
 	install)
