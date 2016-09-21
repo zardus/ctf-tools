@@ -2,5 +2,7 @@ language: python
 python: 2.7
 sudo: required
 dist: xenial
+env:
+- PATH=$TRAVIS_BUILD_DIR/bin:$PATH
 install: (sudo apt-get update || true) && bin/manage-tools -s setup
-script: bin/manage-tools -s test all
+script: manage-tools -s test all
