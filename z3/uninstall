@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd z3/build
+make uninstall
