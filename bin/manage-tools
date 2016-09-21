@@ -139,6 +139,9 @@ function base_build_setup()
 
 	# create the py2 virtualenv
 	"$PWD/bin/ctf-tools-pip" freeze 2>&1 >/dev/null
+
+	# create the py3 virtualenv
+	"$PWD/bin/ctf-tools-pip3" freeze 2>&1 >/dev/null
 }
 
 

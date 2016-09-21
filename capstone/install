@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ctf-tools-pip install -U capstone
+ctf-tools-pip3 install -U capstone
