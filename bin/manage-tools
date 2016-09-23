@@ -5,10 +5,11 @@ set -eu -o pipefail
 function usage()
 {
 	cat <<END
-Usage: $(basename $0) [-s] (list|setup|install|uninstall|bin|search) tool
+Usage: $(basename $0) [-sv] (list|setup|install|uninstall|bin|search) tool
 
 Where:
     -s      allow running things with sudo (i.e., to install debs)
+    -v      verbose mode. print log while installing
     tool    the name of the tool. if "all", does the action on all tools
 
 Actions:
@@ -158,6 +159,9 @@ do
 		-s)
 			export ALLOW_SUDO=1
 			;;
+		-v)
+			export VERBOSE_OUTPUT=1
+			;;
 		*)
 			usage
 			exit
@@ -167,6 +171,7 @@ do
 done
 
 [[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
+[[ -z ${VERBOSE_OUTPUT+x} ]] && export VERBOSE_OUTPUT=0
 
 if [[ $# -ge 1 ]]; then
 	ACTION="$1"
@@ -246,8 +251,12 @@ case $ACTION in
 		fi
 
 		# execute install script
-		if env DISTRI=$DISTRI ./install >>install.log 2>&1
-		then
+		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
+			env DISTRI=$DISTRI ./install 2>&1 | tee -a install.log
+		else
+			env DISTRI=$DISTRI ./install >>install.log 2>&1
+		fi
+		if [ "$?" -eq 0 ]; then
 			tool_log "install finished"
 		else
 			tool_log "INSTALL FAILED"
