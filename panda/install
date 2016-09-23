@@ -11,7 +11,7 @@ cp distorm3/make/linux/*.so distorm3/*.a lib
 mkdir -p include
 cp distorm3/include/*.h include
 
-pip install -U pycparser
+ctf-tools-pip install -U pycparser
 
 sed -i -e "s|/usr/local|$PWD|" panda/qemu/build.sh
 export QEMU_CFLAGS="-I $PWD/include -L $PWD/lib"
