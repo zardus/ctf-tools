@@ -5,7 +5,7 @@ wget -O dirb.tar.gz https://sourceforge.net/projects/dirb/files/latest/download
 tar -xf dirb.tar.gz
 
 chmod -R a+X dirb222/
-cd dirb*
+cd dirb222
 chmod a+x configure
 ./configure
 make
