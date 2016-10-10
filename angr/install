@@ -1,10 +1,6 @@
 #!/bin/bash -e
 
-if [ -z "$VIRTUAL_ENV" ]
-then
-	echo "Please activate the ctftools virtualenv before installing angr."
-	exit
-fi
+source ctf-tools-venv-activate
 
 #[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/PyQt4 ] || ln -s /usr/lib/python2.7/dist-packages/PyQt4 $VIRTUAL_ENV/lib/python2.7/site-packages/
 #[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/sip.so ] || ln -s /usr/lib/python2.7/dist-packages/sip.so $VIRTUAL_ENV/lib/python2.7/site-packages/
