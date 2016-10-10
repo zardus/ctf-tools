@@ -10,6 +10,7 @@ Usage: $(basename $0) [-sv] (list|setup|install|uninstall|bin|search) tool
 Where:
     -s      allow running things with sudo (i.e., to install debs)
     -v      verbose mode. print log while installing
+    -f      force certain actions (such as installing over an installed tool)
     tool    the name of the tool. if "all", does the action on all tools
 
 Actions:
@@ -159,6 +160,9 @@ do
 		-s)
 			export ALLOW_SUDO=1
 			;;
+		-f)
+			export FORCE=1
+			;;
 		-v)
 			export VERBOSE_OUTPUT=1
 			;;
@@ -171,6 +175,7 @@ do
 done
 
 [[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
+[[ -z ${FORCE+x} ]] && export FORCE=0
 [[ -z ${VERBOSE_OUTPUT+x} ]] && export VERBOSE_OUTPUT=0
 
 if [[ $# -ge 1 ]]; then
@@ -218,7 +223,7 @@ case $ACTION in
 		;;
 	install)
 		cd $TOOL
-		if git status --ignored . | egrep -q 'Untracked|Ignored'
+		if [ "$FORCE" -eq 0 ] && git status --ignored . | egrep -q 'Untracked|Ignored'
 		then
 			tool_log "appears to already be installed. Uninstall first?"
 			exit 0
@@ -297,7 +302,7 @@ case $ACTION in
 		cat README.md | grep "<\!--tool-->" | sed "s/<\!--[^-]*-->//g" | grep -i "$TOOL"
 		;;
 	test)
-		if ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
+		if [ "$FORCE" -eq 0 ] && ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
 		then
 			tool_log "Tests not enabled."
 		else
