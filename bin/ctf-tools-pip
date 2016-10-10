@@ -2,43 +2,8 @@
 set -e -o pipefail
 #set -x
 
-# let's stick with python 2 as default
-PY_VERSION=2
-# check this scripts file ending
-if [[ "$0" =~ pip3 ]]; then
-    PY_VERSION=3
-fi
-if [[ "$0" =~ pip2 ]]; then
-    PY_VERSION=2
-fi
+# http://stackoverflow.com/questions/59895/can-a-bash-script-tell-which-directory-it-is-stored-in
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-PY_INTERPRETER=$(which "python$PY_VERSION" || which python)
-
-CTF_TOOLS_VE="ctftools"
-if [[ $PY_VERSION -eq 3 ]]; then
-    CTF_TOOLS_VE="${CTF_TOOLS_VE}3"
-fi
-
-if [[ -z "${WORKON_HOME+x}" ]]; then
-    export WORKON_HOME="$HOME/.virtualenvs"
-fi
-if [[ ! -d "$WORKON_HOME" ]]; then
-    mkdir -p "$WORKON_HOME"
-fi
-
-VE_DIR="$WORKON_HOME/$CTF_TOOLS_VE"
-
-if [[ ! -d "$VE_DIR" || ! -e "$VE_DIR/bin/activate" ]]; then
-    echo "#### Creating python$PY_VERSION virtualenv '$CTF_TOOLS_VE' ####" >&2
-    virtualenv --system-site-packages -p "$PY_INTERPRETER"  "$VE_DIR"
-fi
-
-if [[ -z "${VIRTUAL_ENV+x}" || "$VIRTUAL_ENV" != "$VE_DIR" ]]; then
-    if [[ -n "${VIRTUAL_ENV+x}" ]]; then
-        source ${VIRTUAL_ENV}/bin/activate
-        deactivate
-    fi
-    source "$VE_DIR/bin/activate"
-fi
-
+source $DIR/ctf-tools-venv-activate
 exec pip "$@"
