@@ -84,6 +84,7 @@ Installers for the following tools are included:
 | android | [apktool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs | <!--tool--><!--test-->
 | android | [android-sdk](http://developer.android.com/sdk) | The android SDK (adb, emulator, etc). | <!--tool--><!--no-test-->
 | misc | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. | <!--tool--><!--times-out-->
+| misc | [jdgui](http://jd.benow.ca/) | Java decompiler. | <!--tool--><!--test-->
 
 There are also some installers for non-CTF stuff to break the monotony!
 
