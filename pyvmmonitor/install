@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # retry because the server is not reliable
-wget -t 10 https://bbc5a801c67991bd078f7f789065e318bdf9d509.googledrive.com/host/0BwwQN8QrgsRpOGpyc2syWkVYVkE/PyVmMonitor%201.0.1/pyvmmonitor_1.0.1_linux.x86_64.tar.gz -O - | tar xvz
+wget -t 10 http://www.mediafire.com/download/bzmazee4bcysbi4/pyvmmonitor_1.0.1_linux.x86_64.tar.gz -O - | tar xvz
 
 mkdir -p bin
 cat <<END > bin/pyvmmonitor-ui
