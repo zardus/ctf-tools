@@ -2,10 +2,11 @@ language: bash
 sudo: required
 dist: trusty
 env:
-- PATH=$TRAVIS_BUILD_DIR/bin:$PATH
+- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="all" OPTS="-s"
+- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="z3" OPTS="-s -v -f"
+- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="qemu" OPTS="-s -f -v"
+- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="qira" OPTS="-s -f"
+- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="afl" OPTS="-s -f"
 install: (sudo apt-get update || true) && bin/manage-tools -s setup
 script:
-- VIRTUALENVWRAPPER_SCRIPT=/usr/share/virtualenvwrapper/virtualenvwrapper.sh manage-tools -s -v test z3
-- VIRTUALENVWRAPPER_SCRIPT=/usr/share/virtualenvwrapper/virtualenvwrapper.sh manage-tools -s -v test qemu
-- VIRTUALENVWRAPPER_SCRIPT=/usr/share/virtualenvwrapper/virtualenvwrapper.sh manage-tools -s -v test qira
-- VIRTUALENVWRAPPER_SCRIPT=/usr/share/virtualenvwrapper/virtualenvwrapper.sh manage-tools -s -v test all
+- VIRTUALENVWRAPPER_SCRIPT=/usr/share/virtualenvwrapper/virtualenvwrapper.sh manage-tools $OPTS test $SUITE
