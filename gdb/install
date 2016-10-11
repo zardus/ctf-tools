@@ -2,6 +2,11 @@
 
 curl https://ftp.gnu.org/gnu/gdb/gdb-7.11.1.tar.gz | tar xz
 cd gdb-7.11.1
+
+# move to ctftools virtual env
+source ${VIRTUALENVWRAPPER_SCRIPT}
+workon ctftools
+
 ./configure --prefix=$(dirname $PWD) --with-python=python2 --enable-targets=all
 make -j $(nproc)
 make install

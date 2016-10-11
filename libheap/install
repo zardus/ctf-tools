@@ -1,0 +1,10 @@
+#!/bin/bash
+
+git clone https://github.com/cloudburst/libheap
+
+# move to ctftools virtual env
+source ${VIRTUALENVWRAPPER_SCRIPT}
+workon ctftools
+
+cd libheap
+python setup.py install
