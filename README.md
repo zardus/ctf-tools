@@ -151,6 +151,12 @@ docker run -it ctf-tools
 
 The built image will have ctf-tools cloned and ready to go, but you will still need to install the tools themselves (see above).
 
+Alternatively, you can also pull ctf-tools (with some tools preinstalled) from dockerhub:
+
+```bash
+docker run -it zardus/ctf-tools
+```
+
 ## Vagrant
 
 You can build a Vagrant VM with:
