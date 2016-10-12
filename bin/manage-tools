@@ -265,7 +265,7 @@ case $ACTION in
 		INSTALL_FAILED=$?
 		set -e
 
-		if [ "$INSTALL_FAILED" -eq 1 ]; then
+		if [ "$INSTALL_FAILED" -eq 0 ]; then
 			tool_log "install finished"
 		else
 			tool_log "INSTALL FAILED"
