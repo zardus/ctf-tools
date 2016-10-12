@@ -21,6 +21,8 @@ EOF
 chmod +rx bin/pwndbg
 
 cd pwndbg
+# make sure gdbinit exists
+touch ~/.gdbinit
 if ! grep "init-pwndbg" ~/.gdbinit; then
     cat >> ~/.gdbinit <<EOF
 
