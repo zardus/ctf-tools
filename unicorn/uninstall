@@ -1,0 +1,9 @@
+#!/bin/bash
+
+ctf-tools-venv-activate
+
+pip uninstall -y unicorn
+
+pushd unicorn
+PREFIX="$VIRTUAL_ENV" ./make.sh uninstall
+popd

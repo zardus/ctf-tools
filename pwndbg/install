@@ -1,7 +1,17 @@
 #!/bin/bash
 set -eu -o pipefail
 
-git clone --depth 1 https://github.com/zachriggle/pwndbg
+git clone --depth 1 https://github.com/pwndbg/pwndbg
+
+pushd pwndbg
+ctf-tools-pip instal -Ur ./requirements.txt
+ctf-tools-pip install -U capstone
+
+manage-tools install unicorn
+
+# pwndbg brings it's own capstone/unicorn submodules
+#git submodule update --init --recursive
+# we ignore this for now
 
 mkdir bin
 cat >> bin/pwndbg <<EOF
@@ -20,10 +30,9 @@ define init-pwndbg
     source $PWD/gdbinit.py
 end
 document init-pwndbg
-    Initializes the pwndbg gdb extension (https://github.com/zachriggle/pwndbg)
+    Initializes the pwndbg gdb extension (https://github.com/pwndbg/pwndbg)
 end
 ####
 
 EOF
 fi
-

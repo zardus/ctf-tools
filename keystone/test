@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ctf-tools-venv-activate
+
+kstool x32 "add eax, ebx"

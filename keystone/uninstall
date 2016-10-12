@@ -1,0 +1,9 @@
+#!/bin/bash
+
+ctf-tools-venv-activate
+
+pip uninstall -y keystone-engine
+
+pushd keystone/build
+PREFIX="$VIRTUAL_ENV" make uninstall
+popd

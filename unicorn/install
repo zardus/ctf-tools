@@ -1,0 +1,16 @@
+#!/bin/bash
+set -eu -o pipefail
+
+git clone --depth 1 https://github.com/unicorn-engine/unicorn.git || true
+
+ctf-tools-venv-activate
+
+pushd unicorn
+echo "installing unicorn to $VIRTUAL_ENV"
+UNICORN_QEMU_FLAGS="--python=$(which python)" PREFIX="$VIRTUAL_ENV" ./make.sh install
+
+pushd bindings/python
+#pip install -U .
+make DEST_DIR="$VIRTUAL_ENV" install
+popd
+popd

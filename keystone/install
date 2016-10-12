@@ -1,0 +1,21 @@
+#!/bin/bash
+set -eu -o pipefail
+
+git clone --depth 1 https://github.com/keystone-engine/keystone.git || true
+
+ctf-tools-venv-activate
+
+mkdir -p keystone/build/
+pushd keystone/build/
+cmake -DCMAKE_INSTALL_PREFIX="$VIRTUAL_ENV" \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DBUILD_SHARED_LIBS=ON \
+	-DLLVM_TARGETS_TO_BUILD="all" \
+	-G "Unix Makefiles" ..
+make -j$(getconf _NPROCESSORS_ONLN) install
+popd
+
+pushd keystone/bindings/python
+#pip install -U .
+make DEST_DIR="$VIRTUAL_ENV" BUILD_DIR="../../build/" install
+popd
