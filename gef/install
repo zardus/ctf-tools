@@ -11,6 +11,8 @@ EOF
 chmod +rx bin/gdb-gef
 
 cd gef
+# make sure gdbinit exists
+touch ~/.gdbinit
 if ! grep "init-gef" ~/.gdbinit; then
     cat >> ~/.gdbinit <<EOF
 
