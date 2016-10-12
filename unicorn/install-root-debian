@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu -o pipefail
+
+apt-get -y install libglib2.0-dev
