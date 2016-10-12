@@ -256,12 +256,16 @@ case $ACTION in
 		fi
 
 		# execute install script
+		set +e
 		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
 			env DISTRI=$DISTRI ./install 2>&1 | tee -a install.log
 		else
 			env DISTRI=$DISTRI ./install >>install.log 2>&1
 		fi
-		if [ "$?" -eq 0 ]; then
+		INSTALL_FAILED=$?
+		set -e
+
+		if [ "$INSTALL_FAILED" -eq 1 ]; then
 			tool_log "install finished"
 		else
 			tool_log "INSTALL FAILED"
@@ -312,7 +316,11 @@ case $ACTION in
 			if [ -f ./test ]
 			then
 				tool_log "Running test script."
-				./test
+				if ! ./test
+				then
+					tool_log "$TOOL test failed!"
+					exit 1
+				fi
 				tool_log "test script succeeded!"
 			else
 				tool_log "Install succeeded. No test script!"
