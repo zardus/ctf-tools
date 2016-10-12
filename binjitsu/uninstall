@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-ctf-tools-pip uninstall -y binjitsu || true
