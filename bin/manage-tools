@@ -139,6 +139,10 @@ function base_build_setup()
 		echo "set -x PATH $PWD/bin \$PATH " >> ~/.config/fish/config.fish
 	fi
 
+	if [[ ! -e "$PWD/bin/ctf-tools-pip3" ]]; then
+		ln -s "$PWD/bin/ctf-tools-pip" "$PWD/bin/ctf-tools-pip3"
+	fi
+
 	# create the py2 virtualenv
 	"$PWD/bin/ctf-tools-pip" freeze 2>&1 >/dev/null
 
