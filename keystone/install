@@ -3,7 +3,7 @@ set -eu -o pipefail
 
 git clone --depth 1 https://github.com/keystone-engine/keystone.git || true
 
-ctf-tools-venv-activate
+source ctf-tools-venv-activate
 
 mkdir -p keystone/build/
 pushd keystone/build/
@@ -19,3 +19,7 @@ pushd keystone/bindings/python
 #pip install -U .
 make DEST_DIR="$VIRTUAL_ENV" BUILD_DIR="../../build/" install
 popd
+
+
+echo "WARNING: keystone installation is broken"
+exit 1

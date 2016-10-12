@@ -3,15 +3,19 @@ set -eu -o pipefail
 
 git clone --depth 1 https://github.com/pwndbg/pwndbg
 
-pushd pwndbg
-ctf-tools-pip instal -Ur ./requirements.txt
-ctf-tools-pip install -U capstone
+source ctf-tools-venv-activate
 
-manage-tools install unicorn
+pushd pwndbg
+pip install -Ur ./requirements.txt
+popd
 
 # pwndbg brings it's own capstone/unicorn submodules
+# we ignore this for now and install the deps ourselfs
 #git submodule update --init --recursive
-# we ignore this for now
+
+# install capstone/unicron dependencies
+pip install -U capstone
+manage-tools install unicorn
 
 mkdir bin
 cat >> bin/pwndbg <<EOF
