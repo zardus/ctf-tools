@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export PY_VERSION=3
+export CTF_TOOLS_VE="ctftools3"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$DIR/ctf-tools-venv-activate"

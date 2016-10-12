@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# let's stick with python 2 as default
-PY_VERSION=2
 # check this scripts file ending
 if [[ "$0" =~ pip3 ]]; then
     PY_VERSION=3
@@ -10,11 +8,18 @@ if [[ "$0" =~ pip2 ]]; then
     PY_VERSION=2
 fi
 
+if [[ -z "${PY_VERSION+x}" ]]; then
+    # if not defined otherwise let's stick with python 2 as default
+    PY_VERSION=2
+fi
+
 PY_INTERPRETER=$(which "python$PY_VERSION" || which python)
 
-CTF_TOOLS_VE="ctftools"
-if [[ $PY_VERSION -eq 3 ]]; then
-    CTF_TOOLS_VE="${CTF_TOOLS_VE}3"
+if [[ -z "${CTF_TOOLS_VE+x}" ]]; then
+    CTF_TOOLS_VE="ctftools"
+    if [[ $PY_VERSION -eq 3 ]]; then
+        CTF_TOOLS_VE="${CTF_TOOLS_VE}3"
+    fi
 fi
 
 if [[ -z "${WORKON_HOME+x}" ]]; then
