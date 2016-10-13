@@ -7,7 +7,7 @@ source ctf-tools-venv-activate
 
 mkdir -p keystone/build/
 pushd keystone/build/
-cmake -DCMAKE_INSTALL_PREFIX="$VIRTUAL_ENV" \
+cmake -DCMAKE_INSTALL_PREFIX="$(realpath $PWD/../../)" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_SHARED_LIBS=ON \
 	-DLLVM_TARGETS_TO_BUILD="all" \
@@ -16,10 +16,10 @@ make -j$(getconf _NPROCESSORS_ONLN) install
 popd
 
 pushd keystone/bindings/python
-#pip install -U .
-make DEST_DIR="$VIRTUAL_ENV" BUILD_DIR="../../build/" install
+pip install -U -e .
+# create a symlink that the python bindings can find the keystone lib
+ln -s $(realpath ../../../lib/libkeystone.so.0) keystone/libkeystone.so
 popd
 
-
-echo "WARNING: keystone installation is broken"
-exit 1
+# kstool doesn't find the lib. so let's rm it
+rm -r bin/
