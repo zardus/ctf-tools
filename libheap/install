@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # move to ctftools virtual env
 source ctf-tools-venv-activate
