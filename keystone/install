@@ -20,7 +20,7 @@ popd
 pushd keystone/bindings/python
 pip install -U -e .
 # create a symlink that the python bindings can find the keystone lib
-ln -s $(realpath ../../../lib/libkeystone.so.0) keystone/libkeystone.so
+ln -s $(readlink -f ../../../lib/libkeystone.so.0) keystone/libkeystone.so
 popd
 
 # kstool doesn't find the lib. so let's rm it
