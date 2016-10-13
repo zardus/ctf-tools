@@ -1,10 +1,13 @@
 #!/bin/bash
 set -e -o pipefail
 
-ctf-tools-venv-activate
+source ctf-tools-venv-activate
 
-pip uninstall -y keystone-engine
+pip uninstall -y keystone-engine || true
 
-pushd keystone/build
-PREFIX="$VIRTUAL_ENV" make uninstall
-popd
+if [[ -d keystone && -d keystone/build ]]; then
+    export PREFIX="$PWD"
+    pushd keystone/build
+    make uninstall
+    popd
+fi

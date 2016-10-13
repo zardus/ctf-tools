@@ -1,5 +1,14 @@
 #!/bin/bash
+set -e -o pipefail
 
-ctf-tools-venv-activate
+source ctf-tools-venv-activate
 
-kstool x32 "add eax, ebx"
+python <<EOF
+from keystone import *
+CODE = b"INC ecx; DEC edx"
+# Initialize engine in X86-32bit mode
+ks = Ks(KS_ARCH_X86, KS_MODE_32)
+encoding, count = ks.asm(CODE)
+EOF
+
+#kstool x32 "add eax, ebx"
