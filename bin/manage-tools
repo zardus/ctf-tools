@@ -37,7 +37,7 @@ function detect_distribution()
 	if which pacman 2>&1 >/dev/null; then
 		echo "archlinux"
 	elif which apt-get 2>&1 >/dev/null; then
-		if lsb_release -a | grep -i ubuntu 2>&1 >/dev/null; then
+		if lsb_release -a 2>/dev/null | grep -i ubuntu 2>&1 >/dev/null; then
 			echo "ubuntu"
 		else
 			echo "debian"

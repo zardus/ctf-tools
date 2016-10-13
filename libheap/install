@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+# move to ctftools virtual env
+source ctf-tools-venv-activate
+
+git clone --depth 1 https://github.com/cloudburst/libheap
+pip install -e libheap
