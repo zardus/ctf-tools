@@ -5,9 +5,11 @@ git clone --depth 1 https://github.com/keystone-engine/keystone.git
 
 source ctf-tools-venv-activate
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 mkdir -p keystone/build/
 pushd keystone/build/
-cmake -DCMAKE_INSTALL_PREFIX="$(realpath $PWD/../../)" \
+cmake -DCMAKE_INSTALL_PREFIX="$DIR" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_SHARED_LIBS=ON \
 	-DLLVM_TARGETS_TO_BUILD="all" \
