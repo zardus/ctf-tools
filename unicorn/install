@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -o pipefail
 
-git clone --depth 1 https://github.com/unicorn-engine/unicorn.git || true
+git clone --depth 1 https://github.com/unicorn-engine/unicorn.git
 
 source ctf-tools-venv-activate
 
