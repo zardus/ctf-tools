@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
+set -e -o pipefail
 
 git clone --depth 1 https://github.com/unicorn-engine/unicorn.git || true
 
