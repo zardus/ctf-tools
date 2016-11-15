@@ -34,10 +34,10 @@ function tool_log()
 
 function detect_distribution()
 {
-	if which pacman 2>&1 >/dev/null; then
+	if which pacman >/dev/null 2>&1; then
 		echo "archlinux"
-	elif which apt-get 2>&1 >/dev/null; then
-		if lsb_release -a 2>/dev/null | grep -i ubuntu 2>&1 >/dev/null; then
+	elif which apt-get >/dev/null 2>&1; then
+		if lsb_release -a 2>/dev/null | grep -i ubuntu >/dev/null 2>&1; then
 			echo "ubuntu"
 		else
 			echo "debian"
@@ -262,9 +262,9 @@ case $ACTION in
 		# execute install script
 		set +e
 		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
-			env DISTRI=$DISTRI ./install 2>&1 | tee -a install.log
+			DISTRI=$DISTRI ./install 2>&1 | tee -a install.log
 		else
-			env DISTRI=$DISTRI ./install >>install.log 2>&1
+			DISTRI=$DISTRI ./install >>install.log 2>&1
 		fi
 		INSTALL_FAILED=$?
 		set -e
