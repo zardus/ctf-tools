@@ -1,0 +1,3 @@
+#/bin/bash -e
+
+ctf-tools-pip uninstall -y r2pipe || true
