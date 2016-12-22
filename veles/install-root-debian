@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+apt-get install -y cmake zlib zlib-dev qtbase5 qtbase5-dev
