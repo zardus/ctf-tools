@@ -80,7 +80,7 @@ Installers for the following tools are included:
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image steganography solver. | <!--tool--><!--test-->
 | stego | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. | <!--tool--><!--test-->
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. | <!--tool--><!--test-->
-| stego | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--test-->
+| stego | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
 | android | [apktool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs | <!--tool--><!--test-->
 | android | [android-sdk](http://developer.android.com/sdk) | The android SDK (adb, emulator, etc). | <!--tool--><!--no-test-->
 | misc | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. | <!--tool--><!--times-out-->
