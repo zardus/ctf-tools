@@ -18,4 +18,4 @@ END
 	chmod 755 $i
 done
 
-ctf-tools-pip install -yU r2pipe
+ctf-tools-pip install -U r2pipe

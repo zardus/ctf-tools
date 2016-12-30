@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+pacman -Syu --noconfirm --needed ruby
