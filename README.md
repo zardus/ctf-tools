@@ -229,7 +229,7 @@ They're not included in ctf-tools, but are included here as notes for the author
 |----------|---------|-------------|---------|
 | forensics | [foremost](http://foremost.sourceforge.net/) | File carver. | `foremost` | <!--deb-tool-->
 | dsniff | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | dsniff | <!--deb-tool-->
-| stego | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. | <!--tool--><!--test-->
+| stego | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. | <!--deb-tool-->
 
 ## Tools with unofficial Debian/Ubuntu repos or debs
 
