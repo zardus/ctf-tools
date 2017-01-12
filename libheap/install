@@ -17,7 +17,7 @@ if ! grep "init-libheap" ~/.gdbinit; then
 define init-libheap
     python from libheap import *
 end
-document init-pwndbg
+document init-libheap
     Initializes the libheap gdb extension (https://github.com/cloudburst/libheap)
 end
 ####
