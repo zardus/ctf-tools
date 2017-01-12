@@ -42,6 +42,8 @@ function detect_distribution()
 		else
 			echo "debian"
 		fi
+	elif which dnf 2>&1 >/dev/null; then
+		echo "fedora"
 	else
 		echo ""
 	fi
@@ -110,6 +112,19 @@ EOF
 }
 
 
+function base_build_setup_fedora()
+{
+	PACKAGE_REQS="libtool gcc gcc-c++ texinfo curl wget automake autoconf python python-devel git subversion unzip python-virtualenvwrapper"
+	if [ "$ALLOW_SUDO" -eq 1 ]; then
+		sudo dnf -y install $PACKAGE_REQS
+	else
+		TOOL=SETUP tool_log "Please install the following packages: $PACKAGE_REQS"
+	fi
+
+	# TODO: check whether we have to explicitly enable i386 package support
+}
+
+
 function base_build_setup()
 {
 	case "$1" in
@@ -121,6 +136,9 @@ function base_build_setup()
 		"archlinux")
 			base_build_setup_arch
 			export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+			;;
+		"fedora")
+			base_build_setup_fedora
 			;;
 		*)
 			TOOL=SETUP tool_log "Cannot detect or unsupported distribution"
