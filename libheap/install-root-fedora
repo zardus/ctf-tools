@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
 dnf install -y dnf-plugins-core
-dnf debuginfo-install glibc
+dnf debuginfo-install -y glibc
