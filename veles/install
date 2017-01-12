@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+wget -O src.tar.gz https://codisec.com/wp-content/uploads/2016/12/Veles_2016.12_Source.tar.gz
+tar xf src.tar.gz
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX:PATH=.. ../veles-2016.12
+make -j8
+make install
