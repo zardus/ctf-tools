@@ -21,6 +21,7 @@ Installers for the following tools are included:
 | binary | [elfparser](http://www.elfparser.com/) | Quickly determine the capabilities of an ELF binary through static analysis. | <!--tool--><!--test-->
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool--><!--test-->
 | binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--failing-->
+| binary | [gdb-heap](https://fedorahosted.org/gdb-heap/) | gdb extension for debugging heap issues. | <!--tool--><!--test-->
 | binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
 | binary | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
 | binary | [libheap](https://github.com/cloudburst/libheap) | gdb python library for examining the glibc heap (ptmalloc) | <!--tool--><!--no-test-->
