@@ -75,6 +75,7 @@ Installers for the following tools are included:
 | web | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. | <!--tool--><!--test-->
 | web | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
 | web | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
+| web | [HackBar](https://addons.mozilla.org/en-US/firefox/addon/hackbar/) | Firefox addon for easy web exploitation
 | web | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool--><!--failing-->
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image steganography solver. | <!--tool--><!--test-->
