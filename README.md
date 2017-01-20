@@ -92,6 +92,7 @@ There are also a couple of installers for useful libraries included. Currently
 only the python bindings for these libraries are installed.
 
 | Category | Library | Description |
+|----------|---------|-------------|
 | binary | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. | <!--tool--><!--test-->
 | binary | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. | <!--tool--><!--test-->
 | binary | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. | <!--tool--><!--test-->
