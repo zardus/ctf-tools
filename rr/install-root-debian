@@ -1,0 +1,4 @@
+#!/bin/bash -e
+apt-get install -y ccache cmake make g++-multilib gdb \
+    pkg-config libz-dev realpath python-pexpect manpages-dev git zlib1g-dev \
+    ninja-build

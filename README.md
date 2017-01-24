@@ -38,6 +38,7 @@ Installers for the following tools are included:
 | binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. | <!--tool--><!--test-->
 | binary | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool--><!--test-->
 | binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool--><!--test-->
+| binary | [rr](http://rr-project.org) | Record and Replay Debugging Framework | <!--tool--><!--test-->
 | binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. | <!--tool--><!--test-->
 | binary | [shellsploit](https://github.com/b3mb4m/shellsploit-framework) | Shellcode development kit. | <!--tool--><!--test-->
 | binary | [snowman](https://github.com/yegord/snowman) | Cross-architecture decompiler. | <!--tool--><!--test-->
