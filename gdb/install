@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e -o pipefail
 
-curl https://ftp.gnu.org/gnu/gdb/gdb-7.11.1.tar.gz | tar xz
-cd gdb-7.11.1
+curl https://ftp.gnu.org/gnu/gdb/gdb-7.12.tar.gz | tar xz
+cd gdb-7.12
 
 # move to ctftools virtual env
 source ctf-tools-venv-activate
