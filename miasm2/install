@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+git clone --depth 1 https://github.com/serpilliere/elfesteem.git
+git clone --depth 1 https://github.com/cea-sec/miasm.git
+
+ctf-tools-pip install -U llvmlite
+ctf-tools-pip install -e elfesteem
+ctf-tools-pip install -e miasm
