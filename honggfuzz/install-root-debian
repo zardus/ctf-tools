@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eu -o pipefail
 
-apt-get install libbfd-dev libunwind8-dev
+apt-get install -y libbfd-dev libunwind8-dev
