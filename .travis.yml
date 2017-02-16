@@ -1,12 +1,188 @@
 language: bash
 sudo: required
-dist: trusty
+services:
+- docker
+before_install:
+- if [ "$DISTRO" = "xenial" ]; then docker build -t ctftools -f Dockerfile.xenial .; fi
+- if [ "$DISTRO" = "trusty" ]; then docker build -t ctftools -f Dockerfile .; fi
+
 env:
-- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="all" OPTS="-s"
-- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="z3" OPTS="-s -v -f"
-- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="qemu" OPTS="-s -f -v"
-- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="qira" OPTS="-s -f"
-- PATH=$TRAVIS_BUILD_DIR/bin:$PATH SUITE="afl" OPTS="-s -f"
-install: (sudo apt-get update || true) && bin/manage-tools -s setup
+- DISTRO="trusty" TOOL="afl" 
+- DISTRO="trusty" TOOL="android-sdk" 
+- DISTRO="trusty" TOOL="angr" EXPECTFAIL=1
+- DISTRO="trusty" TOOL="apktool" 
+- DISTRO="trusty" TOOL="barf" 
+- DISTRO="trusty" TOOL="beef" EXPECTFAIL=1 ### unsupported for now, needs ruby with RVM
+- DISTRO="trusty" TOOL="bindead" 
+- DISTRO="trusty" TOOL="binwalk"
+- DISTRO="trusty" TOOL="burpsuite" 
+- DISTRO="trusty" TOOL="capstone" 
+- DISTRO="trusty" TOOL="checksec"
+- DISTRO="trusty" TOOL="codereason"
+- DISTRO="trusty" TOOL="commix" 
+- DISTRO="trusty" TOOL="cribdrag" 
+#- DISTRO="trusty" TOOL="cross2"  ### takes too long for travis
+#- DISTRO="trusty" TOOL="crosstool"  ### takes too long for travis
+- DISTRO="trusty" TOOL="df" 
+- DISTRO="trusty" TOOL="dirb" 
+- DISTRO="trusty" TOOL="dirsearch" 
+- DISTRO="trusty" TOOL="dislocker" 
+- DISTRO="trusty" TOOL="elfkickers" 
+- DISTRO="trusty" TOOL="elfparser" 
+- DISTRO="trusty" TOOL="evilize" 
+- DISTRO="trusty" TOOL="exetractor" 
+- DISTRO="trusty" TOOL="featherduster" 
+- DISTRO="trusty" TOOL="firmware-mod-kit" 
+- DISTRO="trusty" TOOL="foresight" 
+- DISTRO="trusty" TOOL="gdb" 
+- DISTRO="trusty" TOOL="gdb-heap" 
+- DISTRO="trusty" TOOL="gef" 
+- DISTRO="trusty" TOOL="hash-identifier" 
+- DISTRO="trusty" TOOL="hashkill" 
+- DISTRO="trusty" TOOL="hashpump" 
+- DISTRO="trusty" TOOL="hashpump-partialhash" 
+- DISTRO="trusty" TOOL="honggfuzz" 
+- DISTRO="trusty" TOOL="jdgui" 
+- DISTRO="trusty" TOOL="keystone" 
+- DISTRO="trusty" TOOL="libheap" 
+- DISTRO="trusty" TOOL="littleblackbox" 
+- DISTRO="trusty" TOOL="mitmproxy" 
+- DISTRO="trusty" TOOL="msieve" 
+- DISTRO="trusty" TOOL="panda" EXPECTFAIL=1 ### not sure why this fails, compilation errors
+- DISTRO="trusty" TOOL="pathgrind" EXPECTFAIL=1 ### only works on kernel 2.4 or 2.6
+- DISTRO="trusty" TOOL="pdf-parser" 
+- DISTRO="trusty" TOOL="peda" 
+- DISTRO="trusty" TOOL="peepdf" 
+- DISTRO="trusty" TOOL="pemcrack" 
+- DISTRO="trusty" TOOL="pkcrack" 
+- DISTRO="trusty" TOOL="preeny" 
+- DISTRO="trusty" TOOL="pwndbg" 
+- DISTRO="trusty" TOOL="pwntools" EXPECTFAIL=1
+- DISTRO="trusty" TOOL="python-paddingoracle" 
+- DISTRO="trusty" TOOL="python-pin"
+- DISTRO="trusty" TOOL="pyvmmonitor" 
+- DISTRO="trusty" TOOL="qemu" 
+- DISTRO="trusty" TOOL="qira" 
+- DISTRO="trusty" TOOL="radare2" 
+- DISTRO="trusty" TOOL="reveng" 
+- DISTRO="trusty" TOOL="ropper" 
+- DISTRO="trusty" TOOL="rp++" 
+- DISTRO="trusty" TOOL="scrdec18" 
+- DISTRO="trusty" TOOL="shellnoob" 
+- DISTRO="trusty" TOOL="shellsploit" 
+- DISTRO="trusty" TOOL="snowman" 
+- DISTRO="trusty" TOOL="sonic-visualizer" EXPECTFAIL=1 ### build errors
+- DISTRO="trusty" TOOL="sqlmap" 
+- DISTRO="trusty" TOOL="ssh_decoder" 
+- DISTRO="trusty" TOOL="sslsplit" 
+- DISTRO="trusty" TOOL="steganabara" 
+- DISTRO="trusty" TOOL="stegdetect" 
+- DISTRO="trusty" TOOL="stegsolve" 
+- DISTRO="trusty" TOOL="subbrute" 
+- DISTRO="trusty" TOOL="taintgrind" EXPECTFAIL=1 ### missing Iop_* declarations
+- DISTRO="trusty" TOOL="testdisk" 
+- DISTRO="trusty" TOOL="tor-browser" 
+- DISTRO="trusty" TOOL="unicorn" 
+- DISTRO="trusty" TOOL="veles" EXPECTFAIL=1 ### Cmake is too old
+- DISTRO="trusty" TOOL="villoc" 
+- DISTRO="trusty" TOOL="virtualsocket" 
+- DISTRO="trusty" TOOL="wcc" EXPECTFAIL=1 ### depends on xenial
+- DISTRO="trusty" TOOL="xortool" 
+- DISTRO="trusty" TOOL="xrop" EXPECTFAIL=1
+- DISTRO="trusty" TOOL="xspy" 
+- DISTRO="trusty" TOOL="yafu" 
+- DISTRO="trusty" TOOL="z3" 
+- DISTRO="trusty" TOOL="zsteg" 
+
+- DISTRO="xenial" TOOL="afl" 
+- DISTRO="xenial" TOOL="android-sdk" 
+- DISTRO="xenial" TOOL="angr" 
+- DISTRO="xenial" TOOL="apktool" 
+- DISTRO="xenial" TOOL="barf" 
+- DISTRO="xenial" TOOL="beef" EXPECTFAIL=1 ### unsupported for now, needs ruby with RVM
+- DISTRO="xenial" TOOL="bindead" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="binwalk"
+- DISTRO="xenial" TOOL="burpsuite" 
+- DISTRO="xenial" TOOL="capstone" 
+- DISTRO="xenial" TOOL="checksec"
+- DISTRO="xenial" TOOL="codereason"
+- DISTRO="xenial" TOOL="commix" 
+- DISTRO="xenial" TOOL="cribdrag" 
+#- DISTRO="xenial" TOOL="cross2"  ### takes too long for travis
+#- DISTRO="xenial" TOOL="crosstool"  ### takes too long for travis
+- DISTRO="xenial" TOOL="df" 
+- DISTRO="xenial" TOOL="dirb" 
+- DISTRO="xenial" TOOL="dirsearch" 
+- DISTRO="xenial" TOOL="dislocker" 
+- DISTRO="xenial" TOOL="elfkickers" 
+- DISTRO="xenial" TOOL="elfparser" 
+- DISTRO="xenial" TOOL="evilize" 
+- DISTRO="xenial" TOOL="exetractor" 
+- DISTRO="xenial" TOOL="featherduster" 
+- DISTRO="xenial" TOOL="firmware-mod-kit" 
+- DISTRO="xenial" TOOL="foresight" 
+- DISTRO="xenial" TOOL="gdb" 
+- DISTRO="xenial" TOOL="gdb-heap" 
+- DISTRO="xenial" TOOL="gef" 
+- DISTRO="xenial" TOOL="hash-identifier" 
+- DISTRO="xenial" TOOL="hashkill" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="hashpump" 
+- DISTRO="xenial" TOOL="hashpump-partialhash" 
+- DISTRO="xenial" TOOL="honggfuzz" 
+- DISTRO="xenial" TOOL="jdgui" 
+- DISTRO="xenial" TOOL="keystone" 
+- DISTRO="xenial" TOOL="libheap" 
+- DISTRO="xenial" TOOL="littleblackbox" 
+- DISTRO="xenial" TOOL="mitmproxy" 
+- DISTRO="xenial" TOOL="msieve" 
+- DISTRO="xenial" TOOL="panda" EXPECTFAIL=1 ### not sure why this fails, compilation errors
+- DISTRO="xenial" TOOL="pathgrind" EXPECTFAIL=1 ### only works on kernel 2.4 or 2.6
+- DISTRO="xenial" TOOL="pdf-parser" 
+- DISTRO="xenial" TOOL="peda" 
+- DISTRO="xenial" TOOL="peepdf" 
+- DISTRO="xenial" TOOL="pemcrack" 
+- DISTRO="xenial" TOOL="pkcrack" 
+- DISTRO="xenial" TOOL="preeny" 
+- DISTRO="xenial" TOOL="pwndbg" 
+- DISTRO="xenial" TOOL="pwntools" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="python-paddingoracle" 
+- DISTRO="xenial" TOOL="python-pin" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="pyvmmonitor" 
+- DISTRO="xenial" TOOL="qemu" 
+- DISTRO="xenial" TOOL="qira" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="radare2" 
+- DISTRO="xenial" TOOL="reveng" 
+- DISTRO="xenial" TOOL="ropper" 
+- DISTRO="xenial" TOOL="rp++" 
+- DISTRO="xenial" TOOL="scrdec18" 
+- DISTRO="xenial" TOOL="shellnoob" 
+- DISTRO="xenial" TOOL="shellsploit" 
+- DISTRO="xenial" TOOL="snowman" 
+- DISTRO="xenial" TOOL="sonic-visualizer" EXPECTFAIL=1 ### build errors
+- DISTRO="xenial" TOOL="sqlmap" 
+- DISTRO="xenial" TOOL="ssh_decoder" 
+- DISTRO="xenial" TOOL="sslsplit" 
+- DISTRO="xenial" TOOL="steganabara" 
+- DISTRO="xenial" TOOL="stegdetect" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="stegsolve" 
+- DISTRO="xenial" TOOL="subbrute" 
+- DISTRO="xenial" TOOL="taintgrind" EXPECTFAIL=1 ### missing Iop_* declarations
+- DISTRO="xenial" TOOL="testdisk" 
+- DISTRO="xenial" TOOL="tor-browser" 
+- DISTRO="xenial" TOOL="unicorn" 
+- DISTRO="xenial" TOOL="veles"
+- DISTRO="xenial" TOOL="villoc" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="virtualsocket" 
+- DISTRO="xenial" TOOL="wcc" EXPECTFAIL=1 ### depends on xenial
+- DISTRO="xenial" TOOL="xortool" 
+- DISTRO="xenial" TOOL="xrop" EXPECTFAIL=1
+- DISTRO="xenial" TOOL="xspy" 
+- DISTRO="xenial" TOOL="yafu" 
+- DISTRO="xenial" TOOL="z3" 
+- DISTRO="xenial" TOOL="zsteg" EXPECTFAIL=1
+
+
 script:
-- VIRTUALENVWRAPPER_SCRIPT=/usr/share/virtualenvwrapper/virtualenvwrapper.sh manage-tools $OPTS test $SUITE
+- docker run --rm ctftools lsb_release -a
+- docker run -e EXPECTFAIL="$EXPECTFAIL" -e TOOL="$TOOL" --rm ctftools bash -ic 'manage-tools -s -f -v test $TOOL'
+
