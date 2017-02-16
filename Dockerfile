@@ -3,7 +3,7 @@ maintainer yans@yancomm.net
 
 RUN apt-get update && apt-get install -y build-essential libtool g++ gcc \
     texinfo curl wget automake autoconf python python-dev git subversion \
-    unzip virtualenvwrapper
+    unzip virtualenvwrapper sudo
 
 RUN useradd -m ctf
 COPY .git /home/ctf/tools/.git
