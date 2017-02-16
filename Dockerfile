@@ -22,4 +22,4 @@ RUN bin/ctf-tools-pip install appdirs
 RUN echo "workon ctftools" >> /home/ctf/.bashrc
 
 WORKDIR /home/ctf
-ENTRYPOINT bash -i
+CMD bash -i
