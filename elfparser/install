@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 wget http://www.elfparser.com/release/elfparser_x86_64_1.4.0.deb
 dpkg -x elfparser_x86_64_1.4.0.deb .

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 mkdir bin
 wget -O msieve.tar.gz "http://downloads.sourceforge.net/project/msieve/msieve/Msieve v1.53/msieve153_src.tar.gz"

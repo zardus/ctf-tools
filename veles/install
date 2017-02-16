@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 wget -O src.tar.gz https://codisec.com/wp-content/uploads/2016/12/Veles_2016.12_Source.tar.gz
 tar xf src.tar.gz

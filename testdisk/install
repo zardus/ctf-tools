@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 curl https://www.cgsecurity.org/testdisk-7.0.linux26-x86_64.tar.bz2 | tar xj
 

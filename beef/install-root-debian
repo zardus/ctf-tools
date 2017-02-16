@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 echo "Need to get ruby with RVM... Unsupported for now"
 exit 1

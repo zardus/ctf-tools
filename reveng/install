@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 curl http://jaist.dl.sourceforge.net/project/reveng/1.4.4/reveng-1.4.4.tar.gz | tar xz
 cd reveng-1.4.4

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -e -o pipefail
 
 curl http://download.qemu-project.org/qemu-2.8.0.tar.bz2 | tar xvj

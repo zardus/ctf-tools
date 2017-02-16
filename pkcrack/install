@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 wget https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack/pkcrack-1.2.2.tar.gz
 tar xzf pkcrack-1.2.2.tar.gz

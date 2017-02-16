@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -eu -o pipefail
 
 echo "ERROR: archlinux has no aclocal-1.4. only $(aclocal --version | head -n 1)"

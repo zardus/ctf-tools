@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 mkdir bin
 wget https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
 wget https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.2.0.jar

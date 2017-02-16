@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 mkdir bin
 wget -O dirb.tar.gz http://downloads.sourceforge.net/project/dirb/dirb/2.22/dirb222.tar.gz

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -e xspy ] || git clone git://git.kali.org/packages/xspy.git
 mkdir -p bin

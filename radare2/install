@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 git clone --depth 1 https://github.com/radare/radare2.git
 cd radare2/

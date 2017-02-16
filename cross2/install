@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 FILE=cross2-20130826.tgz
 INSTALL_DIR=$PWD

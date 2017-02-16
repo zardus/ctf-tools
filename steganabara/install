@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 curl http://www.caesum.com/handbook/steganabara-1.1.1.tar.gz | tar xz
 mkdir -p bin

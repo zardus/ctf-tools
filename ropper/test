@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 set +e
 source ${VIRTUALENVWRAPPER_SCRIPT}
