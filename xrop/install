@@ -3,10 +3,10 @@
 git clone --depth 1 https://github.com/acama/xrop.git
 cd xrop
 git submodule update --init --recursive
-make -j $(nproc)
+make -j 1 # Watch out!! -j $(nproc) makes the build fail
 cd ..
 
 mkdir bin
 cd bin
-ln -s ../xrop/xrop .
+ln -s ../xrop 
 cd ..
