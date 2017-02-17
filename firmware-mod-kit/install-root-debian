@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -eu -o pipefail
 
 apt-get -y install liblzma-dev python-magic zlib1g-dev

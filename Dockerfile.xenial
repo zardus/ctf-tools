@@ -1,4 +1,4 @@
-from ubuntu:trusty
+from ubuntu:xenial
 maintainer yans@yancomm.net
 
 RUN apt-get update && apt-get install -y build-essential libtool g++ gcc \

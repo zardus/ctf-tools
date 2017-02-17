@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 wget https://didierstevens.com/files/software/pdf-parser_V0_6_4.zip
 unzip pdf-parser_V0_6_4.zip

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 PY_TEST_FILE=$(mktemp)
 cat << END > $PY_TEST_FILE

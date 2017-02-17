@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -e -o pipefail
 
 curl https://ftp.gnu.org/gnu/gdb/gdb-7.12.tar.gz | tar xz

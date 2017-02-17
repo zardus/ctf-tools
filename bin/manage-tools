@@ -52,7 +52,7 @@ function detect_distribution()
 
 function base_build_setup_debian()
 {
-	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper"
+	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper lsb-release"
 	PACKAGE_COUNT=$(echo $PACKAGE_REQS | tr ' ' '\n' | wc -l)
 	if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
 	then
@@ -199,6 +199,7 @@ done
 [[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
 [[ -z ${FORCE+x} ]] && export FORCE=0
 [[ -z ${VERBOSE_OUTPUT+x} ]] && export VERBOSE_OUTPUT=0
+export EXPECTFAIL=${EXPECTFAIL:-0}
 
 if [[ $# -ge 1 ]]; then
 	ACTION="$1"
@@ -249,6 +250,13 @@ case $ACTION in
 		then
 			tool_log "appears to already be installed. Uninstall first?"
 			exit 0
+		fi
+
+		# the first line in all install and uninstall scripts should have the -e flag, otherwise fail
+		if [ $(for i in install* uninstall test; do if [ -e "$i" ]; then head -1 "$i"; fi; done | sort | uniq | grep -v '^#!/bin/bash -ex$' | wc -l) -ne 0 ];
+		then
+			tool_log "not all install/uninstall/test scripts start with '#!/bin/bash -ex', which is a must for accurate testing."
+			exit 1
 		fi
 
 		tool_log "starting install, logging to $PWD/install.log"
@@ -331,10 +339,12 @@ case $ACTION in
 		if [ "$FORCE" -eq 0 ] && ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
 		then
 			tool_log "Tests not enabled."
+			if [ "$EXPECTFAIL" -eq "1" ]; then exit 1; fi
 		else
-			$0 install $TOOL
+			if (
+			if ! $0 install $TOOL; then exit 1; fi
 
-			cd $TOOL
+			cd $TOOL || exit 1
 			if [ -f ./test ]
 			then
 				tool_log "Running test script."
@@ -346,6 +356,13 @@ case $ACTION in
 				tool_log "test script succeeded!"
 			else
 				tool_log "Install succeeded. No test script!"
+			fi
+			exit 0
+			); 
+			then
+				if [ "$EXPECTFAIL" -eq "1" ]; then exit 1; else exit 0; fi
+			else
+				if [ "$EXPECTFAIL" -eq "1" ]; then exit 0; else exit 1; fi
 			fi
 		fi
 		;;

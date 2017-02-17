@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 mkdir -p src
 [ -e crosstool-ng ] || git clone --depth 1 https://github.com/crosstool-ng/crosstool-ng.git

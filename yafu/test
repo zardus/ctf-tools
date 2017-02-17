@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 RESULT=$(./bin/yafu 'factor(10)' | grep "^P" | tr -d '\n')
 [ "$RESULT" == "P1 = 2P1 = 5" ] || exit 1

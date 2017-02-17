@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -e honggfuzz ] || git clone --depth 1 https://github.com/google/honggfuzz
 cd honggfuzz

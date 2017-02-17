@@ -1,5 +1,13 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -eu -o pipefail
 
 apt-get -y build-dep qemu
-apt-get -y install bison
+
+case "$(lsb_release -cs)" in
+	xenial)
+		apt-get -y install bison libtool-bin
+		;;
+	*)
+		apt-get -y install bison
+		;;
+esac
