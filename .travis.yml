@@ -183,6 +183,5 @@ env:
 
 
 script:
-- docker run --rm ctftools lsb_release -a
-- docker run -e EXPECTFAIL="$EXPECTFAIL" -e TOOL="$TOOL" --rm ctftools bash -ic 'manage-tools -s -f -v test $TOOL'
+- ./bin/travis-ci.sh
 
