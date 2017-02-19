@@ -31,4 +31,12 @@ then
 	echo "==================================================="
 	exit 1
 fi
+
+if [ "$EXPECTFAIL" -eq "1" ];
+then
+	echo "DONE: $totalcount tools failed as expected."
+else
+	echo "DONE: $totalcount tools succeeded as expected."
+fi
+
 exit 0

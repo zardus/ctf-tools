@@ -53,7 +53,8 @@ env:
         gef hash-identifier hashpump hashpump-partialhash honggfuzz testdisk
         tor-browser unicorn virtualsocket xortool xspy yafu z3"
 - DISTRO="trusty" TOOL="pkcrack preeny pwndbg python-paddingoracle pyvmmonitor
-        qemu radare2 reveng ropper rp++"
+        radare2 reveng ropper rp++"
+- DISTRO="trusty" TOOL="qemu"
 - DISTRO="trusty" EXPECTFAIL=1 TOOL="angr beef panda pathgrind pwntools
         sonic-visualizer taintgrind veles wcc xrop"
 # - DISTRO="trusty" TOOL="cross2 crosstool" ### takes too long for travis-ci
@@ -69,7 +70,8 @@ env:
         gef hash-identifier hashpump hashpump-partialhash honggfuzz testdisk
         tor-browser unicorn veles virtualsocket xortool xspy yafu z3"
 - DISTRO="xenial" TOOL="pkcrack preeny pwndbg python-paddingoracle pyvmmonitor
-        qemu radare2 reveng ropper rp++"
+        radare2 reveng ropper rp++"
+- DISTRO="xenial" TOOL="qemu"
 - DISTRO="xenial" EXPECTFAIL=1 TOOL="beef bindead hashkill panda pathgrind
         pwntools python-pin qira sonic-visualizer stegdetect taintgrind villoc wcc xrop
         zsteg"
