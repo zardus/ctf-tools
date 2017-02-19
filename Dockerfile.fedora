@@ -1,6 +1,6 @@
 FROM fedora
 
-RUN dnf -y install which sudo git
+RUN dnf -y install which sudo git redhat-lsb
 
 RUN useradd -m ctf
 COPY .git /home/ctf/tools/.git
