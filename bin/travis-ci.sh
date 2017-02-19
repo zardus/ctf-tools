@@ -2,14 +2,18 @@
 
 export EXPECTFAIL=${EXPECTFAIL:-0}
 
+starttime=$SECONDS
 failed=""
 for t in $TOOL;
 do
 	set +e
+	toolstarttime=$SECONDS
+	echo "[-] TOOL $t TEST STARTED: $((SECONDS - starttime)) seconds since start of script"
 	if ! docker run -e EXPECTFAIL="$EXPECTFAIL" -e TOOL="$t" --rm ctftools bash -ic 'manage-tools -s -f -v test $TOOL';
 	then
 		failed="$failed$t "
 	fi
+	echo "[-] TOOL $t TEST ENDED: $((SECONDS - toolstarttime)) seconds, $((SECONDS - starttime)) seconds since start of script"
 	set -e
 done
 
