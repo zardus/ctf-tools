@@ -14,20 +14,20 @@ env:
 - DISTRO="fedora" TOOL="apktool binwalk burpsuite capstone checksec commix cribdrag dirsearch elfkickers evilize exetractor foresight gdb gdb-heap gef jdgui libheap"
 - DISTRO="fedora" TOOL="pdf-parser peda peepdf pkcrack python-paddingoracle pyvmmonitor radare2 reveng ropper rp++ scrdec18 shellnoob shellsploit ssh_decoder steganabara stegsolve subbrute unicorn virtualsocket"
 - DISTRO="fedora" TOOL="xortool yafu z3"
-- DISTRO="fedora" EXPECTFAIL=1 TOOL="afl android-sdk angr barf beef bindead codereason df dirb dislocker"
-- DISTRO="fedora" EXPECTFAIL=1 TOOL="elfparser featherduster firmware-mod-kit hash-identifier hashkill hashpump hashpump-partialhash honggfuzz keystone"
-- DISTRO="fedora" EXPECTFAIL=1 TOOL="littleblackbox mitmproxy msieve panda pathgrind pemcrack preeny pwndbg pwntools python-pin"
-- DISTRO="fedora" EXPECTFAIL=1 TOOL="qemu qira snowman sonic-visualizer sqlmap sslsplit stegdetect taintgrind testdisk tor-browser"
-- DISTRO="fedora" EXPECTFAIL=1 TOOL="veles villoc wcc xrop xspy zsteg"
+- DISTRO="fedora" EXPECTFAIL=1 TOOL="afl android-sdk angr barf beef bindead codereason df dirb dislocker
+        elfparser featherduster firmware-mod-kit hash-identifier hashkill hashpump hashpump-partialhash honggfuzz keystone
+        littleblackbox mitmproxy msieve panda pathgrind pemcrack preeny pwndbg pwntools python-pin
+        qemu qira snowman sonic-visualizer sqlmap sslsplit stegdetect taintgrind testdisk tor-browser
+        veles villoc wcc xrop xspy zsteg"
 
 # Tests for archlinux
 - DISTRO="archlinux" TOOL="afl android-sdk apktool binwalk burpsuite checksec commix cribdrag"
 - DISTRO="archlinux" TOOL="df dirb dirsearch evilize exetractor featherduster firmware-mod-kit foresight gdb gdb-heap gef"
 - DISTRO="archlinux" TOOL="hashpump hashpump-partialhash jdgui keystone libheap msieve pdf-parser peda peepdf pemcrack pkcrack pwndbg"
-- DISTRO="archlinux" TOOL="pwntools python-paddingoracle pyvmmonitor"
 # - DISTRO="archlinux" TOOL="qemu" ### takes too long for travis-ci
-- DISTRO="archlinux" TOOL="radare2 reveng rp++ scrdec18 shellnoob ssh_decoder sslsplit steganabara stegsolve subbrute testdisk tor-browser"
-- DISTRO="archlinux" TOOL="unicorn veles virtualsocket xortool xrop yafu zsteg elfkickers honggfuzz"
+- DISTRO="archlinux" TOOL="pwntools python-paddingoracle pyvmmonitor
+        radare2 reveng rp++ scrdec18 shellnoob ssh_decoder sslsplit steganabara stegsolve subbrute testdisk tor-browser
+        unicorn veles virtualsocket xortool xrop yafu zsteg elfkickers honggfuzz"
 - DISTRO="archlinux" EXPECTFAIL=1 TOOL="angr barf beef bindead capstone codereason dislocker elfparser hash-identifier"
 - DISTRO="archlinux" EXPECTFAIL=1 TOOL="hashkill littleblackbox mitmproxy panda pathgrind preeny qira ropper shellsploit"
 - DISTRO="archlinux" EXPECTFAIL=1 TOOL="snowman sonic-visualizer sqlmap stegdetect taintgrind villoc wcc xspy z3 python-pin"
