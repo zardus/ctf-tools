@@ -48,14 +48,15 @@ env:
         elfparser evilize exetractor jdgui keystone libheap littleblackbox mitmproxy
         msieve pdf-parser peda peepdf pemcrack scrdec18 shellnoob shellsploit snowman
         sqlmap ssh_decoder sslsplit steganabara stegsolve subbrute bindead hashkill
-        python-pin qira stegdetect villoc zsteg"
+        python-pin"
 - DISTRO="trusty" TOOL="featherduster firmware-mod-kit foresight gdb gdb-heap
         gef hash-identifier hashpump hashpump-partialhash honggfuzz testdisk
         tor-browser unicorn virtualsocket xortool xspy yafu z3"
 - DISTRO="trusty" TOOL="pkcrack preeny pwndbg python-paddingoracle pyvmmonitor
-        radare2 reveng ropper rp++"
+        radare2 reveng ropper rp++ qira stegdetect villoc zsteg"
 - DISTRO="trusty" TOOL="qemu"
-- DISTRO="trusty" EXPECTFAIL=1 TOOL="angr beef panda pathgrind pwntools
+- DISTRO="trusty" EXPECTFAIL=1 TOOL="angr"
+- DISTRO="trusty" EXPECTFAIL=1 TOOL="beef panda pathgrind pwntools
         sonic-visualizer taintgrind veles wcc xrop"
 # - DISTRO="trusty" TOOL="cross2 crosstool" ### takes too long for travis-ci
 
