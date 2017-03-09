@@ -19,7 +19,7 @@ env:
 - DISTRO='archlinux' TOOL='binwalk checksec commix cribdrag df dirb dirsearch evilize exetractor foresight gef hashpump hashpump-partialhash honggfuzz libheap pdf-parser peda peepdf pemcrack pkcrack python-paddingoracle pyvmmonitor rp++ scrdec18 shellnoob sqlmap ssh_decoder sslsplit steganabara stegsolve subbrute testdisk tor-browser virtualsocket xortool zsteg' # estimated 200 seconds
 - DISTRO='archlinux' EXPECTFAIL=1 TOOL='qira sonic-visualizer taintgrind z3' # estimated 1940 seconds
 - DISTRO='archlinux' EXPECTFAIL=1 TOOL='angr barf beef bindead capstone codereason dislocker elfkickers elfparser gdb-heap hash-identifier hashkill littleblackbox mitmproxy panda pathgrind preeny python-pin reveng ropper shellsploit snowman stegdetect villoc wcc xspy' # estimated 437 seconds
-- DISTRO='archlinux' TOOL='qemu' # unknown duration...
+#- DISTRO='archlinux' TOOL='qemu' # unknown duration...
 - DISTRO='trusty' TOOL='barf bindead capstone sslsplit stegdetect tor-browser yafu z3' # estimated 1999 seconds
 - DISTRO='trusty' TOOL='qemu' # estimated 2106 seconds
 - DISTRO='trusty' TOOL='df dirb dislocker elfparser gdb pwntools qira snowman sqlmap' # estimated 1993 seconds
