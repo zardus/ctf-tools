@@ -10,26 +10,25 @@ before_install:
 
 env:
 
-- DISTRO='xenial' EXPECTFAIL=1 TOOL='beef pathgrind python-pin zsteg qira taintgrind stegdetect villoc gdb-heap pwntools wcc reveng bindead xrop hashkill panda sonic-visualizer' # estimated 451 seconds
-- DISTRO='xenial' TOOL='qemu' # estimated 1962 seconds
-- DISTRO='xenial' TOOL='afl barf pwndbg z3' # estimated 1928 seconds
-- DISTRO='xenial' TOOL='snowman firmware-mod-kit gdb keystone angr android-sdk' # estimated 1882 seconds
-- DISTRO='xenial' TOOL='pkcrack testdisk steganabara pdf-parser virtualsocket peda apktool peepdf xspy python-paddingoracle dislocker stegsolve libheap xortool tor-browser cribdrag sslsplit elfkickers capstone ssh_decoder pyvmmonitor commix sqlmap preeny jdgui df hash-identifier littleblackbox pemcrack dirb exetractor gef unicorn yafu binwalk veles featherduster elfparser foresight checksec dirsearch hashpump-partialhash ropper shellnoob codereason msieve burpsuite mitmproxy honggfuzz shellsploit radare2 rp++ scrdec18 subbrute hashpump evilize' # estimated 1115 seconds
-- DISTRO='archlinux' EXPECTFAIL=1 TOOL='qira sonic-visualizer z3' # estimated 1928 seconds
-- DISTRO='archlinux' EXPECTFAIL=1 TOOL='snowman barf panda xspy dislocker reveng beef stegdetect wcc capstone preeny python-pin hash-identifier littleblackbox villoc gdb-heap hashkill elfparser pathgrind ropper taintgrind codereason mitmproxy angr shellsploit bindead' # estimated 693 seconds
-- DISTRO='archlinux' TOOL='unicorn gdb pwndbg apktool afl yafu firmware-mod-kit jdgui tor-browser sslsplit keystone pyvmmonitor sqlmap zsteg dirb xrop pwntools android-sdk veles featherduster hashpump-partialhash msieve burpsuite honggfuzz radare2 hashpump' # estimated 1997 seconds
-- DISTRO='archlinux' TOOL='pkcrack testdisk virtualsocket peda peepdf ssh_decoder python-paddingoracle stegsolve libheap xortool cribdrag elfkickers pdf-parser scrdec18 df pemcrack shellnoob exetractor gef checksec rp++ binwalk dirsearch foresight commix subbrute steganabara evilize' # estimated 47 seconds
-- DISTRO='archlinux' TOOL='qemu' # unknown duration...
-- DISTRO='fedora' EXPECTFAIL=1 TOOL='snowman testdisk pwntools pwndbg barf qemu panda xspy sonic-visualizer afl dislocker firmware-mod-kit beef sslsplit tor-browser qira wcc keystone sqlmap preeny stegdetect zsteg df hash-identifier littleblackbox villoc gdb-heap dirb reveng xrop hashkill android-sdk veles featherduster elfparser pemcrack pathgrind hashpump-partialhash taintgrind codereason msieve mitmproxy angr honggfuzz python-pin bindead hashpump' # estimated 507 seconds
-- DISTRO='fedora' TOOL='pkcrack unicorn pdf-parser gdb virtualsocket peda apktool peepdf python-paddingoracle stegsolve libheap xortool cribdrag elfkickers capstone ssh_decoder pyvmmonitor scrdec18 jdgui shellnoob exetractor gef checksec yafu binwalk z3 rp++ ropper burpsuite foresight dirsearch commix shellsploit steganabara subbrute radare2 evilize' # estimated 1825 seconds
-- DISTRO='trusty' EXPECTFAIL=1 TOOL='reveng pathgrind sonic-visualizer beef taintgrind gdb-heap wcc xrop veles panda' # estimated 882 seconds
-- DISTRO='trusty' TOOL='df android-sdk elfparser barf z3' # estimated 1975 seconds
-- DISTRO='trusty' TOOL='qemu' # estimated 2174 seconds
-- DISTRO='trusty' TOOL='snowman msieve qira gdb exetractor bindead capstone' # estimated 1993 seconds
-- DISTRO='trusty' TOOL='afl sqlmap firmware-mod-kit jdgui codereason apktool burpsuite mitmproxy pwntools keystone pwndbg unicorn hashkill featherduster radare2' # estimated 1973 seconds
-- DISTRO='trusty' TOOL='pkcrack testdisk steganabara virtualsocket peda peepdf ssh_decoder xspy python-paddingoracle dislocker stegsolve libheap xortool tor-browser cribdrag sslsplit elfkickers pdf-parser pyvmmonitor scrdec18 preeny rp++ stegdetect zsteg hash-identifier littleblackbox villoc pemcrack dirb gef checksec yafu binwalk dirsearch hashpump-partialhash ropper shellnoob foresight honggfuzz shellsploit commix python-pin subbrute hashpump evilize' # estimated 317 seconds
+- DISTRO='trusty' TOOL='android-sdk barf dirsearch gef hashpump libheap peda pkcrack python-paddingoracle pyvmmonitor rp++ sqlmap ssh_decoder testdisk virtualsocket xspy z3 zsteg' # estimated 1987 seconds
+- DISTRO='trusty' TOOL='qemu' # estimated 2163 seconds
+- DISTRO='trusty' TOOL='bindead checksec df elfkickers elfparser exetractor featherduster gdb littleblackbox msieve peepdf pemcrack preeny python-pin qira scrdec18 shellnoob snowman sslsplit steganabara subbrute xortool yafu' # estimated 1987 seconds
+- DISTRO='trusty' TOOL='afl apktool binwalk burpsuite capstone codereason commix cribdrag dirb dislocker evilize firmware-mod-kit foresight hash-identifier hashkill hashpump-partialhash honggfuzz jdgui keystone mitmproxy pdf-parser pwndbg pwntools radare2 ropper shellsploit stegdetect stegsolve tor-browser unicorn villoc' # estimated 1986 seconds
+- DISTRO='trusty' EXPECTFAIL=1 TOOL='beef gdb-heap panda pathgrind reveng sonic-visualizer taintgrind veles wcc xrop' # estimated 830 seconds
 - DISTRO='trusty' TOOL='angr' # unknown duration...
+- DISTRO='archlinux' TOOL='afl android-sdk apktool burpsuite dirb featherduster firmware-mod-kit gdb hashpump jdgui keystone msieve pwndbg pwntools radare2 tor-browser unicorn veles xrop yafu zsteg' # estimated 1988 seconds
+- DISTRO='archlinux' TOOL='binwalk checksec commix cribdrag df dirsearch evilize exetractor foresight gef hashpump-partialhash honggfuzz libheap pdf-parser peda peepdf pemcrack pkcrack python-paddingoracle pyvmmonitor rp++ scrdec18 shellnoob sqlmap ssh_decoder sslsplit steganabara stegsolve subbrute testdisk virtualsocket xortool' # estimated 109 seconds
+- DISTRO='archlinux' EXPECTFAIL=1 TOOL='qira sonic-visualizer z3' # estimated 1772 seconds
+- DISTRO='archlinux' EXPECTFAIL=1 TOOL='angr barf beef bindead capstone codereason dislocker elfkickers elfparser gdb-heap hash-identifier hashkill littleblackbox mitmproxy panda pathgrind preeny python-pin reveng ropper shellsploit snowman stegdetect taintgrind villoc wcc xspy' # estimated 653 seconds
+# - DISTRO='archlinux' TOOL='qemu' # unknown duration...
+- DISTRO='fedora' TOOL='apktool binwalk burpsuite capstone checksec commix cribdrag dirsearch elfkickers evilize exetractor foresight gdb gef jdgui libheap pdf-parser peda peepdf pkcrack python-paddingoracle pyvmmonitor radare2 ropper rp++ scrdec18 shellnoob shellsploit ssh_decoder steganabara stegsolve subbrute unicorn virtualsocket xortool yafu z3' # estimated 1820 seconds
+- DISTRO='fedora' EXPECTFAIL=1 TOOL='afl android-sdk angr barf beef bindead codereason df dirb dislocker elfparser featherduster firmware-mod-kit gdb-heap hash-identifier hashkill hashpump hashpump-partialhash honggfuzz keystone littleblackbox mitmproxy msieve panda pathgrind pemcrack preeny pwndbg pwntools python-pin qemu qira reveng snowman sonic-visualizer sqlmap sslsplit stegdetect taintgrind testdisk tor-browser veles villoc wcc xrop xspy zsteg' # estimated 615 seconds
+- DISTRO='xenial' TOOL='qemu' # estimated 1983 seconds
+- DISTRO='xenial' TOOL='barf pwndbg snowman z3' # estimated 1923 seconds
+- DISTRO='xenial' TOOL='afl android-sdk angr codereason firmware-mod-kit gdb keystone mitmproxy veles' # estimated 1934 seconds
+- DISTRO='xenial' TOOL='apktool binwalk burpsuite capstone checksec commix cribdrag df dirb dirsearch dislocker elfkickers elfparser evilize exetractor featherduster foresight gef hash-identifier hashpump hashpump-partialhash honggfuzz jdgui libheap littleblackbox msieve pdf-parser peda peepdf pemcrack pkcrack preeny python-paddingoracle pyvmmonitor radare2 ropper rp++ scrdec18 shellnoob shellsploit sqlmap ssh_decoder sslsplit steganabara stegsolve subbrute testdisk tor-browser unicorn virtualsocket xortool xspy yafu' # estimated 777 seconds
+- DISTRO='xenial' EXPECTFAIL=1 TOOL='beef bindead gdb-heap hashkill panda pathgrind pwntools python-pin qira reveng sonic-visualizer stegdetect taintgrind villoc wcc xrop zsteg' # estimated 447 seconds
 
 script:
-- ./bin/travis-ci.sh
+- travis_wait 50 ./bin/travis-ci.sh
 
