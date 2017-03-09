@@ -12,6 +12,9 @@ do
 	if ! docker run -e EXPECTFAIL="$EXPECTFAIL" -e TOOL="$t" --rm ctftools bash -ic 'manage-tools -s -f -v test $TOOL';
 	then
 		failed="$failed$t "
+		echo "[ACCOUNTING]=====[ $DISTRO $t FAILED $((SECONDS - toolstarttime)) ]"
+	else
+		echo "[ACCOUNTING]=====[ $DISTRO $t SUCCEEDED $((SECONDS - toolstarttime)) ]"
 	fi
 	echo "[-] TOOL $t TEST ENDED: $((SECONDS - toolstarttime)) seconds, $((SECONDS - starttime)) seconds since start of script."
 	set -e
