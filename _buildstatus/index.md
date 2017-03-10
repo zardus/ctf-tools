@@ -1,5 +1,12 @@
  | archlinux | fedora | trusty | xenial
 ----- | ----- | ----- | ----- | -----
+![success](success.png) | 54 | 37 | 73 | 67
+![fail](fail.png) | 29 | 47 | 11 | 17
+![unknown](unknown.png) | 1 | 0 | 0 | 0
+total | 84 | 84 | 84 | 84
+
+ | archlinux | fedora | trusty | xenial
+----- | ----- | ----- | ----- | -----
 afl | ![success](success.png) | ![fail](fail.png) | ![success](success.png) | ![success](success.png)
 android-sdk | ![success](success.png) | ![fail](fail.png) | ![success](success.png) | ![success](success.png)
 angr | ![fail](fail.png) | ![fail](fail.png) | ![fail](fail.png) | ![success](success.png)
@@ -84,9 +91,3 @@ xspy | ![fail](fail.png) | ![fail](fail.png) | ![success](success.png) | ![succe
 yafu | ![success](success.png) | ![success](success.png) | ![success](success.png) | ![success](success.png)
 z3 | ![fail](fail.png) | ![success](success.png) | ![success](success.png) | ![success](success.png)
 zsteg | ![success](success.png) | ![fail](fail.png) | ![success](success.png) | ![fail](fail.png)
- | archlinux | fedora | trusty | xenial
------ | ----- | ----- | ----- | -----
-![success](success.png) | 54 | 37 | 73 | 67
-![fail](fail.png) | 29 | 47 | 11 | 17
-![unknown](unknown.png) | 1 | 0 | 0 | 0
-total | 84 | 84 | 84 | 84

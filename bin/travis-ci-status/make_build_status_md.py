@@ -7,8 +7,11 @@ if __name__ == "__main__":
     distros = sorted(timingdata.keys()) # all distros seen during previous build
     tools = sorted(getToolsFromTimingdata(timingdata)) # all tools seen during previous build
 
-    print(" | ".join([""] + distros))
-    print(" | ".join(["-----"] * (1+len(distros))))
+    fulltable = []
+    summarytable = []
+
+    fulltable += [" | ".join([""] + distros)]
+    fulltable += [" | ".join(["-----"] * (1+len(distros)))]
 	
     summary = {}
     for tool in tools:
@@ -27,11 +30,15 @@ if __name__ == "__main__":
 		}
 	    summary[distro][val] += 1
 	    summary[distro]["total"] += 1
-	print(" | ".join([tool] + ["![{0}]({0}.png)".format(x) for x in parts]))
+	fulltable += [" | ".join([tool] + ["![{0}]({0}.png)".format(x) for x in parts])]
 
-    print(" | ".join([""] + distros))
-    print(" | ".join(["-----"] * (1+len(distros))))
+    summarytable += [" | ".join([""] + distros)]
+    summarytable += [" | ".join(["-----"] * (1+len(distros)))]
     for x in ["success", "fail", "unknown"]:
-	print(" | ".join(["![{0}]({0}.png)".format(x)] + ["{}".format(summary[d][x]) for d in distros]))
+	summarytable += [" | ".join(["![{0}]({0}.png)".format(x)] + ["{}".format(summary[d][x]) for d in distros])]
     for x in ["total"]:
-	print(" | ".join([x] + ["{}".format(summary[d][x]) for d in distros]))
+	summarytable += [" | ".join([x] + ["{}".format(summary[d][x]) for d in distros])]
+
+    print("\n".join(summarytable))
+    print("")
+    print("\n".join(fulltable))
