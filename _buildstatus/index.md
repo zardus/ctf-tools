@@ -84,3 +84,9 @@ xspy | ![fail](fail.png) | ![fail](fail.png) | ![success](success.png) | ![succe
 yafu | ![success](success.png) | ![success](success.png) | ![success](success.png) | ![success](success.png)
 z3 | ![fail](fail.png) | ![success](success.png) | ![success](success.png) | ![success](success.png)
 zsteg | ![success](success.png) | ![fail](fail.png) | ![success](success.png) | ![fail](fail.png)
+ | archlinux | fedora | trusty | xenial
+----- | ----- | ----- | ----- | -----
+![success](success.png) | 54 | 37 | 73 | 67
+![fail](fail.png) | 29 | 47 | 11 | 17
+![unknown](unknown.png) | 1 | 0 | 0 | 0
+total | 84 | 84 | 84 | 84
