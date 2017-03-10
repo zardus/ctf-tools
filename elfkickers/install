@@ -2,6 +2,6 @@
 
 git clone --depth 1 https://github.com/BR903/ELFkickers
 cd ELFkickers
-make -j
+make -j $(nproc)
 cd ..
 mv ELFkickers/bin ./bin
