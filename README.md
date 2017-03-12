@@ -6,6 +6,7 @@ This is a collection of setup scripts to create an install of various security r
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
 
 Installers for the following tools are included:
+(The install-scripts for these tools are checked regularly, the results can be found on [the build status page](_buildstatus/index.md))
 
 | Category | Tool | Description |
 |----------|------|-------------|
