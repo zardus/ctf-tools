@@ -1,0 +1,12 @@
+language: bash
+sudo: required
+services:
+- docker
+before_install:
+- if [ "$DISTRO" = "archlinux" ]; then docker build -t ctftools -f Dockerfile.archlinux .; fi
+- if [ "$DISTRO" = "fedora" ]; then docker build -t ctftools -f Dockerfile.fedora .; fi
+- if [ "$DISTRO" = "xenial" ]; then docker build -t ctftools -f Dockerfile.xenial .; fi
+- if [ "$DISTRO" = "trusty" ]; then docker build -t ctftools -f Dockerfile .; fi
+
+env:
+

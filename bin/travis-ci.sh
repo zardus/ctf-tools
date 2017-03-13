@@ -2,6 +2,25 @@
 
 export EXPECTFAIL=${EXPECTFAIL:-0}
 
+function flipstatus() {
+    if [ $EXPECTFAIL -eq 0 ];
+    then
+	    echo $1
+    else
+	    case $1 in
+		    FAILED)
+			    echo SUCCEEDED
+			    ;;
+		    SUCCEEDED)
+			    echo FAILED
+			    ;;
+		    *)
+			    echo $1
+			    ;;
+	    esac
+    fi
+}
+
 starttime=$SECONDS
 failed=""
 for t in $TOOL;
@@ -12,6 +31,9 @@ do
 	if ! docker run -e EXPECTFAIL="$EXPECTFAIL" -e TOOL="$t" --rm ctftools bash -ic 'manage-tools -s -f -v test $TOOL';
 	then
 		failed="$failed$t "
+		echo "[ACCOUNTING]=====[ $DISTRO $t $(flipstatus FAILED) $((SECONDS - toolstarttime)) ]"
+	else
+		echo "[ACCOUNTING]=====[ $DISTRO $t $(flipstatus SUCCEEDED) $((SECONDS - toolstarttime)) ]"
 	fi
 	echo "[-] TOOL $t TEST ENDED: $((SECONDS - toolstarttime)) seconds, $((SECONDS - starttime)) seconds since start of script."
 	set -e
