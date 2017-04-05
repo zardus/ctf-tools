@@ -4,10 +4,7 @@ set -e -o pipefail
 source ctf-tools-venv-activate
 
 pip uninstall -y keystone-engine || true
+#!/bin/bash -ex
 
-if [[ -d keystone && -d keystone/build ]]; then
-    export PREFIX="$PWD"
-    pushd keystone/build
-    make uninstall
-    popd
-fi
+ctf-tools-pip uninstall -y keystone || true
+ctf-tools-pip3 uninstall -y keystone || true
