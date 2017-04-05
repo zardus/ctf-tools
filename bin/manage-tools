@@ -42,7 +42,7 @@ function detect_distribution()
 		else
 			echo "debian"
 		fi
-	elif which dnf 2>&1 >/dev/null; then
+	elif which dnf >/dev/null 2>&1; then
 		echo "fedora"
 	else
 		echo ""
