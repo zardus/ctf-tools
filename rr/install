@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 git clone https://github.com/mozilla/rr.git
 mkdir build
