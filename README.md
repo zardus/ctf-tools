@@ -26,6 +26,7 @@ Installers for the following tools are included:
 | binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
 | binary | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
 | binary | [libheap](https://github.com/cloudburst/libheap) | gdb python library for examining the glibc heap (ptmalloc) | <!--tool--><!--no-test-->
+| binary | [miasm](https://github.com/cea-sec/miasm) | Reverse engineering framework in Python. | <!--tool--> <!--test-->
 | binary | [panda](https://github.com/moyix/panda) | Platform for Architecture-Neutral Dynamic Analysis. | <!--tool--><!--no-test-->
 | binary | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. | <!--tool--><!--failing-->
 | binary | [peda](https://github.com/longld/peda) | Enhanced environment for gdb. | <!--tool--><!--test-->
@@ -38,6 +39,7 @@ Installers for the following tools are included:
 | binary | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. | <!--tool--><!--test-->
 | binary | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool--><!--test-->
 | binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool--><!--test-->
+| binary | [rr](http://rr-project.org) | Record and Replay Debugging Framework | <!--tool--><!--test-->
 | binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. | <!--tool--><!--test-->
 | binary | [shellsploit](https://github.com/b3mb4m/shellsploit-framework) | Shellcode development kit. | <!--tool--><!--test-->
 | binary | [snowman](https://github.com/yegord/snowman) | Cross-architecture decompiler. | <!--tool--><!--test-->
@@ -99,6 +101,7 @@ only the python bindings for these libraries are installed.
 | binary | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. | <!--tool--><!--test-->
 | binary | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. | <!--tool--><!--test-->
 | binary | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. | <!--tool--><!--test-->
+| binary | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. | <!--tool--><!--test-->
 
 There are also some installers for non-CTF stuff to break the monotony!
 

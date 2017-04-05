@@ -42,7 +42,7 @@ function detect_distribution()
 		else
 			echo "debian"
 		fi
-	elif which dnf 2>&1 >/dev/null; then
+	elif which dnf >/dev/null 2>&1; then
 		echo "fedora"
 	else
 		echo ""
@@ -114,7 +114,7 @@ EOF
 
 function base_build_setup_fedora()
 {
-	PACKAGE_REQS="libtool gcc gcc-c++ texinfo curl wget automake autoconf python python-devel git subversion unzip python-virtualenvwrapper"
+	PACKAGE_REQS="libtool gcc gcc-c++ clang cmake texinfo curl wget automake autoconf python python-devel git subversion unzip python-virtualenvwrapper redhat-rpm-config"
 	if [ "$ALLOW_SUDO" -eq 1 ]; then
 		sudo dnf -y install $PACKAGE_REQS
 	else
