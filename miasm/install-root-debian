@@ -1,4 +1,7 @@
 #!/bin/bash -ex
 
-apt-get install -y zlib zlib-dev libstdc++6-4.9-dev libstdc++6 \
-    llvm-3.5 llvm--3.5-dev libedit libedit-dev
+apt-get install -y \
+    zlib1g zlib1g-dev \
+    libstdc++6 \
+    llvm-3.8 llvm-3.8-dev clang-3.8 \
+    libedit2 libedit-dev
