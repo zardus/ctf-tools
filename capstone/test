@@ -1,0 +1,33 @@
+#!/bin/bash -ex
+
+PY_TEST_FILE=$(mktemp)
+cat << END > $PY_TEST_FILE
+from capstone import *
+import sys
+
+CODE = b"\x55\x48\x8b\x05\xb8\x13\x00\x00"
+
+addresses = [0x1000, 0x1001]
+md = Cs(CS_ARCH_X86, CS_MODE_64)
+for idx, i in enumerate(md.disasm(CODE, 0x1000)):
+	if i.address != addresses[idx]:
+		sys.exit(1)
+
+sys.exit(0)
+END
+
+source ${VIRTUALENVWRAPPER_SCRIPT}
+
+set +e
+workon ctftools
+set -e
+python $PY_TEST_FILE
+deactivate
+
+set +e
+workon ctftools3
+set -e
+python $PY_TEST_FILE
+deactivate
+
+rm $PY_TEST_FILE

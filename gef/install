@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -eu -o pipefail
 
 git clone --depth 1 https://github.com/hugsy/gef.git
@@ -11,6 +11,8 @@ EOF
 chmod +rx bin/gdb-gef
 
 cd gef
+# make sure gdbinit exists
+touch ~/.gdbinit
 if ! grep "init-gef" ~/.gdbinit; then
     cat >> ~/.gdbinit <<EOF
 

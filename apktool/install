@@ -1,8 +1,8 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 mkdir bin
 wget https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
-wget https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.0.2.jar
-mv apktool_2.0.2.jar bin/apktool.jar
+wget https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.2.0.jar
+mv apktool_2.2.0.jar bin/apktool.jar
 mv apktool bin/
 chmod 755 bin/apktool
 chmod 755 bin/apktool.jar

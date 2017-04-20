@@ -1,13 +1,14 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
-[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/PyQt4 ] || ln -s /usr/lib/python2.7/dist-packages/PyQt4 $VIRTUAL_ENV/lib/python2.7/site-packages/
-[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/sip.so ] || ln -s /usr/lib/python2.7/dist-packages/sip.so $VIRTUAL_ENV/lib/python2.7/site-packages/
-[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/pygraphviz ] || ln -s /usr/lib/pymodules/python2.7/pygraphviz $VIRTUAL_ENV/lib/python2.7/site-packages/
+source ctf-tools-venv-activate
+
+#[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/PyQt4 ] || ln -s /usr/lib/python2.7/dist-packages/PyQt4 $VIRTUAL_ENV/lib/python2.7/site-packages/
+#[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/sip.so ] || ln -s /usr/lib/python2.7/dist-packages/sip.so $VIRTUAL_ENV/lib/python2.7/site-packages/
+#[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/pygraphviz ] || ln -s /usr/lib/pymodules/python2.7/pygraphviz $VIRTUAL_ENV/lib/python2.7/site-packages/
 
 git clone --depth 1 https://github.com/angr/angr-dev
-cd angr-dev
-./setup.sh
-cd ..
+GIT_ASKPASS=echo angr-dev/setup.sh -w -r https://git:@github.com/salls angrop
+rm -rf angr-dev/wheels
 
 mkdir -p bin
 cd bin

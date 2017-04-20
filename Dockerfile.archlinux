@@ -20,7 +20,7 @@ RUN pacman -Syu --noconfirm --needed \
         python2-pip python-pip \
         unzip python-virtualenvwrapper \
         zsh grml-zsh-config \
-        sudo \
+        sudo which \
     && pacman -Scc --noconfirm
 
 RUN useradd -m ctf

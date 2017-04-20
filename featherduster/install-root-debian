@@ -1,0 +1,5 @@
+#!/bin/bash -ex
+set -eu -o pipefail
+
+apt-get -y install libgmp3-dev libncurses5-dev
+

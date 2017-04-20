@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 set -eu -o pipefail
 
 git clone --depth 1 https://github.com/longld/peda.git
@@ -11,7 +11,8 @@ EOF
 chmod +rx bin/gdb-peda
 
 cd peda
-#echo "source $PWD/peda.py" >> ~/.gdbinit
+# make sure gdbinit exists
+touch ~/.gdbinit
 if ! grep "init-peda" ~/.gdbinit; then
     cat >> ~/.gdbinit <<EOF
 

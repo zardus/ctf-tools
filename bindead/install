@@ -1,10 +1,11 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 INST_DIR="$PWD"
 
 [ -e bindead ] || git clone --depth 1 https://bitbucket.org/mihaila/bindead.git
 cd bindead
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre ./build.sh
+mvn install
 cd ..
 
 [ -e p9 ] || git clone --depth 1 https://bitbucket.org/mihaila/p9.git

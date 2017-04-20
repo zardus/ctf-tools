@@ -5,10 +5,12 @@ set -eu -o pipefail
 function usage()
 {
 	cat <<END
-Usage: $(basename $0) [-s] (list|setup|install|uninstall|bin|search) tool
+Usage: $(basename $0) [-sv] (list|setup|install|uninstall|bin|search) tool
 
 Where:
     -s      allow running things with sudo (i.e., to install debs)
+    -v      verbose mode. print log while installing
+    -f      force certain actions (such as installing over an installed tool)
     tool    the name of the tool. if "all", does the action on all tools
 
 Actions:
@@ -32,14 +34,16 @@ function tool_log()
 
 function detect_distribution()
 {
-	if which pacman 2>&1 >/dev/null; then
+	if which pacman >/dev/null 2>&1; then
 		echo "archlinux"
-	elif which apt-get 2>&1 >/dev/null; then
-		if lsb_release -a | grep -i ubuntu 2>&1 >/dev/null; then
+	elif which apt-get >/dev/null 2>&1; then
+		if lsb_release -a 2>/dev/null | grep -i ubuntu >/dev/null 2>&1; then
 			echo "ubuntu"
 		else
 			echo "debian"
 		fi
+	elif which dnf >/dev/null 2>&1; then
+		echo "fedora"
 	else
 		echo ""
 	fi
@@ -48,7 +52,7 @@ function detect_distribution()
 
 function base_build_setup_debian()
 {
-	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper"
+	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper lsb-release"
 	PACKAGE_COUNT=$(echo $PACKAGE_REQS | tr ' ' '\n' | wc -l)
 	if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
 	then
@@ -108,6 +112,19 @@ EOF
 }
 
 
+function base_build_setup_fedora()
+{
+	PACKAGE_REQS="libtool gcc gcc-c++ clang cmake texinfo curl wget automake autoconf python python-devel git subversion unzip python-virtualenvwrapper redhat-rpm-config"
+	if [ "$ALLOW_SUDO" -eq 1 ]; then
+		sudo dnf -y install $PACKAGE_REQS
+	else
+		TOOL=SETUP tool_log "Please install the following packages: $PACKAGE_REQS"
+	fi
+
+	# TODO: check whether we have to explicitly enable i386 package support
+}
+
+
 function base_build_setup()
 {
 	case "$1" in
@@ -119,6 +136,9 @@ function base_build_setup()
 		"archlinux")
 			base_build_setup_arch
 			export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+			;;
+		"fedora")
+			base_build_setup_fedora
 			;;
 		*)
 			TOOL=SETUP tool_log "Cannot detect or unsupported distribution"
@@ -137,8 +157,15 @@ function base_build_setup()
 		echo "set -x PATH $PWD/bin \$PATH " >> ~/.config/fish/config.fish
 	fi
 
+	if [[ ! -e "$PWD/bin/ctf-tools-pip3" ]]; then
+		ln -s "$PWD/bin/ctf-tools-pip" "$PWD/bin/ctf-tools-pip3"
+	fi
+
 	# create the py2 virtualenv
 	"$PWD/bin/ctf-tools-pip" freeze 2>&1 >/dev/null
+
+	# create the py3 virtualenv
+	"$PWD/bin/ctf-tools-pip3" freeze 2>&1 >/dev/null
 }
 
 
@@ -155,6 +182,12 @@ do
 		-s)
 			export ALLOW_SUDO=1
 			;;
+		-f)
+			export FORCE=1
+			;;
+		-v)
+			export VERBOSE_OUTPUT=1
+			;;
 		*)
 			usage
 			exit
@@ -164,6 +197,9 @@ do
 done
 
 [[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
+[[ -z ${FORCE+x} ]] && export FORCE=0
+[[ -z ${VERBOSE_OUTPUT+x} ]] && export VERBOSE_OUTPUT=0
+export EXPECTFAIL=${EXPECTFAIL:-0}
 
 if [[ $# -ge 1 ]]; then
 	ACTION="$1"
@@ -202,16 +238,25 @@ case $ACTION in
 		;;
 	bin)
 		cd bin
-		ln -sf ../$TOOL/bin/* .
-		tool_log "bin symlinks updated"
+		if [ -d ../$TOOL/bin ]; then
+			ln -sf ../$TOOL/bin/* .
+			tool_log "bin symlinks updated"
+		fi
 		cd ..
 		;;
 	install)
 		cd $TOOL
-		if git status --ignored . | egrep -q 'Untracked|Ignored'
+		if [ "$FORCE" -eq 0 ] && git status --ignored . | egrep -q 'Untracked|Ignored'
 		then
 			tool_log "appears to already be installed. Uninstall first?"
 			exit 0
+		fi
+
+		# the first line in all install and uninstall scripts should have the -e flag, otherwise fail
+		if [ $(for i in install* uninstall test; do if [ -e "$i" ]; then head -1 "$i"; fi; done | sort | uniq | grep -v '^#!/bin/bash -ex$' | wc -l) -ne 0 ];
+		then
+			tool_log "not all install/uninstall/test scripts start with '#!/bin/bash -ex', which is a must for accurate testing."
+			exit 1
 		fi
 
 		tool_log "starting install, logging to $PWD/install.log"
@@ -241,8 +286,16 @@ case $ACTION in
 		fi
 
 		# execute install script
-		if env DISTRI=$DISTRI ./install >>install.log 2>&1
-		then
+		set +e
+		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
+			DISTRI=$DISTRI ./install 2>&1 | tee -a install.log
+		else
+			DISTRI=$DISTRI ./install >>install.log 2>&1
+		fi
+		INSTALL_FAILED=$?
+		set -e
+
+		if [ "$INSTALL_FAILED" -eq 0 ]; then
 			tool_log "install finished"
 		else
 			tool_log "INSTALL FAILED"
@@ -283,20 +336,33 @@ case $ACTION in
 		cat README.md | grep "<\!--tool-->" | sed "s/<\!--[^-]*-->//g" | grep -i "$TOOL"
 		;;
 	test)
-		if ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
+		if [ "$FORCE" -eq 0 ] && ! cat README.md | grep "<\!--tool-->" | grep "| \[$TOOL\](" | grep -q -- "--test--"
 		then
 			tool_log "Tests not enabled."
+			if [ "$EXPECTFAIL" -eq "1" ]; then exit 1; fi
 		else
-			$0 install $TOOL
+			if (
+			if ! $0 install $TOOL; then exit 1; fi
 
-			cd $TOOL
+			cd $TOOL || exit 1
 			if [ -f ./test ]
 			then
 				tool_log "Running test script."
-				./test
+				if ! ./test
+				then
+					tool_log "$TOOL test failed!"
+					exit 1
+				fi
 				tool_log "test script succeeded!"
 			else
 				tool_log "Install succeeded. No test script!"
+			fi
+			exit 0
+			); 
+			then
+				if [ "$EXPECTFAIL" -eq "1" ]; then exit 1; else exit 0; fi
+			else
+				if [ "$EXPECTFAIL" -eq "1" ]; then exit 0; else exit 1; fi
 			fi
 		fi
 		;;

@@ -1,0 +1,3 @@
+script:
+- travis_wait 50 ./bin/travis-ci.sh
+

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 git clone --depth 1 https://github.com/radare/radare2.git
 cd radare2/
@@ -17,3 +17,5 @@ LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$PWD/../lib $PWD/$i.real "\$@"
 END
 	chmod 755 $i
 done
+
+ctf-tools-pip install -U r2pipe

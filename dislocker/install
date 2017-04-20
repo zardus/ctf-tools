@@ -1,14 +1,18 @@
-#!/bin/bash
+#!/bin/bash -ex
 
-wget http://www.hsc.fr/ressources/outils/dislocker/download/dislocker.tar.bz2
-tar xjf dislocker.tar.bz2
-cd dislocker/src
-sed 's?override LDFLAGS.*?& -Wl,-rpath,'`pwd`'?' < Makefile > Makefile.tmp && mv Makefile.tmp Makefile
+wget -O dislocker.tar.gz https://github.com/Aorimn/dislocker/archive/v0.7.1.tar.gz
+tar xf dislocker.tar.gz
+DISLOCKERDIR=$(ls -d dislocker-*)
+cd $DISLOCKERDIR
+
+cmake .
 make -j $(nproc)
-cd ../..
+cd ..
 mkdir bin
 cd bin
-ln -s ../dislocker/src/dislocker-bek .
-ln -s ../dislocker/src/dislocker-file .
-ln -s ../dislocker/src/dislocker-fuse .
-ln -s ../dislocker/src/dislocker-metadata .
+ls -l ../$DISLOCKERDIR/src/
+
+ln -s ../$DISLOCKERDIR/src/dislocker-bek .
+ln -s ../$DISLOCKERDIR/src/dislocker-file .
+ln -s ../$DISLOCKERDIR/src/dislocker-fuse .
+ln -s ../$DISLOCKERDIR/src/dislocker-metadata .

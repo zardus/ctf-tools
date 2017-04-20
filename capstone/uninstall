@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+
+ctf-tools-pip uninstall -y capstone || true
+ctf-tools-pip3 uninstall -y capstone || true

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -e peepdf ] || git clone --depth 1 https://github.com/jesparza/peepdf
 

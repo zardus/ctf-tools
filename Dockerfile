@@ -3,7 +3,7 @@ maintainer yans@yancomm.net
 
 RUN apt-get update && apt-get install -y build-essential libtool g++ gcc \
     texinfo curl wget automake autoconf python python-dev git subversion \
-    unzip virtualenvwrapper
+    unzip virtualenvwrapper sudo
 
 RUN useradd -m ctf
 COPY .git /home/ctf/tools/.git
@@ -18,7 +18,8 @@ USER ctf
 WORKDIR /home/ctf/tools
 RUN git checkout .
 RUN bin/manage-tools -s setup
+RUN bin/ctf-tools-pip install appdirs
 RUN echo "workon ctftools" >> /home/ctf/.bashrc
 
 WORKDIR /home/ctf
-ENTRYPOINT bash -i
+CMD bash -i

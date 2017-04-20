@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -e android-sdk_r24.4.1-linux.tgz ] || wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
 [ -e android-sdk-linux ] || tar xfz android-sdk_r24.4.1-linux.tgz

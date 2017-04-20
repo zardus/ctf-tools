@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -ex
 
-wget -O - http://www.bay12games.com/dwarves/df_42_02_linux.tar.bz2 | tar xj
+wget -O - http://www.bay12games.com/dwarves/df_43_05_linux.tar.bz2 | tar xj
 
 mkdir -p bin
 cat <<END > bin/dwarf_fortress
