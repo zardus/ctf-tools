@@ -1,0 +1,14 @@
+#!/bin/bash -ex
+
+ctf-tools-pip3 install -y nose
+git clone --recursive https://github.com/pfalcon/ScratchABlock
+source ctf-tools-venv-activate3
+
+mkdir -p bin
+cd bin
+for i in ../ScratchABlock/*.py
+do
+	ln -s $i ./scratchablock-$(basename $i)
+done
+ln -s ../ScratchABlock/run_tests ./scratchablock-runtests
+cd ..
