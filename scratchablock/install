@@ -6,9 +6,11 @@ source ctf-tools-venv-activate3
 
 mkdir -p bin
 cd bin
-for i in ../ScratchABlock/*.py
-do
-	ln -s $i ./scratchablock-$(basename $i)
-done
-ln -s ../ScratchABlock/run_tests ./scratchablock-runtests
+ln -s ../ScratchABlock/apply_xform.py ./scratchablock-apply_xform.py
+ln -s ../ScratchABlock/asmprinter.py ./scratchablock-asmprinter.py
+ln -s ../ScratchABlock/dump_c.py ./scratchablock-dump_c.py
+ln -s ../ScratchABlock/funcdb_dot.py ./scratchablock-funcdb_dot.py
+ln -s ../ScratchABlock/funcdb_util.py ./scratchablock-funcdb_util.py
+ln -s ../ScratchABlock/make_callgraph.sh ./scratchablock-make_callgraph.sh
+ln -s ../ScratchABlock/parse_asm.py ./scratchablock-parse_asm.py
 cd ..
