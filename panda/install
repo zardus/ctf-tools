@@ -13,7 +13,7 @@ source ctf-tools-venv-activate
 
 pushd libdwarf-code
 ./configure --enable-shared
-make -j$(nproc)
+make -j $(nproc)
 mkdir -p ../include
 mkdir -p ../lib
 cp libdwarf/libdwarf.h ../include
