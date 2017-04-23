@@ -1,6 +1,8 @@
 #!/bin/bash -ex
 
-ctf-tools-pip3 install nose
+ctf-tools-pip3 install --upgrade nose
+ctf-tools-pip3 install --upgrade pyyaml
+
 git clone --recursive https://github.com/pfalcon/ScratchABlock
 source ctf-tools-venv-activate3
 
