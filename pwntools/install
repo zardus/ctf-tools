@@ -1,4 +1,5 @@
 #!/bin/bash -ex
 
 git clone --depth=1 https://github.com/Gallopsled/pwntools.git
+ctf-tools-pip install --upgrade appdirs
 ctf-tools-pip install --upgrade -e pwntools

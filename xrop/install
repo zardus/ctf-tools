@@ -8,5 +8,5 @@ cd ..
 
 mkdir bin
 cd bin
-ln -s ../xrop 
+ln -s ../xrop/xrop 
 cd ..

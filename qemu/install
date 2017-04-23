@@ -1,8 +1,8 @@
 #!/bin/bash -ex
 set -e -o pipefail
 
-curl http://download.qemu-project.org/qemu-2.8.0.tar.bz2 | tar xvj
-cd qemu-2.8.0
+curl http://download.qemu-project.org/qemu-2.8.1.tar.bz2 | tar xvj
+cd qemu-2.8.1
 
 source ctf-tools-venv-activate
 ./configure "--prefix=$(dirname $PWD)" "--python=$(which python)"

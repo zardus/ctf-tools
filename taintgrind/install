@@ -2,8 +2,8 @@
 
 INST_DIR=$PWD
 
-curl http://valgrind.org/downloads/valgrind-3.11.0.tar.bz2 | tar xj
-cd valgrind-3.11.0
+curl http://valgrind.org/downloads/valgrind-3.12.0.tar.bz2 | tar xj
+cd valgrind-3.12.0
 ./autogen.sh
 ./configure --prefix=$INST_DIR
 make -j $(nproc)
