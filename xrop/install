@@ -6,7 +6,7 @@ git submodule update --init --recursive
 make -j 1 # Watch out!! -j $(nproc) makes the build fail
 cd ..
 
-mkdir bin
+mkdir -p bin
 cd bin
 ln -s ../xrop/xrop . 
 cd ..
