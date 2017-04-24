@@ -1,10 +1,14 @@
 #!/bin/bash -ex
 
-ctf-tools-pip3 install --upgrade nose
-ctf-tools-pip3 install --upgrade pyyaml
+#move to ctftools virtual env - warning you'll have to activate the 
+#virtualenv to use the scripts unless you install the pypl packages 
+#outside the venv for Python 3
+source ctf-tools-venv-activate3
+
+pip install --upgrade nose
+pip install --upgrade pyyaml
 
 git clone --recursive https://github.com/pfalcon/ScratchABlock
-source ctf-tools-venv-activate3
 
 mkdir -p bin
 cd bin
