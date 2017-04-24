@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-git clone https://github.com/b3mb4m/shellsploit-framework.git
+git clone https://github.com/raildex1/shellsploit-framework.git
 cd shellsploit-framework
 
 set +e
