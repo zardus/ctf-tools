@@ -1,32 +1,41 @@
 #!/bin/bash -ex
 
-[ -e panda ] || git clone --depth 1 https://github.com/moyix/panda
+[ -e panda ] || git clone --recursive https://github.com/panda-re/panda
 
-curl -O http://ragestorm.net/distorm/distorm3.3-package.zip
-rm -rf distorm3
-unzip distorm3.3-package.zip
-make -C distorm3/make/linux -j
-mkdir -p lib
-cp distorm3/make/linux/*.so distorm3/*.a lib
-mkdir -p include
-cp distorm3/include/*.h include
+# git includes submodules hence recursive
 
 ctf-tools-pip install -U pycparser
 
-sed -i -e "s|/usr/local|$PWD|" panda/qemu/build.sh
-export QEMU_CFLAGS="-I $PWD/include -L $PWD/lib"
-export QEMU_CXXFLAGS="-I $PWD/include -L $PWD/lib"
+git clone git://git.code.sf.net/p/libdwarf/code libdwarf-code
+
+# move to ctftools virtual env
+source ctf-tools-venv-activate
+
+pushd libdwarf-code
+./configure --enable-shared
+make -j $(nproc)
+mkdir -p ../include
+mkdir -p ../lib
+cp libdwarf/libdwarf.h ../include
+cp libdwarf/dwarf.h ../include
+cp libdwarf/libdwarf.so ../lib
+popd
+
+#sed -i -e "s|/usr/local|$PWD|" panda/build.sh
+export QEMU_CFLAGS="-I $PWD/include"
+export QEMU_CXXFLAGS="-I $PWD/include"
 #export LDFLAGS="-L $PWD/lib"
-cd panda/qemu
-./build.sh
+mkdir -p panda/build
+cd panda/build
+../build.sh "$@"
 cd ../../
 
 # link binaries
 mkdir -p bin
 cd bin
-ln -s ../panda/qemu/i386-softmmu/qemu-system-i386 ./panda-qemu-system-i386
-ln -s ../panda/qemu/arm-softmmu/qemu-system-arm ./panda-qemu-system-arm
-ln -s ../panda/qemu/x86_64-softmmu/qemu-system-x86_64 ./panda-qemu-system-x86_64
+ln -s ../panda/build/i386-softmmu/qemu-system-i386 ./panda-qemu-system-i386
+ln -s ../panda/build/arm-softmmu/qemu-system-arm ./panda-qemu-system-arm
+ln -s ../panda/build/x86_64-softmmu/qemu-system-x86_64 ./panda-qemu-system-x86_64
 for i in ../panda/scripts/*.py
 do
 	ln -s $i ./panda-$(basename $i)
