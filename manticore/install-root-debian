@@ -2,5 +2,4 @@
 
 set -eu -o pipefail
 
-apt-get update
 apt-get -y install z3
