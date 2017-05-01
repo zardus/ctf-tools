@@ -1,4 +1,6 @@
 #!/bin/bash -ex
 
-sudo apt-get update
-sudo apt-get -y install z3
+set -eu -o pipefail
+
+apt-get update
+apt-get -y install z3
