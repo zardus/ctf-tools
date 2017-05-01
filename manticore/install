@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+
+git clone --depth 1 https://github.com/trailofbits/manticore.git && cd manticore
+ctf-tools-pip install --no-binary capstone .
