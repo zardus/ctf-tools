@@ -50,6 +50,7 @@ Installers for the following tools are included:
 | binary | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. | <!--tool--><!--test-->
 | binary | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. | <!--tool--><!--no-test-->
 | binary | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
+| binary | [manticore](https://github.com/trailofbits/manticore) | Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool--><!--no-test-->
 | forensics | [binwalk](https://github.com/devttys0/binwalk.git) | Firmware (and arbitrary file) analysis tool. | <!--tool--><!--test-->
 | forensics | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. | <!--tool--><!--test-->
 | forensics | [exetractor](https://github.com/kholia/exetractor-clone) | Unpacker for packed Python executables. Supports PyInstaller and py2exe. | <!--tool--><!--test-->
