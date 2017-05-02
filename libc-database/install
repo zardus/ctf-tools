@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+[ -e libc-database ] || git clone https://github.com/niklasb/libc-database
+
+mkdir -p bin
+for i in add dump find get identify
+do
+	cat <<END > bin/libc-database-$i
+cd $PWD/libc-database/
+./$i "$@"
+END
+	chmod 755 bin/libc-database-$i
+done
+
+bin/libc-database-get
