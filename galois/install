@@ -1,0 +1,14 @@
+#!/bin/bash
+
+wget http://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/galois.tar
+
+mkdir -p galois
+cd galois
+tar xvf ../galois.tar
+make
+cd ..
+
+mkdir -p bin
+cd bin
+ln -s ../galois/{gf_basic_tester,gf_div,gf_ilog,gf_inverse,gf_log,gf_mult,gf_xor,gf_xor_tester} .
+cd ..

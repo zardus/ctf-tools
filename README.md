@@ -64,6 +64,7 @@ Installers for the following tools are included:
 | crypto | [fastcoll](https://www.win.tue.nl/hashclash/) | An md5sum collision generator. | <!--tool--><!--test-->
 | crypto | [foresight](https://github.com/ALSchwalm/foresight) | A tool for predicting the output of random number generators. To run, launch "foresee". | <!--tool--><!--test-->
 | crypto | [featherduster](https://github.com/nccgroup/featherduster) |  An automated, modular cryptanalysis tool. | <!--tool--><!--no-test-->
+| crypto | [galois](http://web.eecs.utk.edu/~plank/plank/papers/CS-07-593) | A fast galois field arithmetic library/toolkit. | <!--tool--><!--test-->
 | crypto | [hashkill](https://github.com/gat3way/hashkill) | Hash cracker. | <!--tool--><!--test-->
 | crypto | [hashpump](https://github.com/bwall/HashPump) | A tool for performing hash length extension attaacks. | <!--tool--><!--test-->
 | crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool--><!--test-->
