@@ -129,7 +129,7 @@ function base_build_setup()
 {
 	case "$1" in
 		"ubuntu")
-			;&  # fallthrough
+			;;  # fallthrough
 		"debian")
 			base_build_setup_debian
 			;;
