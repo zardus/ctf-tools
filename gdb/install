@@ -1,12 +1,18 @@
 #!/bin/bash -ex
 set -e -o pipefail
 
-curl https://ftp.gnu.org/gnu/gdb/gdb-7.12.1.tar.gz | tar xz
-cd gdb-7.12.1
+VERSION=8.0
+
+curl "https://ftp.gnu.org/gnu/gdb/gdb-$VERSION.tar.gz" | tar xz
+cd "gdb-$VERSION"
 
 # move to ctftools virtual env
 source ctf-tools-venv-activate
 
-./configure --prefix=$(dirname $PWD) --with-python=$(which python) --enable-targets=all
+./configure \
+    --prefix=$(dirname $PWD) \
+    --with-python=$(which python) \
+    --enable-targets=all \
+    --with-guile=guile-2.0
 make -j $(nproc)
 make install
