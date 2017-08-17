@@ -1,7 +1,11 @@
 from base/archlinux
 
-RUN echo 'Server = http://mirror1.htu.tugraz.at/archlinux/$repo/os/$arch' \
-    > /etc/pacman.d/mirrorlist
+RUN cat /etc/pacman.d/mirrorlist \ 
+        | sed 's/^#Server/Server/' \
+        > /etc/pacman.d/mirrorlist.backup \
+        && rankmirrors -n 10 /etc/pacman.d/mirrorlist.backup \
+        > /etc/pacman.d/mirrorlist
+
 RUN echo "[multilib]" >> /etc/pacman.conf
 RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 
