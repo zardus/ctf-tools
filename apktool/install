@@ -1,8 +1,11 @@
 #!/bin/bash -ex
+VERSION=2.2.4
+
 mkdir bin
+cd bin
 wget https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
-wget https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.2.2.jar
-mv apktool_2.2.2.jar bin/apktool.jar
-mv apktool bin/
-chmod 755 bin/apktool
-chmod 755 bin/apktool.jar
+wget "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_$VERSION.jar"
+ln -s "apktool_$VERSION.jar" apktool.jar
+chmod 755 apktool
+chmod 755 apktool.jar
+cd ..
