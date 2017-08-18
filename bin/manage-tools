@@ -146,15 +146,28 @@ function base_build_setup()
 
 	## setup PATH for several shells
 
-	echo "export PATH=\"$PWD/bin:\$PATH\"" >> ~/.bashrc
+	MAGIC="# ctf-tools: PATH setup"
+	# make sure at least bashrc exists in case of plain VM setup
+	touch ~/.bashrc
 
-	if [ -e ~/.zshrc ]
-	then
-		echo "export PATH=\"$PWD/bin:\$PATH\"" >> ~/.zshrc
-	fi
+	for f in ~/.bashrc ~/.zshrc; do
+		if [[ -e "$f" ]]; then
+			if ! grep "$MAGIC" "$f" >/dev/null 2>&1; then
+				cat >> "$f" << EOF
+$MAGIC
+export PATH=$PWD/bin:\$PATH
+EOF
+			fi
+		fi
+	done
 
-	if [ -e ~/.config/fish/config.fish ]; then
-		echo "set -x PATH $PWD/bin \$PATH " >> ~/.config/fish/config.fish
+	if [[ -e "$f" ]]; then
+		if ! grep "$MAGIC" "$f" >/dev/null 2>&1; then
+			cat >> "$f" << EOF
+$MAGIC
+set -x PATH $PWD/bin \$PATH
+EOF
+		fi
 	fi
 
 	if [[ ! -e "$PWD/bin/ctf-tools-pip3" ]]; then
