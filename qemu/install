@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-VERSION=v2.10.0-rc2
+VERSION=v2.10.0
 git clone --depth=1 -b "$VERSION" git://git.qemu-project.org/qemu.git
 cd qemu
 
