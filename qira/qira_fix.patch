@@ -1,0 +1,13 @@
+diff --git a/middleware/qira_webserver.py b/middleware/qira_webserver.py
+index 3eac66a..068df7a 100644
+--- a/middleware/qira_webserver.py
++++ b/middleware/qira_webserver.py
+@@ -431,7 +431,7 @@ def run_server(largs, lprogram):
+   print "****** starting WEB SERVER on %s:%d" % (qira_config.HOST, qira_config.WEB_PORT)
+   threading.Thread(target=mwpoller).start()
+   try:
+-    socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT, log=open("/dev/null", "w"))
++    socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT)
+   except KeyboardInterrupt:
+     print "*** User raised KeyboardInterrupt"
+     exit()

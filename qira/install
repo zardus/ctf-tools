@@ -18,6 +18,7 @@ sed -i '/eval $(opam config env)/d' qira
 sed -i 's/\.\/bap_install.sh/#.\/bap_install.sh/g' install.sh
 
 ./install.sh
+git apply ../qira_fix.patch
 
 cd ..
 mkdir -p bin
