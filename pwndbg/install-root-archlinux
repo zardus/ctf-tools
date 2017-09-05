@@ -1,0 +1,6 @@
+#!/bin/bash -ex
+
+# install system wide, s.t. pwndbg works also with system qemu
+pacman -Syu --noconfirm python-psutil python2-psutil \
+    capstone python-capstone python2-capstone\
+    unicorn python-unicorn python2-unicorn 
