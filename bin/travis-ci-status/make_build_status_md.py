@@ -13,7 +13,7 @@ if __name__ == "__main__":
     summarytable = []
 
     fulltable.append("| " + " | ".join([""] + distros) + " |")
-    fulltable.append("| " + " | ".join(["-----"] * len(distros)) + " |")
+    fulltable.append("| " + " | ".join(["-----"] * (len(distros) + 1)) + " |")
 
     summary = {}
     for tool in tools:
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             [tool] + ["![{0}]({0}.png)".format(x) for x in parts]) + " |")
 
     summarytable.append("| " + " | ".join([""] + distros) + " |")
-    summarytable.append("| " + " | ".join(["-----"] * len(distros)) + " |")
+    summarytable.append("| " + " | ".join(["-----"] * (len(distros) + 1)) + " |")
 
     for x in ["success", "fail", "unknown"]:
         summarytable.append("| " + " | ".join(["![{0}]({0}.png)".format(
