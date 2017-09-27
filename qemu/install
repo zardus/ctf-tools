@@ -2,9 +2,18 @@
 
 VERSION=v2.10.0
 git clone --depth=1 -b "$VERSION" git://git.qemu-project.org/qemu.git
-cd qemu
 
 source ctf-tools-venv-activate
-./configure "--prefix=$(dirname $PWD)" "--python=$(which python)"
+
+prefix="--prefix=$(pwd)"
+python="--python=$(which python)"
+
+cd qemu
+if ! ./configure "$prefix" "$python"; then
+    echo "Updating QEMU submodules in case dependencies are missing"
+    git submodule init
+    git submodule update --recursive
+    ./configure "$prefix" "$python"
+fi
 make -j $(nproc)
 make install
