@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wget http://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/galois.tar
+wget https://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/galois.tar
 
 mkdir -p galois
 cd galois

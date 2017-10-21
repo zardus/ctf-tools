@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-git clone --depth=1 http://git.fedorahosted.org/git/gdb-heap.git || true
+git clone --depth=1 https://github.com/rogerhu/gdb-heap || true
 
 cd gdb-heap
 # make sure gdbinit exists
@@ -14,7 +14,7 @@ define init-gdb-heap
     python import sys; sys.path.append("$PWD"); import heap
 end
 document init-gdb-heap
-    Initializes the gdb-heap extension (https://fedorahosted.org/gdb-heap/)
+    Initializes the gdb-heap extension (https://github.com/rogerhu/gdb-heap)
 end
 ####
 
