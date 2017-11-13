@@ -1,6 +1,15 @@
 #!/bin/bash -ex
 
-VERSION=v2.10.0
+find_latest_qemu_version() {
+    git ls-remote --tags git://git.qemu.org/qemu.git \
+        | grep -v '\-rc' \
+        | grep -oh 'v[0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}\(\.[0-9]\{0,2\}\)\?' \
+        | sort --version-sort -r \
+        | head -n 1
+}
+
+#VERSION=v2.10.1
+VERSION=$(find_latest_qemu_version)
 git clone --depth=1 -b "$VERSION" git://git.qemu-project.org/qemu.git
 
 source ctf-tools-venv-activate
