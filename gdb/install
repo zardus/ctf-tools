@@ -1,7 +1,18 @@
 #!/bin/bash -ex
 set -e -o pipefail
 
-VERSION=8.0.1
+find_latest_gdb_version() {
+    git ls-remote --tags git://sourceware.org/git/binutils-gdb.git \
+        | grep -v users \
+        | grep -v '{}' \
+        | grep -oh 'gdb-[0-9]\{1,2\}.[0-9]\{1,2\}.[0-9]\{1,2\}\(\.[0-9]\{1,2\}\)\?-release' \
+        | sort --version-sort -r \
+        | sed 's/gdb-//g' \
+        | sed 's/-release//g' \
+        | head -n 1
+}
+
+VERSION=$(find_latest_gdb_version)
 
 curl "https://ftp.gnu.org/gnu/gdb/gdb-$VERSION.tar.gz" | tar xz
 cd "gdb-$VERSION"
