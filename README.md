@@ -43,6 +43,7 @@ Installers for the following tools are included:
 | binary | [rr](http://rr-project.org) | Record and Replay Debugging Framework | <!--tool--><!--test-->
 | binary | [scratchabit](https://github.com/pfalcon/ScratchABit) | Easily retargetable and hackable interactive disassembler | <!--tool--><!--test-->
 | binary | [scratchablock](https://github.com/pfalcon/ScratchABlock) | Yet another crippled decompiler project | <!--tool--><!--test-->
+| binary | [seccomp-tools](https://github.com/david942j/seccomp-tools) | Provides powerful tools for seccomp analysis | <!--tool--><!--test-->
 | binary | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. | <!--tool--><!--test-->
 | binary | [shellsploit](https://github.com/b3mb4m/shellsploit-framework) | Shellcode development kit. | <!--tool--><!--test-->
 | binary | [snowman](https://github.com/yegord/snowman) | Cross-architecture decompiler. | <!--tool--><!--test-->
