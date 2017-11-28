@@ -14,14 +14,15 @@ Where:
     tool    the name of the tool. if "all", does the action on all tools
 
 Actions:
-    setup       set up the environment (adds ctf-tools/bin to your \$PATH in .bashrc)
-    list        list all tools (-i: only installed, -u: only uninstalled)
-    install     installs a tool
-    uninstall   uninstalls a tool
-    reinstall   reinstalls a tool
-    upgrade     upgrades a tool
-    bin         re-links tool binaries into ctf-tools/bin
-    search      search description and name of tools
+    setup           set up the environment (adds ctf-tools/bin to your \$PATH in .bashrc)
+    list            list all tools (-i: only installed, -u: only uninstalled)
+    install         installs a tool
+    uninstall       uninstalls a tool
+    reinstall       reinstalls a tool
+    upgrade         upgrades a tool
+    bin             re-links tool binaries into ctf-tools/bin
+    search          search description and name of tools
+    full-upgrade    upgrade all installed tools
 
 END
 }
@@ -255,7 +256,20 @@ case $ACTION in
 		for t in *
 		do
 			[ ! -e "$t/install" ] && continue
-			echo $t
+
+            if [[ "$2" == "" ]]; then
+                echo "$t"
+            else
+                if is_tool_installed "$t"; then
+                    if [[ "$2" == "-i" ]]; then
+                        echo "$t"
+                    fi
+                else
+                    if [[ "$2" == "-u" ]]; then
+                        echo "$t"
+                    fi
+                fi
+            fi
 		done
 		;;
 	bin)
@@ -355,16 +369,16 @@ case $ACTION in
         succ=0
         fail=0
         declare -a failed
-        for t in $($0 list)
+        installed=$($0 list -i)
+        TOOL="full-upgrade" tool_log "Upgrading tools: $installed"
+        for t in $installed
         do
-            if is_tool_installed "$t"; then
-                TOOL="full-upgrade" tool_log "Upgrading tool $t"
-                if $0 upgrade $t; then 
-                    succ=$((succ+1))
-                else
-                    fail=$((fail+1))
-                    failed[${#failed[@]}]="$t"
-                fi
+            TOOL="full-upgrade" tool_log "Upgrading tool $t"
+            if $0 upgrade $t; then 
+                succ=$((succ+1))
+            else
+                fail=$((fail+1))
+                failed[${#failed[@]}]="$t"
             fi
         done
         TOOL="full-upgrade" tool_log "failed to upgrade ${failed[@]}"
