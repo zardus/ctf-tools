@@ -257,7 +257,7 @@ case $ACTION in
 		do
 			[ ! -e "$t/install" ] && continue
 
-			if [[ "$2" == "" ]]; then
+			if [[ "${2:-}" == "" ]]; then
 				echo "$t"
 			else
 				if is_tool_installed "$t"; then
