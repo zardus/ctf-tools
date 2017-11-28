@@ -182,6 +182,11 @@ EOF
 }
 
 
+function is_tool_installed() {
+    git status --ignored "$1" | egrep -q 'Untracked|Ignored'
+}
+
+
 if [[ $# -eq 0 ]]; then
 	usage
 	exit 1
@@ -228,12 +233,16 @@ then
 	for t in $($0 list)
 	do
 		$0 $ACTION $t
-	done
+    done
+elif [ -z "$TOOL" -a "$ACTION" == "full-upgrade" ]
+then
+    TOOL=""
 elif [ -z "$TOOL" -a "$ACTION" != "list" -a "$ACTION" != "setup" ]
 then
 	usage
 	exit
 fi
+
 
 cd $(dirname "${BASH_SOURCE[0]}")/..
 
@@ -259,7 +268,7 @@ case $ACTION in
 		;;
 	install)
 		cd $TOOL
-		if [ "$FORCE" -eq 0 ] && git status --ignored . | egrep -q 'Untracked|Ignored'
+		if [ "$FORCE" -eq 0 ] && is_tool_installed "."
 		then
 			tool_log "appears to already be installed. Uninstall first?"
 			exit 0
@@ -341,6 +350,26 @@ case $ACTION in
 			$0 install $TOOL
 		fi
 		;;
+    full-upgrade)
+        TOOL="full-upgrade" tool_log "Upgrading all installed tools!"
+        succ=0
+        fail=0
+        declare -a failed
+        for t in $($0 list)
+        do
+            if is_tool_installed "$t"; then
+                TOOL="full-upgrade" tool_log "Upgrading tool $t"
+                if $0 upgrade $t; then 
+                    succ=$((succ+1))
+                else
+                    fail=$((fail+1))
+                    failed[${#failed[@]}]="$t"
+                fi
+            fi
+        done
+        TOOL="full-upgrade" tool_log "failed to upgrade ${failed[@]}"
+        TOOL="full-upgrade" tool_log "tool full-upgrade stats - sucess=$succ failed=$fail"
+        ;;
 	reinstall)
 		$0 uninstall $TOOL
 		$0 install $TOOL
