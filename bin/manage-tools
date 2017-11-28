@@ -184,7 +184,7 @@ EOF
 
 
 function is_tool_installed() {
-    git status --ignored "$1" | egrep -q 'Untracked|Ignored'
+	git status --ignored "$1" | egrep -q 'Untracked|Ignored'
 }
 
 
@@ -234,10 +234,10 @@ then
 	for t in $($0 list)
 	do
 		$0 $ACTION $t
-    done
+	done
 elif [ -z "$TOOL" -a "$ACTION" == "full-upgrade" ]
 then
-    TOOL=""
+	TOOL=""
 elif [ -z "$TOOL" -a "$ACTION" != "list" -a "$ACTION" != "setup" ]
 then
 	usage
@@ -257,19 +257,19 @@ case $ACTION in
 		do
 			[ ! -e "$t/install" ] && continue
 
-            if [[ "$2" == "" ]]; then
-                echo "$t"
-            else
-                if is_tool_installed "$t"; then
-                    if [[ "$2" == "-i" ]]; then
-                        echo "$t"
-                    fi
-                else
-                    if [[ "$2" == "-u" ]]; then
-                        echo "$t"
-                    fi
-                fi
-            fi
+			if [[ "$2" == "" ]]; then
+				echo "$t"
+			else
+				if is_tool_installed "$t"; then
+					if [[ "$2" == "-i" ]]; then
+						echo "$t"
+					fi
+				else
+					if [[ "$2" == "-u" ]]; then
+						echo "$t"
+					fi
+				fi
+			fi
 		done
 		;;
 	bin)
@@ -364,26 +364,26 @@ case $ACTION in
 			$0 install $TOOL
 		fi
 		;;
-    full-upgrade)
-        TOOL="full-upgrade" tool_log "Upgrading all installed tools!"
-        succ=0
-        fail=0
-        declare -a failed
-        installed=$($0 list -i)
-        TOOL="full-upgrade" tool_log "Upgrading tools: $installed"
-        for t in $installed
-        do
-            TOOL="full-upgrade" tool_log "Upgrading tool $t"
-            if $0 upgrade $t; then 
-                succ=$((succ+1))
-            else
-                fail=$((fail+1))
-                failed[${#failed[@]}]="$t"
-            fi
-        done
-        TOOL="full-upgrade" tool_log "failed to upgrade ${failed[@]}"
-        TOOL="full-upgrade" tool_log "tool full-upgrade stats - sucess=$succ failed=$fail"
-        ;;
+	full-upgrade)
+		TOOL="FULL-UPGRADE" tool_log "Upgrading all installed tools!"
+		succ=0
+		fail=0
+		declare -a failed
+		installed=$($0 list -i)
+		TOOL="FULL-UPGRADE" tool_log "Upgrading tools: $installed"
+		for t in $installed
+		do
+			TOOL="FULL-UPGRADE" tool_log "Upgrading tool $t"
+			if $0 upgrade $t; then
+				succ=$((succ+1))
+			else
+				fail=$((fail+1))
+				failed[${#failed[@]}]="$t"
+			fi
+		done
+		TOOL="FULL-UPGRADE" tool_log "failed to upgrade ${failed[@]}"
+		TOOL="FULL-UPGRADE" tool_log "tool full-upgrade stats - sucess=$succ failed=$fail"
+		;;
 	reinstall)
 		$0 uninstall $TOOL
 		$0 install $TOOL
