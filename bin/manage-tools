@@ -2,6 +2,9 @@
 set -eu -o pipefail
 # set -x
 
+CTF_TOOLS_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
+
+
 function usage()
 {
 	cat <<END
@@ -11,7 +14,7 @@ Where:
     -s      allow running things with sudo (i.e., to install debs)
     -v      verbose mode. print log while installing
     -f      force certain actions (such as installing over an installed tool)
-    tool    the name of the tool. if "all", does the action on all tools
+    tool    the name of the tool. if "all", does the action on all (installed) tools
 
 Actions:
     setup           set up the environment (adds ctf-tools/bin to your \$PATH in .bashrc)
@@ -19,10 +22,9 @@ Actions:
     install         installs a tool
     uninstall       uninstalls a tool
     reinstall       reinstalls a tool
-    upgrade         upgrades a tool
+    upgrade         upgrades a tool (use "all" to do a full upgrade of installed tools)
     bin             re-links tool binaries into ctf-tools/bin
     search          search description and name of tools
-    full-upgrade    upgrade all installed tools
 
 END
 }
@@ -188,6 +190,48 @@ function is_tool_installed() {
 }
 
 
+function full_upgrade() {
+	TOOL="FULL-UPGRADE" tool_log "Upgrading all installed tools!"
+	succ=0
+	fail=0
+	declare -a failed
+	installed=$($0 list -i)
+	TOOL="FULL-UPGRADE" tool_log "Upgrading tools: $installed"
+	for t in $installed
+	do
+		TOOL="FULL-UPGRADE" tool_log "Upgrading tool $t"
+		if $0 upgrade $t; then
+			succ=$((succ+1))
+		else
+			fail=$((fail+1))
+			failed[${#failed[@]}]="$t"
+		fi
+	done
+	TOOL="FULL-UPGRADE" tool_log "failed to upgrade ${failed[@]}"
+	TOOL="FULL-UPGRADE" tool_log "tool full-upgrade stats - sucess=$succ failed=$fail"
+}
+
+function verify_tool_sanity() {
+	if [[ -z "$TOOL" ]]; then
+		TOOL="$ACTION" tool_log "must provide at least one tool for $ACTION"
+		usage
+		exit 1
+	fi
+
+	if [[ "$TOOL" == "all" ]]; then
+		TOOL="$ACTION" tool_log "can't handle \"all\" magic tool directly!" \
+			"This is probably a bug you should report."
+		usage
+		exit 1
+	fi
+
+	if [[ ! -d "$CTF_TOOLS_ROOT/$TOOL" ]]; then
+		TOOL="$ACTION" tool_log "invalid tool $TOOL"
+		exit 1
+	fi
+}
+
+
 if [[ $# -eq 0 ]]; then
 	usage
 	exit 1
@@ -229,20 +273,36 @@ else
 	TOOL=""
 fi
 
-if [ "$TOOL" == "all" ]
+# handle the special all tool
+if [[ "$TOOL" == "all" ]]
 then
-	for t in $($0 list)
-	do
-		$0 $ACTION $t
-	done
-elif [ -z "$TOOL" -a "$ACTION" == "full-upgrade" ]
-then
-	TOOL=""
-elif [ -z "$TOOL" -a "$ACTION" != "list" -a "$ACTION" != "setup" ]
-then
-	usage
-	exit
+	case $ACTION in
+		install)
+			for t in $($0 list)
+			do
+				$0 $ACTION $t
+			done
+			exit 0
+			;;
+		bin | uninstall | reinstall)
+			for t in $($0 list -i)
+			do
+				$0 $ACTION $t
+			done
+			exit 0
+			;;
+		upgrade)
+			full_upgrade
+			exit 0
+			;;
+		*)
+			TOOL="" tool_log "action $ACTION cannot handle the special \"all\" tool"
+			usage
+			exit 1
+			;;
+	esac
 fi
+
 
 
 cd $(dirname "${BASH_SOURCE[0]}")/..
@@ -273,6 +333,7 @@ case $ACTION in
 		done
 		;;
 	bin)
+		verify_tool_sanity
 		cd bin
 		if [ -d ../$TOOL/bin ]; then
 			ln -sf ../$TOOL/bin/* .
@@ -281,6 +342,7 @@ case $ACTION in
 		cd ..
 		;;
 	install)
+		verify_tool_sanity
 		cd $TOOL
 		if [ "$FORCE" -eq 0 ] && is_tool_installed "."
 		then
@@ -343,6 +405,7 @@ case $ACTION in
 		$0 bin $TOOL
 		;;
 	uninstall)
+		verify_tool_sanity
 		cd $TOOL
 
 		tool_log "starting uninstall, logging to $PWD/uninstall.log"
@@ -353,6 +416,11 @@ case $ACTION in
 		cd ..
 		;;
 	upgrade)
+		if [[ "$TOOL" == "" ]]; then
+			full_upgrade
+			exit 0
+		fi
+		verify_tool_sanity
 		cd $TOOL
 		if [ -x ./upgrade ]
 		then
@@ -363,26 +431,6 @@ case $ACTION in
 			$0 uninstall $TOOL
 			$0 install $TOOL
 		fi
-		;;
-	full-upgrade)
-		TOOL="FULL-UPGRADE" tool_log "Upgrading all installed tools!"
-		succ=0
-		fail=0
-		declare -a failed
-		installed=$($0 list -i)
-		TOOL="FULL-UPGRADE" tool_log "Upgrading tools: $installed"
-		for t in $installed
-		do
-			TOOL="FULL-UPGRADE" tool_log "Upgrading tool $t"
-			if $0 upgrade $t; then
-				succ=$((succ+1))
-			else
-				fail=$((fail+1))
-				failed[${#failed[@]}]="$t"
-			fi
-		done
-		TOOL="FULL-UPGRADE" tool_log "failed to upgrade ${failed[@]}"
-		TOOL="FULL-UPGRADE" tool_log "tool full-upgrade stats - sucess=$succ failed=$fail"
 		;;
 	reinstall)
 		$0 uninstall $TOOL
@@ -424,5 +472,7 @@ case $ACTION in
 		;;
 	*)
 		echo "TOOLS | ERROR | unknown action $ACTION"
+		usage
+		exit 1
 		;;
 esac
