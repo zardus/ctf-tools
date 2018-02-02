@@ -1,0 +1,4 @@
+#!/bin/bash
+
+[ -e origami-pdf ] || hg clone https://code.google.com/p/origami-pdf/
+cd origami-pdf

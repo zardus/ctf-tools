@@ -1,0 +1,9 @@
+#!/bin/bash -ex
+
+git clone https://github.com/m1ghtym0/magic_gadget_finder
+chmod 755 magic_gadget_finder/magic.py
+mkdir bin
+cd bin
+ln -s ../magic_gadget_finder/magic.py .
+cd ..
+

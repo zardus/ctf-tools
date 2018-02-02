@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+[ -e volatility ] || git clone --depth 1 https://github.com/volatilityfoundation/volatility
+pip install -e volatility
+pip install distorm3
