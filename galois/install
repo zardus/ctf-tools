@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 wget https://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/galois.tar
 
