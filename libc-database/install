@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -e libc-database ] || git clone https://github.com/niklasb/libc-database
 
