@@ -1,0 +1,3 @@
+#!/bin/bash
+
+apt-get install libntl-dev

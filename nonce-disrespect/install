@@ -1,0 +1,9 @@
+#!/bin/bash -ex
+
+git clone https://github.com/nonce-disrespect/nonce-disrespect.git
+git -C nonce-disrespect apply $PWD/build.patch
+make -C nonce-disrespect/tool
+
+mkdir bin
+cp nonce-disrespect/tool/forge bin/
+cp nonce-disrespect/tool/recover bin/

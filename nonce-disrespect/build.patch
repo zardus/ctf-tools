@@ -1,0 +1,17 @@
+diff --git a/tool/Makefile b/tool/Makefile
+index 39983c2..60c8dfc 100644
+--- a/tool/Makefile
++++ b/tool/Makefile
+@@ -4,10 +4,10 @@ LDLIBS += -lgmp -lntl
+ all : recover forge
+ 
+ recover : recover.o gcm.o
+-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(LDLIBS) $^
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(LDLIBS) $^ $(LDLIBS)
+ 
+ forge : forge.o gcm.o
+-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(LDLIBS) $^
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(LDLIBS) $^ $(LDLIBS)
+ 
+ %.o : %.cpp
+ 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $^
