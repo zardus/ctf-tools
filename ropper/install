@@ -2,6 +2,6 @@
 
 [ -e ropper ] || git clone --depth 1 https://github.com/sashs/Ropper.git ropper
 
-ctf-tools-pip install --no-use-wheel -I capstone
+ctf-tools-pip install --no-binary -I capstone
 ctf-tools-pip install filebytes
 ctf-tools-pip install -e ropper
