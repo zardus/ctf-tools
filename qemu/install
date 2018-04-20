@@ -3,26 +3,40 @@
 find_latest_qemu_version() {
     git ls-remote --tags git://git.qemu.org/qemu.git \
         | grep -v '\-rc' \
-        | grep -oh 'v[0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}\(\.[0-9]\{0,2\}\)\?' \
+        | grep -oh 'v[0-9]\{1,2\}\.[0-9]\{1,2\}\(\.[0-9]\{1,2\}\(\.[0-9]\{0,2\}\)\?\)\?' \
         | sort --version-sort -r \
         | head -n 1
 }
 
 #VERSION=v2.10.1
 VERSION=$(find_latest_qemu_version)
+echo $VERSION > qemu_version
 git clone --depth=1 -b "$VERSION" git://git.qemu-project.org/qemu.git
 
+set +x
 source ctf-tools-venv-activate
+set -x
 
 prefix="--prefix=$(pwd)"
 python="--python=$(which python)"
+build_flags=""
 
-cd qemu
-if ! ./configure "$prefix" "$python"; then
+mkdir build
+pushd build
+if ! ../qemu/configure "$prefix" "$python" $build_flags; then
     echo "Updating QEMU submodules in case dependencies are missing"
+    pushd ../qemu/
     git submodule init
     git submodule update --recursive
-    ./configure "$prefix" "$python"
+    popd
+
+    # redo configure step
+    ../qemu/configure "$prefix" "$python" $build_flags
 fi
 make -j $(nproc)
+
 make install
+# remove build artifacts - qemu is huge otherwise...
+make clean
+popd
+rm -rf build
