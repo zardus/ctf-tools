@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+
+apt-get install -y libedit-dev nasm
+apt-get install -y libedit-dev:i386 || true

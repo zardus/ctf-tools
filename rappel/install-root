@@ -1,2 +1,0 @@
-apt-get install libedit-dev nasm
-apt-get install libedit-dev:i386
