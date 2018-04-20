@@ -1,0 +1,3 @@
+#!/bin/bash -ex
+
+echo "Y" | gem uninstall --user-install zsteg
