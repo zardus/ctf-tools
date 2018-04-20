@@ -1,4 +1,4 @@
-from ubuntu:xenial
+FROM ubuntu:artful
 
 # wrapper script for apt-get
 COPY .docker/apt-get-install /usr/local/bin/apt-get-install
@@ -35,4 +35,4 @@ RUN bin/ctf-tools-pip install appdirs
 RUN echo 'source $(which ctf-tools-venv-activate)' >> /home/ctf/.bashrc
 
 WORKDIR /home/ctf
-CMD bash -i
+#CMD bash -i

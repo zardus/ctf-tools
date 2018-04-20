@@ -38,6 +38,16 @@ USER ctf
 
 WORKDIR /home/ctf/tools
 RUN git checkout .
+
+# add non-commited scripts
+USER root
+COPY bin/manage-tools /home/ctf/tools/bin/
+COPY bin/ctf-tools-pip /home/ctf/tools/bin/
+COPY bin/ctf-tools-venv-activate /home/ctf/tools/bin/
+COPY bin/ctf-tools-venv-activate3 /home/ctf/tools/bin/
+RUN chown -R ctf.ctf /home/ctf/tools
+
+USER ctf
 RUN bin/manage-tools -s setup
 RUN echo 'source $(which virtualenvwrapper.sh)' >> ~/.zshrc
 RUN echo 'workon ctftools' >> ~/.zshrc
