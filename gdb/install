@@ -13,17 +13,31 @@ find_latest_gdb_version() {
 }
 
 VERSION=$(find_latest_gdb_version)
+echo $VERSION > gdb_version
 
+rm -rf "gdb" || true
 curl "https://ftp.gnu.org/gnu/gdb/gdb-$VERSION.tar.gz" | tar xz
-cd "gdb-$VERSION"
+mv "gdb-$VERSION" "gdb"
 
+set +x
 # move to ctftools virtual env
 source ctf-tools-venv-activate
+set -x
 
+PREFIX=$(pwd)
+
+pushd ./gdb
 ./configure \
-    --prefix=$(dirname $PWD) \
+    --prefix=$PREFIX \
     --with-python=$(which python) \
     --enable-targets=all \
     --with-guile=guile-2.0
 make -j $(nproc)
 make install
+# remove build artifacts
+make clean
+popd
+
+# reduce binary size a little...
+strip bin/gdb || true
+strip bin/gdbserver || true
