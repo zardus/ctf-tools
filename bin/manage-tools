@@ -57,6 +57,7 @@ function base_build_setup_debian()
 {
 	PACKAGE_REQS="build-essential libtool g++ gcc texinfo curl wget automake autoconf python python-dev git subversion unzip virtualenvwrapper lsb-release"
 	PACKAGE_COUNT=$(echo $PACKAGE_REQS | tr ' ' '\n' | wc -l)
+	sudo apt-get update
 	if [ $(dpkg -l $PACKAGE_REQS | grep "^ii" | wc -l) -ne $PACKAGE_COUNT ]
 	then
 		if [ "$ALLOW_SUDO" -eq 1 ]; then
