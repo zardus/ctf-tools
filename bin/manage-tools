@@ -374,9 +374,19 @@ case $ACTION in
 				INSTALL_ROOT_SCRIPT="./install-root-debian"
 			fi
 			if [[ -x "$INSTALL_ROOT_SCRIPT" && "$ALLOW_SUDO" -eq 1 ]]; then
-				if ! sudo env DISTRI=$DISTRI "$INSTALL_ROOT_SCRIPT" >> install.log 2>&1;
-				then
-					tool_log "INSTALL FAILED"
+				set +e
+				if [[ "$VERBOSE_OUTPUT" -eq 1 ]]; then
+					sudo env DISTRI=$DISTRI "$INSTALL_ROOT_SCRIPT" 2>&1 | tee -a install.log
+				else
+					sudo env DISTRI=$DISTRI "$INSTALL_ROOT_SCRIPT" >> install.log 2>&1
+				fi
+				INSTALL_FAILED=$?
+				set -e
+
+				if [[ "$INSTALL_FAILED" -eq 0 ]]; then
+					tool_log "system dependencies installed"
+				else
+					tool_log "INSTALL FAILED: $INSTALL_ROOT_SCRIPT failed to install dependencies"
 					cat install.log >&2
 					exit 1
 				fi
