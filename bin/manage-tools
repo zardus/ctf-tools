@@ -164,6 +164,7 @@ EOF
 		fi
 	done
 
+	f=~/.config/fish/config.fish
 	if [[ -e "$f" ]]; then
 		if ! grep "$MAGIC" "$f" >/dev/null 2>&1; then
 			cat >> "$f" << EOF
