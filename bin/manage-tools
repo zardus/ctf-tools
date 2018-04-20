@@ -388,9 +388,9 @@ case $ACTION in
 		# execute install script
 		set +e
 		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
-			DISTRI=$DISTRI ./install 2>&1 | tee -a install.log
+			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH ./install 2>&1 | tee -a install.log
 		else
-			DISTRI=$DISTRI ./install >>install.log 2>&1
+			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH ./install >>install.log 2>&1
 		fi
 		INSTALL_FAILED=$?
 		set -e
