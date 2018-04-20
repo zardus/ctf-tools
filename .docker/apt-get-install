@@ -1,0 +1,13 @@
+#!/bin/sh -e
+export DEBIAN_FRONTEND="noninteractive" 
+# update the package lists etc.
+apt-get -q update 
+# this is actually against docker recommendations... But we'll do it anyway in
+# case our base image was not yet updated.
+apt-get dist-upgrade -y --no-install-recommends --auto-remove 
+# finally install the package
+apt-get install -y --no-install-recommends --auto-remove "$@" 
+# remove the package lists and apt-get metadata, such that the docker image
+# layer stays small
+apt-get -q clean 
+rm -rf /var/lib/apt/lists/*

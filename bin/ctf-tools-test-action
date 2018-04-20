@@ -1,0 +1,41 @@
+#!/bin/bash -e
+
+function usage()
+{
+    cat <<END
+Usage: $(basename $0) [-d distribution] <manage-tools parameters...>
+
+Run a manage-tools actions inside of a docker container, with the current
+ctf-tools repository mounted into the container. This is primarily useful for
+testing uncommited changes to a tool.
+
+END
+}
+
+
+CTFTOOLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../"
+
+DOCKER_DIST=""
+DOCKER_CONTAINER="ctftools${DOCKER_DIST}"
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    usage
+    exit 0
+fi
+
+if [[ "$1" == "-d" ]]; then
+    DOCKER_DIST=".$2"
+    shift 2
+fi
+
+pushd $CTFTOOLS_DIR >/dev/null
+set -x
+sudo docker build \
+    -t "$DOCKER_CONTAINER" \
+    -f "Dockerfile${DOCKER_DIST}" \
+    .
+
+sudo docker run --rm -it \
+    -v $CTFTOOLS_DIR:/home/ctf/tools:z \
+    "$DOCKER_CONTAINER" bash -c "/home/ctf/tools/bin/manage-tools $*"
+exit $?

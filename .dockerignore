@@ -1,2 +1,4 @@
 *
 !.git
+!.docker
+!bin/
