@@ -2,7 +2,9 @@
 set -eu -o pipefail
 # set -x
 
-CTF_TOOLS_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+
+CTF_TOOLS_ROOT="$(python -c "import os.path as p;x=p.realpath('$SCRIPT_PATH');x=p.dirname(x);print(x)")/.."
 
 
 function usage()
@@ -307,7 +309,7 @@ fi
 
 
 
-cd $(dirname "${BASH_SOURCE[0]}")/..
+cd "$CTF_TOOLS_ROOT"
 
 case $ACTION in
 	setup)
