@@ -28,7 +28,7 @@ if [[ "$1" == "-d" ]]; then
     shift 2
 fi
 
-pushd $CTFTOOLS_DIR >/dev/null
+pushd "$CTFTOOLS_DIR" >/dev/null
 set -x
 sudo docker build \
     -t "$DOCKER_CONTAINER" \
@@ -36,6 +36,6 @@ sudo docker build \
     .
 
 sudo docker run --rm -it \
-    -v $CTFTOOLS_DIR:/home/ctf/tools:z \
+    -v "$CTFTOOLS_DIR:/home/ctf/tools:z" \
     "$DOCKER_CONTAINER" bash -c "/home/ctf/tools/bin/manage-tools $*"
 exit $?
