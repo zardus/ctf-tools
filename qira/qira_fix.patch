@@ -1,13 +1,101 @@
+From 4dfae62014575bd2d19d0adf072e00c3ddd7fffe Mon Sep 17 00:00:00 2001
+From: pwnslinger <pwnslinger@asu.edu>
+Date: Fri, 6 Jul 2018 15:22:08 -0700
+Subject: [PATCH] issue 202 fix
+
+---
+ middleware/qira_webserver.py |  8 ++++++--
+ middleware/qira_webstatic.py |  5 +++--
+ requirements.txt             |  3 ++-
+ run_tests.sh                 | 10 ++++++++--
+ 4 files changed, 19 insertions(+), 7 deletions(-)
+
 diff --git a/middleware/qira_webserver.py b/middleware/qira_webserver.py
-index 3eac66a..068df7a 100644
+index 3eac66a..3d51317 100644
 --- a/middleware/qira_webserver.py
 +++ b/middleware/qira_webserver.py
-@@ -431,7 +431,7 @@ def run_server(largs, lprogram):
+@@ -38,7 +38,8 @@ def func_wrapper(*args, **kwargs):
+ LIMIT = 0
+ 
+ from flask import Flask, Response, redirect, request
+-from flask.ext.socketio import SocketIO, emit
++#from flask.ext.socketio import SocketIO, emit
++from flask_socketio import SocketIO, emit
+ 
+ # http://stackoverflow.com/questions/8774958/keyerror-in-module-threading-after-a-successful-py-test-run
+ import threading
+@@ -66,6 +67,7 @@ def push_trace_update(i):
+   t.needs_update = False
+ 
+ def push_updates(full = True):
++
+   socketio.emit('pmaps', program.get_pmaps(), namespace='/qira')
+   socketio.emit('maxclnum', program.get_maxclnum(), namespace='/qira')
+   socketio.emit('arch', list(program.tregs), namespace='/qira')
+@@ -431,7 +433,9 @@ def run_server(largs, lprogram):
    print "****** starting WEB SERVER on %s:%d" % (qira_config.HOST, qira_config.WEB_PORT)
    threading.Thread(target=mwpoller).start()
    try:
 -    socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT, log=open("/dev/null", "w"))
-+    socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT)
++    #socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT, log=open("/dev/null", "w"))
++    socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT,
++                 log_output=False)
    except KeyboardInterrupt:
      print "*** User raised KeyboardInterrupt"
      exit()
+diff --git a/middleware/qira_webstatic.py b/middleware/qira_webstatic.py
+index 778f4bc..c1e5478 100644
+--- a/middleware/qira_webstatic.py
++++ b/middleware/qira_webstatic.py
+@@ -9,7 +9,8 @@
+ from qira_webserver import app
+ 
+ from flask import Flask, Response, redirect, request
+-from flask.ext.socketio import SocketIO, emit
++#from flask.ext.socketio import SocketIO, emit
++from flask_socketio import SocketIO, emit
+ 
+ from qira_base import *
+ import json
+@@ -81,7 +82,7 @@ def graph_dot():
+   os.system("dot /tmp/in.dot > /tmp/out.dot")
+   ret = open("/tmp/out.dot").read()
+   #print "DOT RESPONSE", ret
+-  return ret 
++  return ret
+ 
+ # currently if we aren't using static, we don't want to draw the staticview
+ # or be able to makefunction
+diff --git a/requirements.txt b/requirements.txt
+index c46478f..8a69c04 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -12,5 +12,6 @@ capstone
+ hexdump
+ nose
+ ./qiradb
+-https://pypi.python.org/packages/source/p/pyparsing/pyparsing-1.5.7.tar.gz#md5=9be0fcdcc595199c646ab317c1d9a709
++pyparsing>=2.1.4
++#https://pypi.python.org/packages/source/p/pyparsing/pyparsing-1.5.7.tar.gz#md5=9be0fcdcc595199c646ab317c1d9a709
+ 
+diff --git a/run_tests.sh b/run_tests.sh
+index 0e65d07..2411c1c 100755
+--- a/run_tests.sh
++++ b/run_tests.sh
+@@ -36,8 +36,14 @@ fi
+ # phantomjs
+ # use phantomjs2.0 for non-draft WebSockets protol
+ # unforunately this doesn't ship with Ubuntu by default
+-
+-sudo apt-get install $LIBICU
++if [ $(sudo apt-get install $LIBICU; echo $?) != 100 ]; then
++    echo "libcsu55 installed successfully."
++else
++    echo "missing dependencies, fixing source"
++    echo -e "deb http://security.ubuntu.com/ubuntu trusty-security main" | sudo tee -a /etc/apt/sources.list
++    sudo apt-get update
++    sudo apt-get install $LIBICU
++fi
+ 
+ wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-$VER.tar.bz2
+ tar xf ./phantomjs-2.0.0-ubuntu-$VER.tar.bz2
