@@ -172,6 +172,7 @@ You can build a docker image with:
 
 ```bash
 git clone https://github.com/zardus/ctf-tools
+cd ctf-tools
 docker build -t ctf-tools .
 ```
 
