@@ -12,6 +12,7 @@ Usage: $(basename $0) [-sv] (list|setup|install|uninstall|bin|search) tool
 
 Where:
     -s      allow running things with sudo (i.e., to install debs)
+    -n      "nice" the installer to reduce background load
     -v      verbose mode. print log while installing
     -f      force certain actions (such as installing over an installed tool)
     tool    the name of the tool. if "all", does the action on all (installed) tools
@@ -247,6 +248,9 @@ do
 		-s)
 			export ALLOW_SUDO=1
 			;;
+		-n)
+			export NICE_LEVEL=10
+			;;
 		-f)
 			export FORCE=1
 			;;
@@ -264,6 +268,7 @@ done
 [[ -z ${ALLOW_SUDO+x} ]] && export ALLOW_SUDO=0
 [[ -z ${FORCE+x} ]] && export FORCE=0
 [[ -z ${VERBOSE_OUTPUT+x} ]] && export VERBOSE_OUTPUT=0
+[[ -z ${NICE_LEVEL+x} ]] && export NICE_LEVEL=0
 export EXPECTFAIL=${EXPECTFAIL:-0}
 
 if [[ $# -ge 1 ]]; then
@@ -398,9 +403,9 @@ case $ACTION in
 		# execute install script
 		set +e
 		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
-			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH ./install 2>&1 | tee -a install.log
+			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH nice -n$NICE_LEVEL ./install 2>&1 | tee -a install.log
 		else
-			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH ./install >>install.log 2>&1
+			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH nice -n$NICE_LEVEL ./install >>install.log 2>&1
 		fi
 		INSTALL_FAILED=$?
 		set -e

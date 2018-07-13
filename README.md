@@ -140,6 +140,9 @@ manage-tools -s install gdb
 # install pwntools, but don't let it sudo install dependencies
 manage-tools install pwntools
 
+# install qemu, but use "nice" to avoid degrading performance during compilation
+manage-tools -n install qemu
+
 # uninstall gdb
 manage-tools uninstall gdb
 
