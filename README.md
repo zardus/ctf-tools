@@ -196,6 +196,7 @@ You can build a Vagrant VM with:
 
 ```bash
 wget https://raw.githubusercontent.com/zardus/ctf-tools/master/Vagrantfile
+vagrant plugin install vagrant-vbguest
 vagrant up
 ```
 
