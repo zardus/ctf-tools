@@ -59,6 +59,7 @@ Installers for the following tools are included:
 | forensics | Directory | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. | <!--tool--><!--test-->
 | forensics | Directory | [exetractor](https://github.com/kholia/exetractor-clone) | Unpacker for packed Python executables. Supports PyInstaller and py2exe. | <!--tool--><!--test-->
 | forensics | Directory | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. | <!--tool--><!--test-->
+| forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. | <!--deb-tool-->
 | forensics | Directory | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool--><!--test-->
 | forensics | Directory | [peepdf](https://github.com/jesparza/peepdf) | Powerful Python tool to analyze PDF documents. | <!--tool--><!--test-->
 | forensics | Directory | [scrdec](https://gist.github.com/bcse/1834878) | A decoder for encoded Windows Scripts. | <!--tool--><!--test-->
@@ -91,12 +92,14 @@ Installers for the following tools are included:
 | web | Directory | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
 | web | Directory | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
 | web | Directory | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
+| stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. | <!--deb-tool-->
 | stego | Directory | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool--><!--failing-->
 | stego | Directory | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image steganography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegdetect](http://www.outguess.org/) | Steganography detection/breaking tool. | <!--tool--><!--test-->
 | stego | Docker | [stego-toolkit](https://github.com/DominicBreuker/stego-toolkit) | A docker image with dozens of steg tools. | <!--tool--><!--no-test-->
 | stego | Directory | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. | <!--tool--><!--test-->
 | stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
+| dsniff | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | <!--deb-tool-->
 | android | Directory | [apktool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs | <!--tool--><!--test-->
 | android | Directory | [android-sdk](http://developer.android.com/sdk) | The android SDK (adb, emulator, etc). | <!--tool--><!--no-test-->
 | misc | Directory | [xspy](http://git.kali.org/gitweb/?p=packages/xspy.git;a=summary) | Tiny tool to spy on X sessions. | <!--tool--><!--test-->
@@ -104,20 +107,16 @@ Installers for the following tools are included:
 | misc | Directory | [jdgui](http://jd.benow.ca/) | Java decompiler. | <!--tool--><!--test-->
 | misc | Directory | [veles](https://codisec.com/veles/) | Binary data analysis and visulalization tool. | <!--tool--><!--test-->
 | misc | Directory | [youtube-dl](https://yt-dl.org/) | Latest version of the popular youtube downloader. | <!--tool--><!--test-->
-| forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. | <!--deb-tool-->
-| dsniff | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | <!--deb-tool-->
-| stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. | <!--deb-tool-->
-
 
 There are also a couple of installers for useful libraries included. Currently
 only the python bindings for these libraries are installed.
 
 | Category | Library | Description |
 |----------|---------|-------------|
-| binary | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. | <!--tool--><!--test-->
-| binary | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. | <!--tool--><!--test-->
-| binary | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. | <!--tool--><!--test-->
-| binary | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. | <!--tool--><!--test-->
+| binary | Library | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. | <!--tool--><!--test-->
+| binary | Library | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. | <!--tool--><!--test-->
+| binary | Library | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. | <!--tool--><!--test-->
+| binary | Library | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. | <!--tool--><!--test-->
 
 There are also some installers for non-CTF stuff to break the monotony!
 
@@ -248,9 +247,3 @@ Good luck!
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/aWEsoMe-cTf.
 
 There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
-
-## Tools with unofficial Debian/Ubuntu repos or debs
-
-| Category | Package | Description | Repo/deb |
-|----------|---------|-------------|----------|
-| stego | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | [deb](http://www.sonicvisualiser.org/download.html) | <!--deb-tool-->
