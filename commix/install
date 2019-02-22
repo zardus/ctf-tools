@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-git clone --depth 1 https://github.com/stasinopoulos/commix.git
+git clone --depth 1 https://github.com/commixproject/commix.git
 mkdir bin
 cd bin
 ln -s ../commix/commix.py
