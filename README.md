@@ -234,7 +234,7 @@ They could be launched from any directory, so don't make assumptions about the l
 ## License
 
 The individual tools are all licensed under their own licenses.
-As for ctf-tools itself, it is "starware".
+As for ctf-tools itself, it is licensed under BSD 2-Clause License.
 If you find it useful, star it on github (https://github.com/zardus/ctf-tools).
 
 Good luck!
