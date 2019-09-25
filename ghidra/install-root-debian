@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+sudo apt install openjdk-11-jdk -y
