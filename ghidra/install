@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -e https://ghidra-sre.org/ghidra_9.1-BETA_DEV_20190923.zip ] || wget https://ghidra-sre.org/ghidra_9.1-BETA_DEV_20190923.zip
 [ -e ghidra_9.1-BETA_DEV ] || unzip ghidra_9.1-BETA_DEV_20190923.zip
