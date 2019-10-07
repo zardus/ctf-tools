@@ -4,7 +4,9 @@ INST_DIR="$PWD"
 
 git clone --depth 1 https://github.com/AngelKitty/stegosaurus.git
 
-chmod -R 777 stegosaurus/
+mkdir bin
 
-cd stegosaurus/
+cd bin
+
+ln -s ../stegosaurus/stegosaurus .
 
