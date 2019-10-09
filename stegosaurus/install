@@ -1,0 +1,12 @@
+#!/bin/bash -ex
+
+INST_DIR="$PWD"
+
+git clone --depth 1 https://github.com/AngelKitty/stegosaurus.git
+
+mkdir bin
+
+cd bin
+
+ln -s ../stegosaurus/stegosaurus .
+
