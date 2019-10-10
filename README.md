@@ -102,6 +102,7 @@ Installers for the following tools are included:
 | stego | Directory | [stegdetect](http://www.outguess.org/) | Stenography detection/breaking tool. | <!--tool--><!--test-->
 | stego | Docker | [stego-toolkit](https://github.com/DominicBreuker/stego-toolkit) | A docker image with dozens of steg tools. | <!--tool--><!--no-test-->
 | stego | Directory | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool--><!--test-->
+| stego | Directory | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool--><!--no-test-->
 | stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
 | dsniff | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | <!--deb-tool-->
 | android | Directory | [apktool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs | <!--tool--><!--test-->
