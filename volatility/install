@@ -1,7 +1,8 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 ctf-tools-pip install distorm3
 git clone https://github.com/volatilityfoundation/volatility.git
+chmod 755 volatility/vol.py
 mkdir bin
 cd bin
 ln -s ../volatility/vol.py .

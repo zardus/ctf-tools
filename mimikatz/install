@@ -1,0 +1,6 @@
+#!/bin/bash -ex
+
+wget -c https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200104/mimikatz_trunk.zip
+mkdir mimikatz
+cd mimikatz
+unzip ../mimikatz_trunk.zip

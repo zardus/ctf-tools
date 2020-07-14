@@ -1,0 +1,21 @@
+#!/bin/bash -ex
+
+cat <<END | parallel -u wget -c
+https://www.uClibc.org/downloads/old-releases/root_fs_armeb.ext2.bz2
+https://www.uClibc.org/downloads/old-releases/root_fs_arm.ext2.bz2
+https://www.uClibc.org/downloads/old-releases/root_fs_i386.ext2.bz2
+https://www.uClibc.org/downloads/old-releases/root_fs_mips.ext2.bz2
+https://www.uClibc.org/downloads/old-releases/root_fs_mipsel.ext2.bz2
+https://www.uClibc.org/downloads/old-releases/root_fs_powerpc.ext2.bz2
+https://www.uClibc.org/downloads/old-releases/root_fs_sh4.ext2.bz2
+END
+
+cat <<END | parallel -u tar xjf
+root_fs_armeb.ext2.bz2
+root_fs_arm.ext2.bz2
+root_fs_i386.ext2.bz2
+root_fs_mips.ext2.bz2
+root_fs_mipsel.ext2.bz2
+root_fs_powerpc.ext2.bz2
+root_fs_sh4.ext2.bz2
+END
