@@ -228,7 +228,7 @@ function verify_tool_sanity() {
 		exit 1
 	fi
 
-	if [[ ! -d "$CTF_TOOLS_ROOT/$TOOL" ]]; then
+	if [[ ! -d "$PWD/$TOOL" ]]; then
 		TOOL="$ACTION" tool_log "invalid tool $TOOL"
 		exit 1
 	fi
@@ -417,8 +417,8 @@ case $ACTION in
 			cat install.log >&2
 			exit 1
 		fi
-
-		cd ..
+        
+		cd ../bin
 		$0 bin $TOOL
 		;;
 	uninstall)
