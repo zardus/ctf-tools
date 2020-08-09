@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+export GEM_HOME=$PWD/gems
+
+[ -e bettercap ] || git clone https://github.com/evilsocket/bettercap
+cd bettercap
+gem build bettercap.gemspec
+gem install --no-rdoc --no-ri bettercap*.gem

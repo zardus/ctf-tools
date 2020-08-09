@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wget -O - http://esec-lab.sogeti.com/dotclear/public/fuzzgrind/fuzzgrind_090622.tar.gz | tar xz
