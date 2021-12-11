@@ -5,3 +5,6 @@ chmod +x stegsolve.jar
 mkdir bin
 mv stegsolve.jar bin/
 
+## To run the stegsolve.jar file
+java -jar stegsolve.jar 
+## within the bin folder
