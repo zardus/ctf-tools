@@ -68,6 +68,7 @@ Installers for the following tools are included:
 | forensics | Directory | [peepdf](https://github.com/jesparza/peepdf) | Powerful Python tool to analyze PDF documents. | <!--tool--><!--test-->
 | forensics | Directory | [scrdec](https://gist.github.com/bcse/1834878) | A decoder for encoded Windows Scripts. | <!--tool--><!--test-->
 | forensics | Directory | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. | <!--tool--><!--test-->
+| crypto | Library | [codext](https://github.com/dhondta/python-codext) | Python codecs extension featuring CLI tools for encoding/decoding anything including AI-based guessing mode. | <!--tool--><!--test-->
 | crypto | Directory | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). | <!--tool--><!--test-->
 | crypto | Directory | [fastcoll](https://www.win.tue.nl/hashclash/) | An md5sum collision generator. | <!--tool--><!--test-->
 | crypto | Directory | [foresight](https://github.com/ALSchwalm/foresight) | A tool for predicting the output of random number generators. To run, launch "foresee". | <!--tool--><!--test-->
