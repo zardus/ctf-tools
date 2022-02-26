@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+set -eu -o pipefail
+
+apt-get -y install binutils grep imagemagick libimage-exiftool-perl steghide tesseract-ocr
