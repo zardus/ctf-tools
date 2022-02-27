@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+
+
+ctf-tools-pip3 install --upgrade 'git+https://github.com/dhondta/webgrep.git'

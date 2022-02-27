@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+set -eu -o pipefail
+
+pacman -Syu --needed --noconfirm binutils grep imagemagick perl-image-exiftool steghide tesseract

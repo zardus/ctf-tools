@@ -1,0 +1,5 @@
+#!/bin/bash -ex
+set -eu -o pipefail
+
+dnf install perl-Image-ExifTool.noarch
+dnf install -y binutils grep imagemagick steghide tesseract
