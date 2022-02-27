@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:focal
 
 # wrapper script for apt-get
 COPY .docker/apt-get-install /usr/local/bin/apt-get-install
