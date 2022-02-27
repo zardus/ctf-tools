@@ -1,8 +1,8 @@
 #!/bin/bash -ex
 
 git clone --depth 1 https://github.com/devttys0/binwalk.git
-ctf-tools-pip install -e binwalk
+ctf-tools-pip3 install -e binwalk
 
-source ctf-tools-venv-activate
+source ctf-tools-venv-activate3
 mkdir -p bin
 ln -s $VIRTUAL_ENV/bin/binwalk bin
