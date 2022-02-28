@@ -1,4 +1,7 @@
 #!/bin/bash -ex
 
-
 ctf-tools-pip3 install --upgrade 'git+https://github.com/dhondta/webgrep.git'
+
+source ctf-tools-venv-activate3
+mkdir -p bin
+ln -s $VIRTUAL_ENV/bin/webgrep bin
