@@ -1,0 +1,13 @@
+#!/bin/bash -ex
+
+ctf-tools-pip install --upgrade tinyscript
+ctf-tools-pip3 install --upgrade tinyscript
+[ -e stegano-tools ] || git clone --recurse https://github.com/dhondta/stegano-tools
+
+mkdir -p bin
+for F in `find stegano-tools -type f -iname "*.py"`; do
+  chmod +x $F
+  N="${F##*/}"
+  N="${N%.py}"
+  ln -s ../../$F bin/$N
+done
