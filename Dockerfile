@@ -5,8 +5,8 @@ COPY .docker/apt-get-install /usr/local/bin/apt-get-install
 RUN chmod +x /usr/local/bin/apt-get-install
 
 RUN apt-get-install build-essential libtool g++ gcc rubygems \
-    texinfo curl wget automake autoconf python python-dev git subversion \
-    unzip virtualenvwrapper sudo  git virtualenvwrapper ca-certificates
+    texinfo curl wget automake autoconf python python-dev python3-dev git \
+    unzip virtualenvwrapper sudo git subversion virtualenvwrapper ca-certificates
 
 RUN useradd -m ctf
 RUN echo "ctf ALL=NOPASSWD: ALL" > /etc/sudoers.d/ctf
