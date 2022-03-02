@@ -1,0 +1,7 @@
+#!/bin/bash -ex
+
+for F in paddinganograph stegolsb stegopit stegopvd; do
+  rm -f $HOME/tools/bin/$F
+  rm -f $HOME/.virtualenvs/ctftools/bin/$F
+  rm -f $HOME/.virtualenvs/ctftools3/bin/$F
+done
