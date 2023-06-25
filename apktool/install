@@ -1,5 +1,5 @@
 #!/bin/bash -ex
-VERSION=2.2.4
+VERSION=2.7.0
 
 mkdir bin
 cd bin
