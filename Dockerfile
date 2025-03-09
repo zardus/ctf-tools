@@ -12,7 +12,7 @@ RUN useradd -m ctf
 RUN echo "ctf ALL=NOPASSWD: ALL" > /etc/sudoers.d/ctf
 
 COPY .git /home/ctf/tools/.git
-RUN chown -R ctf.ctf /home/ctf/tools
+RUN chown -R ctf:ctf /home/ctf/tools
 
 # git checkout of the files
 USER ctf
@@ -22,7 +22,7 @@ RUN git checkout .
 # add non-commited scripts
 USER root
 COPY bin/manage-tools /home/ctf/tools/bin/
-RUN chown -R ctf.ctf /home/ctf/tools
+RUN chown -R ctf:ctf /home/ctf/tools
 
 # finally run ctf-tools setup
 USER ctf
