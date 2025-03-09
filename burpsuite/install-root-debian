@@ -2,6 +2,9 @@
 set -eu -o pipefail
 
 case "$(lsb_release -cs)" in
+	noble)
+		apt-get -y install openjdk-21-jre jarwrapper
+		;;
 	xenial)
 		apt-get -o Dpkg::Options::="--force-overwrite" -y install openjdk-9-jre
 		;;
