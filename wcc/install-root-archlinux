@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-pacman -Syu --noconfirm --needed clang uthash readline capstone \
-    libelf binutils gsl

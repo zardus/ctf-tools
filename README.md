@@ -38,7 +38,6 @@ Installers for the following tools are included:
 | binary | Directory | [taintgrind](https://github.com/wmkhoo/taintgrind) | A valgrind taint analysis tool. | <!--tool--><!--failing-->
 | binary | Directory | [valgrind](http://valgrind.org) | A Dynamic Binary Instrumentation framework with some built-in tools. | <!--tool--><!--test-->
 | binary | Directory | [villoc](https://github.com/wapiflapi/villoc) | Visualization of heap operations. | <!--tool--><!--test-->
-| binary | Directory | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. | <!--tool--><!--no-test-->
 | binary | Directory | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
 | binary | Directory | [manticore](https://github.com/trailofbits/manticore) | Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool--><!--no-test-->
 | forensics | Directory | [exetractor](https://github.com/kholia/exetractor-clone) | Unpacker for packed Python executables. Supports PyInstaller and py2exe. | <!--tool--><!--test-->
@@ -210,11 +209,12 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | binary | apt | [aflplusplus](https://github.com/AFLplusplus/AFLplusplus) | State-of-the-art fuzzer. |
 | binary | apt | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. |
 | binary | apt | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
+| binary | apt | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. |
 | forensics | apt | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware (and arbitrary file) analysis tool. |
 | forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. |
 | forensics | apt | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
 | forensics | apt | [origami-pdf](http://github.com/gdelugre/origami) | PDF manipulator. |
-| forensics | Directory | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
+| forensics | apt | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
 | web | apt | [dirb](http://dirb.sourceforge.net/) | Web path scanner. |
 | web | apt | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. |
 | web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |

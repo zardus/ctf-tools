@@ -1,6 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-dnf install -y clang clang-libs clang-devel binutils binutils-devel \
-    uthash-devel elfutils-libelf elfutils-libelf-devel capstone \
-    capstone-devel readline readline-devel gsl gsl-devel
