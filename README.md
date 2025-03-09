@@ -214,6 +214,7 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | forensics | apt | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware (and arbitrary file) analysis tool. |
 | forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. |
 | forensics | apt | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
+| forensics | apt | [origami-pdf](http://github.com/gdelugre/origami) | PDF manipulator. |
 | web | apt | [dirb](http://dirb.sourceforge.net/) | Web path scanner. |
 | web | apt | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. |
 | web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
