@@ -174,22 +174,6 @@ Alternatively, you can also pull ctf-tools (with some tools preinstalled) from d
 docker run -it zardus/ctf-tools
 ```
 
-## Vagrant
-
-You can build a Vagrant VM with:
-
-```bash
-wget https://raw.githubusercontent.com/zardus/ctf-tools/master/Vagrantfile
-vagrant plugin install vagrant-vbguest
-vagrant up
-```
-
-And connect to it via:
-
-```bash
-vagrant ssh
-```
-
 ## Kali Linux
 
 Kali Linux (Sana and Rolling), due to manually setting certain libraries to not use the latest version available (sometimes being out of date by years) causes some tools to not install at all, or fail in strange ways. AFL and Panda comes to mind, in fact any tool that uses QEMU 2.30 will probably fail during compilation under Kali.
