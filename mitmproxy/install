@@ -1,3 +1,3 @@
 #!/bin/bash -ex
 
-ctf-tools-pip install --upgrade packaging mitmproxy
+pipx install mitmproxy
