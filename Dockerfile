@@ -29,4 +29,3 @@ USER ctf
 RUN bin/manage-tools -s setup
 
 WORKDIR /home/ctf
-CMD bash -i
