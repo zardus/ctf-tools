@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-pacman -Syu --noconfirm --needed sqlite

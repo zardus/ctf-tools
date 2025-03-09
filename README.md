@@ -90,7 +90,7 @@ Installers for the following tools are included:
 | web | Directory | [dirb](http://dirb.sourceforge.net/) | Web path scanner. | <!--tool--><!--test-->
 | web | Directory | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. | <!--tool--><!--test-->
 | web | Directory | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
-| web | Directory | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--tool--><!--test-->
+| web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--deb-tool--><!--test-->
 | web | Directory | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | web | Directory | [webgrep](https://github.com/dhondta/webgrep) | `grep` for Web pages, with JS deobfuscation, CSS unminifying and OCR on images. | <!--tool--><!--test-->
 | stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. | <!--deb-tool-->
