@@ -46,7 +46,6 @@ Installers for the following tools are included:
 | forensics | Directory | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool--><!--test-->
 | forensics | Directory | [peepdf](https://github.com/cert-ee/peepdf) | Powerful Python tool to analyze PDF documents. | <!--tool--><!--test-->
 | forensics | Directory | [scrdec](https://gist.github.com/bcse/1834878) | A decoder for encoded Windows Scripts. | <!--tool--><!--test-->
-| forensics | Directory | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. | <!--tool--><!--test-->
 | crypto | Directory | [codext](https://github.com/dhondta/python-codext) | Python codecs extension featuring CLI tools for encoding/decoding anything including AI-based guessing mode. | <!--tool--><!--test-->
 | crypto | Directory | [cribdrag](https://github.com/SpiderLabs/cribdrag) | Interactive crib dragging tool (for crypto). | <!--tool--><!--test-->
 | crypto | Directory | [fastcoll](https://www.win.tue.nl/hashclash/) | An md5sum collision generator. | <!--tool--><!--test-->
@@ -215,6 +214,7 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. |
 | forensics | apt | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
 | forensics | apt | [origami-pdf](http://github.com/gdelugre/origami) | PDF manipulator. |
+| forensics | Directory | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
 | web | apt | [dirb](http://dirb.sourceforge.net/) | Web path scanner. |
 | web | apt | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. |
 | web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |

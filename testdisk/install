@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-curl https://www.cgsecurity.org/testdisk-7.0.linux26-x86_64.tar.bz2 | tar xj
-
-mkdir -p bin
-cd bin
-ln -s ../testdisk-7.0/*_static .
-cd ..
