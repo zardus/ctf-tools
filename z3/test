@@ -1,9 +1,0 @@
-#!/bin/bash -ex
-
-set +e
-source ${VIRTUALENVWRAPPER_SCRIPT}
-workon ctftools
-set -e
-
-python -c 'import z3; print(z3.get_version_string())' || exit 1
-exit 0
