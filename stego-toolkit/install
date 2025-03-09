@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-# Nothing to do
-# This file exists to prevent manage-tools install from returning 1

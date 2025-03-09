@@ -74,7 +74,6 @@ Installers for the following tools are included:
 | stego | Directory | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegano-tools](https://github.com/dhondta/stegano-tools) | A collection of text and image steganography tools (incl LSB, PVD, PIT). | <!--tool--><!--test-->
 | stego | Directory | [stegdetect](http://www.outguess.org/) | Stenography detection/breaking tool. | <!--tool--><!--test-->
-| stego | Docker | [stego-toolkit](https://github.com/DominicBreuker/stego-toolkit) | A docker image with dozens of steg tools. | <!--tool--><!--no-test-->
 | stego | Directory | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool--><!--no-test-->
 | stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
@@ -221,6 +220,15 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | networking | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. |
 | networking | apt | [bettercap](https://www.bettercap.org/) | Network shenanigans swiss army knife. |
 | misc | apt | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. |
+
+## Useful CTF tools in docker images
+
+Previously, this repository included some scripts that were wrappers around `docker pull`.
+We trust that you can do that yourself :-)
+
+| Category | Source | Tool | Description |
+|----------|--------|------|-------------|
+| stego | Docker | [stego-toolkit](https://github.com/DominicBreuker/stego-toolkit) | A docker image with dozens of steg tools. |
 
 ## Useful CTF Libraries
 
