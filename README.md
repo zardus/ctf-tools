@@ -152,10 +152,9 @@ manage-tools search preload
 ```
 
 Where possible, the tools keep the installs very self-contained (i.e., in to tool/ directory), and most uninstalls are just calls to `git clean` (**NOTE**, this is **NOT** careful; everything under the tool directory, including whatever you were working on, is blown away during an uninstall).
-One exception to this are python tools, which are installed using the `pip`
-package manager if possible. A `ctftools` virtualenv is created during the
-`manage-tools setup` command and can be accessed using the command
-`workon ctftools`.
+
+Python and Ruby tools are installed in a tool-specific virtual environment.
+If you want to add other packages to this environment, look under the `ctf-tools/TOOL/pipx` or `ctf-tools/TOOL/gems` directories.
 
 ## Help!
 
