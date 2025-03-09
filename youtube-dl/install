@@ -1,6 +1,0 @@
-#!/bin/bash -ex
-
-wget https://yt-dl.org/latest/youtube-dl 
-chmod 755 youtube-dl
-mkdir -p bin
-mv youtube-dl bin

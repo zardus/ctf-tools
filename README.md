@@ -91,7 +91,6 @@ Installers for the following tools are included:
 | misc | Directory | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. | <!--tool--><!--times-out-->
 | misc | Directory | [jdgui](http://jd.benow.ca/) | Java decompiler. | <!--tool--><!--test-->
 | misc | Directory | [veles](https://codisec.com/veles/) | Binary data analysis and visualization tool. | <!--tool--><!--test-->
-| misc | Directory | [youtube-dl](https://yt-dl.org/) | Latest version of the popular youtube downloader. | <!--tool--><!--test-->
 | misc | Directory | [python2](https://www.python.org/downloads/release/python-2718/) | For when you really need it... | <!--tool--><!--test-->
 
 There are also some installers for non-CTF stuff to break the monotony!
