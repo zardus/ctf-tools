@@ -78,7 +78,7 @@ Installers for the following tools are included:
 | stego | Directory | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool--><!--no-test-->
 | stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
-| misc | Directory | [xspy](http://git.kali.org/gitweb/?p=packages/xspy.git;a=summary) | Tiny tool to spy on X sessions. | <!--tool--><!--test-->
+| misc | Directory | [xspy](https://gitlab.com/kalilinux/packages/xspy) | Tiny tool to spy on X sessions. | <!--tool--><!--test-->
 | misc | Directory | [jdgui](http://jd.benow.ca/) | Java decompiler. | <!--tool--><!--test-->
 | misc | Directory | [veles](https://codisec.com/veles/) | Binary data analysis and visualization tool. | <!--tool--><!--test-->
 | misc | Directory | [python2](https://www.python.org/downloads/release/python-2718/) | For when you really need it... | <!--tool--><!--test-->
