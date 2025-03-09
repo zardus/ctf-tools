@@ -1,12 +1,10 @@
 #!/bin/bash -ex
 
 git clone --depth=1 https://github.com/nccgroup/featherduster.git
-ctf-tools-pip install --upgrade -e featherduster
 
-mkdir bin || true
+python2 -m virtualenv venv
+venv/bin/pip2 install -e ./featherduster
+
+mkdir bin
 cd bin
-cat > featherduster <<EOF
-#!/bin/sh
-exec python $(realpath ../featherduster/featherduster.py) "\$@"
-EOF
-chmod +x featherduster
+ln -s ../venv/bin/featherduster .
