@@ -1,10 +1,11 @@
 #!/bin/bash -ex
 
-ctf-tools-pip install --upgrade tinyscript
-ctf-tools-pip3 install --upgrade tinyscript
+virtualenv venv
+source venv/bin/activate
+pip install tinyscript
+
 [ -e stegano-tools ] || git clone --recurse https://github.com/dhondta/stegano-tools
 
-source ctf-tools-venv-activate3
 mkdir -p bin
 for F in `find stegano-tools -type f -iname "*.py"`; do
   N="${F##*/}"
@@ -14,6 +15,6 @@ for F in `find stegano-tools -type f -iname "*.py"`; do
   echo "$N"
   chmod +x $P1
   cp $P1 $P2
-  sed -i '1s/.*/\#\!\$HOME\/\.virtualenvs\/ctftools3\/bin\/python3/' $P2
+  sed -i '1s|.*|#!'"$VIRTUAL_ENV"'/bin/python3|' $P2
   ln -s $P2 bin/$N
 done
