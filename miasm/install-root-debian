@@ -1,7 +1,0 @@
-#!/bin/bash -ex
-
-apt-get install -y \
-    zlib1g zlib1g-dev \
-    libstdc++6 \
-    llvm-3.8 llvm-3.8-dev clang-3.8 \
-    libedit2 libedit-dev

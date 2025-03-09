@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-pacman -Syu --needed --noconfirm \
-    zlib libstdc++5 llvm clang libedit

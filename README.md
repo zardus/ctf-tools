@@ -25,7 +25,6 @@ Installers for the following tools are included:
 | binary | Directory | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
 | binary | Directory | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
 | binary | Directory | [libheap](https://github.com/cloudburst/libheap) | gdb python library for examining the glibc heap (ptmalloc) | <!--tool--><!--no-test-->
-| binary | Directory | [miasm](https://github.com/cea-sec/miasm) | Reverse engineering framework in Python. | <!--tool--> <!--test-->
 | binary | Directory | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> <!--test-->
 | binary | Directory | [panda](https://github.com/moyix/panda) | Platform for Architecture-Neutral Dynamic Analysis. | <!--tool--><!--no-test-->
 | binary | Directory | [pathgrind](https://github.com/codelion/pathgrind) | Path-based, symbolically-assisted fuzzer. | <!--tool--><!--failing-->
@@ -251,6 +250,7 @@ Because of how bespoke library install preferences are (e.g., unlike a tool, it'
 | binary | Library | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. |
 | binary | Library | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. |
 | binary | Library | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. |
+| binary | Library | [miasm](https://github.com/cea-sec/miasm) | Reverse engineering framework in Python. | <!--tool--> <!--test-->
 | binary | Library | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. |
 | binary | Library | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. |
 | crypto | Library | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |

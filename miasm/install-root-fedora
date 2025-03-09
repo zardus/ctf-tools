@@ -1,6 +1,0 @@
-#!/bin/bash -ex
-
-dnf install -y zlib zlib-devel \
-    libstdc++-devel libstdc++ libstdc++-static \
-    llvm llvm-devel \
-    libedit libedit-devel
