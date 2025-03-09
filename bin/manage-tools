@@ -351,6 +351,7 @@ case $ACTION in
 	install)
 		verify_tool_sanity
 		cd $TOOL
+
 		if [ "$FORCE" -eq 0 ] && is_tool_installed "."
 		then
 			tool_log "appears to already be installed. Uninstall first?"
@@ -402,6 +403,11 @@ case $ACTION in
 
 		# execute install script
 		set +e
+
+		export PIPX_HOME=$PWD/pipx
+		export PIPX_MAN_DIR=$PWD/pipx
+		export PIPX_BIN_DIR=$PWD/bin
+
 		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
 			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH nice -n$NICE_LEVEL ./install 2>&1 | tee -a install.log
 		else
