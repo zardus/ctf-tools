@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-ctf-tools-pip uninstall -y keystone || true
-ctf-tools-pip3 uninstall -y keystone || true

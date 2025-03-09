@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-ctf-tools-pip uninstall -y unicorn || true
-ctf-tools-pip3 uninstall -y unicorn || true

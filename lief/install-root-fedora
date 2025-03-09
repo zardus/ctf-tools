@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-dnf install -y cmake 
