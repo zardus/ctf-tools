@@ -9,6 +9,7 @@ cd ..
 
 mkdir bin
 cat <<END >bin/beef
+#!/bin/bash
 export GEM_PATH=$PWD/gems
 export GEM_HOME=$PWD/gems
 cd $PWD/beef # REQUIRED for ruby crap

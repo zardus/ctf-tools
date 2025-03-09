@@ -338,6 +338,7 @@ case $ACTION in
 			for BIN in $PWD/$TOOL/gems/bin/*
 			do
 				cat <<END >$TOOL/bin/$(basename $BIN)
+#!/bin/bash
 export GEM_PATH=$PWD/$TOOL/gems
 export GEM_HOME=$PWD/$TOOL/gems
 $BIN "\$@"
