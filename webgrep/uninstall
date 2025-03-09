@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-ctf-tools-pip3 uninstall -y webgrep-tool || true
