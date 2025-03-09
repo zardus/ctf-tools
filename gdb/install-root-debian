@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 set -eu -o pipefail
 
-apt-get -y install texinfo guile-2.0-dev
+apt-get -y install texinfo guile-2.2-dev libgmp-dev libmpfr-dev

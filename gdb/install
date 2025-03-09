@@ -21,7 +21,8 @@ mv "gdb-$VERSION" "gdb"
 
 set +x
 # move to ctftools virtual env
-source ctf-tools-venv-activate
+virtualenv venv
+source venv/bin/activate
 set -x
 
 PREFIX=$(pwd)
@@ -31,13 +32,9 @@ pushd ./gdb
     --prefix=$PREFIX \
     --with-python=$(which python) \
     --enable-targets=all \
-    --with-guile=guile-2.0
+    --with-guile=guile-2.2
 make -j $(nproc)
 make install
 # remove build artifacts
 make clean
 popd
-
-# reduce binary size a little...
-strip bin/gdb || true
-strip bin/gdbserver || true
