@@ -38,8 +38,6 @@ Installers for the following tools are included:
 | binary | Directory | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool--><!--test-->
 | binary | Directory | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool--><!--test-->
 | binary | Directory | [rr](http://rr-project.org) | Record and Replay Debugging Framework | <!--tool--><!--test-->
-| binary | Directory | [scratchabit](https://github.com/pfalcon/ScratchABit) | Easily retargetable and hackable interactive disassembler | <!--tool--><!--test-->
-| binary | Directory | [scratchablock](https://github.com/pfalcon/ScratchABlock) | Yet another crippled decompiler project | <!--tool--><!--test-->
 | binary | Directory | [seccomp-tools](https://github.com/david942j/seccomp-tools) | Provides powerful tools for seccomp analysis | <!--tool--><!--test-->
 | binary | Directory | [shellnoob](https://github.com/reyammer/shellnoob) | Shellcode writing helper. | <!--tool--><!--test-->
 | binary | Directory | [shellsploit](https://github.com/b3mb4m/shellsploit-framework) | Shellcode development kit. | <!--tool--><!--test-->

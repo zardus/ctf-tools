@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-git clone --recursive https://github.com/pfalcon/ScratchABit
-
-mkdir -p bin
-cd bin
-ln -s ../ScratchABit/ScratchABit.py ./scratchabit.py
-cd ..
