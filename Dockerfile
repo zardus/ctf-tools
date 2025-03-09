@@ -11,22 +11,16 @@ RUN apt-get-install build-essential libtool g++ gcc rubygems \
 RUN useradd -m ctf
 RUN echo "ctf ALL=NOPASSWD: ALL" > /etc/sudoers.d/ctf
 
-COPY .git /home/ctf/tools/.git
-RUN chown -R ctf:ctf /home/ctf/tools
-
-# git checkout of the files
+# a bit weird so that we don't invalidate this cache unless manage-tools changes
 USER ctf
 WORKDIR /home/ctf/tools
+ADD --chown=ctf:ctf bin/manage-tools /home/ctf/tools/bin/manage-tools
+RUN bin/manage-tools -s setup && rm bin/manage-tools
+
+# now check out the repo and re-copy the script if modified
+ADD --chown=ctf:ctf .git /home/ctf/tools/.git
 RUN git checkout .
-
-# add non-commited scripts
-USER root
-COPY bin/manage-tools /home/ctf/tools/bin/
-RUN chown -R ctf:ctf /home/ctf/tools
-
-# finally run ctf-tools setup
-USER ctf
-RUN bin/manage-tools -s setup
+COPY bin/manage-tools /home/ctf/tools/bin/manage-tools
 
 ARG PREINSTALL=""
 RUN <<END
