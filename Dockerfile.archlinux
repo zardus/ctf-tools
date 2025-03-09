@@ -20,8 +20,8 @@ RUN pacman -Syu --noconfirm \
     && pacman -Scc --noconfirm
 RUN trust extract-compat
 RUN pacman -Syu --noconfirm --needed \
-        curl wget python2 python3 git subversion \
-        python2-pip python-pip \
+        curl wget python3 git subversion \
+        python-pip \
         unzip python-virtualenvwrapper \
         zsh grml-zsh-config \
         sudo which \
@@ -42,15 +42,10 @@ RUN git checkout .
 # add non-commited scripts
 USER root
 COPY bin/manage-tools /home/ctf/tools/bin/
-COPY bin/ctf-tools-pip /home/ctf/tools/bin/
-COPY bin/ctf-tools-venv-activate /home/ctf/tools/bin/
-COPY bin/ctf-tools-venv-activate3 /home/ctf/tools/bin/
 RUN chown -R ctf.ctf /home/ctf/tools
 
 USER ctf
 RUN bin/manage-tools -s setup
-RUN echo 'source $(which virtualenvwrapper.sh)' >> ~/.zshrc
-RUN echo 'workon ctftools' >> ~/.zshrc
 
 WORKDIR /home/ctf
 CMD ["zsh", "-i"]

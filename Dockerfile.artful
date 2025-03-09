@@ -22,17 +22,11 @@ RUN git checkout .
 # add non-commited scripts
 USER root
 COPY bin/manage-tools /home/ctf/tools/bin/
-COPY bin/ctf-tools-pip /home/ctf/tools/bin/
-COPY bin/ctf-tools-venv-activate /home/ctf/tools/bin/
-COPY bin/ctf-tools-venv-activate3 /home/ctf/tools/bin/
 RUN chown -R ctf.ctf /home/ctf/tools
 
 # finally run ctf-tools setup
 USER ctf
 RUN bin/manage-tools -s setup
-RUN bin/ctf-tools-pip install appdirs
-#RUN echo "workon ctftools" >> /home/ctf/.bashrc
-RUN echo 'source $(which ctf-tools-venv-activate)' >> /home/ctf/.bashrc
 
 WORKDIR /home/ctf
 #CMD bash -i
