@@ -8,4 +8,4 @@ mkdir bin
 cd bin
 ln -s ../pyenv-root/versions/2.7.18/bin/{easy_install-2.7,pip2.7,python2.7,python2.7-gdb.py,pip2,python2,python2.7-config,python2-config} .
 
-bin/pip2 install virtualenv
+./pip2 install virtualenv
