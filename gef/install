@@ -1,30 +1,10 @@
 #!/bin/bash -ex
 set -eu -o pipefail
 
-git clone --depth 1 https://github.com/hugsy/gef.git
-
+wget -O gef.py -q https://gef.blah.cat/py
 mkdir bin
-cat > bin/gdb-gef <<EOF
-#!/bin/sh
-exec gdb -q -ex init-gef "\$@"
-EOF
-chmod +rx bin/gdb-gef
-
-cd gef
-# make sure gdbinit exists
-touch ~/.gdbinit
-if ! grep "init-gef" ~/.gdbinit; then
-    cat >> ~/.gdbinit <<EOF
-
-####
-# added by ctf-tools
-define init-gef
-    source $PWD/gef.py
-end
-document init-gef
-    Initializes the GEF (GDB Enhanced Features) plugin
-end
-####
-
-EOF
-fi
+cat <<END > bin/gef
+#!/bin/bash
+gdb -ex "source $PWD/gef.py" "\$@"
+END
+chmod 755 bin/gef
