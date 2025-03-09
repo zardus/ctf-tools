@@ -2,7 +2,7 @@
 
 INST_DIR="$PWD"
 
-git clone --depth 1 https://github.com/AlexandreFournier/stegdetect.git
+git clone --depth 1 https://github.com/abeluck/stegdetect
 
 mkdir -p bin etc man/man1 share/stegbreak
 cd stegdetect
