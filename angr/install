@@ -1,21 +1,3 @@
 #!/bin/bash -ex
 
-source ctf-tools-venv-activate
-
-#[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/PyQt4 ] || ln -s /usr/lib/python2.7/dist-packages/PyQt4 $VIRTUAL_ENV/lib/python2.7/site-packages/
-#[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/sip.so ] || ln -s /usr/lib/python2.7/dist-packages/sip.so $VIRTUAL_ENV/lib/python2.7/site-packages/
-#[ -e $VIRTUAL_ENV/lib/python2.7/site-packages/pygraphviz ] || ln -s /usr/lib/pymodules/python2.7/pygraphviz $VIRTUAL_ENV/lib/python2.7/site-packages/
-
-git clone --depth 1 https://github.com/angr/angr-dev
-GIT_ASKPASS=echo angr-dev/setup.sh -w -r https://git:@github.com/salls angrop
-rm -rf angr-dev/wheels
-
-mkdir -p bin
-cd bin
-cat <<END > angr-management
-#!/bin/bash -e
-
-$VIRTUAL_ENV/bin/python -m angrmanagement "\$@"
-END
-chmod 755 angr-management
-cd ..
+pipx install angr
