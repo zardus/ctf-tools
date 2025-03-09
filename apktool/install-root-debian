@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get install -y default-jre
