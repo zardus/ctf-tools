@@ -30,4 +30,5 @@ do
 done
 END
 
+ENV PATH=/home/ctf/tools/bin:/bin:/sbin
 WORKDIR /home/ctf
