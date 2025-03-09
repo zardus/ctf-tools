@@ -5,7 +5,7 @@ COPY .docker/apt-get-install /usr/local/bin/apt-get-install
 RUN chmod +x /usr/local/bin/apt-get-install
 
 RUN apt-get-install build-essential libtool g++ gcc rubygems \
-    texinfo curl wget automake autoconf python python-dev python3-dev git \
+    texinfo curl wget automake autoconf python3 python3-dev git \
     unzip virtualenvwrapper sudo git subversion virtualenvwrapper ca-certificates
 
 RUN useradd -m ctf
