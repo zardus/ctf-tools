@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-apt-get install -y libc6-dbg
