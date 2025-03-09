@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 find_latest_qemu_version() {
-    git ls-remote --tags git://git.qemu.org/qemu.git \
+    git ls-remote --tags https://gitlab.com/qemu-project/qemu.git \
         | grep -v '\-rc' \
         | grep -oh 'v[0-9]\{1,2\}\.[0-9]\{1,2\}\(\.[0-9]\{1,2\}\(\.[0-9]\{0,2\}\)\?\)\?' \
         | sort --version-sort -r \
@@ -11,10 +11,12 @@ find_latest_qemu_version() {
 #VERSION=v2.10.1
 VERSION=$(find_latest_qemu_version)
 echo $VERSION > qemu_version
-git clone --depth=1 -b "$VERSION" git://git.qemu-project.org/qemu.git
+git clone --depth=1 -b "$VERSION" https://gitlab.com/qemu-project/qemu.git
 
 set +x
-source ctf-tools-venv-activate
+virtualenv venv
+source venv/bin/activate
+pip install sphinx sphinx_rtd_theme
 set -x
 
 prefix="--prefix=$(pwd)"

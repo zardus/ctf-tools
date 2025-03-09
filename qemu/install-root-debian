@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 
-apt-get install -y python pkg-config zlib1g-dev \
-    libglib2.0-dev libpixman-1-dev libfdt-dev 
+apt-get install -y python3 pkg-config zlib1g-dev \
+    libglib2.0-dev libpixman-1-dev libfdt-dev ninja-build flex bison

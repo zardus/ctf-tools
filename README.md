@@ -255,7 +255,7 @@ Because of how bespoke library install preferences are (e.g., unlike a tool, it'
 | binary | Library | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. |
 | binary | Library | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. |
 | binary | Library | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. |
-| binary | Library | [miasm](https://github.com/cea-sec/miasm) | Reverse engineering framework in Python. | <!--tool--> <!--test-->
+| binary | Library | [miasm](https://github.com/cea-sec/miasm) | Reverse engineering framework in Python. |
 | binary | Library | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. |
 | binary | Library | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. |
 | crypto | Library | [cryptanalib3](https://github.com/unicornsasfuel/cryptanalib3) |  The surviving core of featherduster cryptanalysis tool, updated for python3. |
