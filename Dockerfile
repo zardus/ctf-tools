@@ -8,7 +8,7 @@ RUN apt-get-install build-essential libtool g++ gcc rubygems \
     texinfo curl wget automake autoconf python3 python3-dev git \
     unzip virtualenvwrapper sudo git subversion virtualenvwrapper ca-certificates
 
-RUN useradd -m ctf
+RUN userdel -f -r ubuntu; useradd -m ctf
 RUN echo "ctf ALL=NOPASSWD: ALL" > /etc/sudoers.d/ctf
 
 # a bit weird so that we don't invalidate this cache unless manage-tools changes
