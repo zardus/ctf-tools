@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-ctf-tools-pip uninstall -y barf pyasmjit
-rm -f $VIRTUAL_ENV/bin/BARFgadgets
