@@ -79,7 +79,6 @@ Installers for the following tools are included:
 | crypto | Directory | [nonce-disrespect](https://github.com/nonce-disrespect/nonce-disrespect) | Nonce-Disrespecting Adversaries: Practical Forgery Attacks on GCM in TLS. | <!--tool--><!--test-->
 | crypto | Directory | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. | <!--tool--><!--test-->
 | crypto | Directory | [pkcrack](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) | PkZip encryption cracker. | <!--tool--><!--test-->
-| crypto | Directory | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. | <!--tool--><!--test-->
 | crypto | Directory | [reveng](http://reveng.sourceforge.net/) | CRC finder. | <!--tool--><!--test-->
 | crypto | Directory | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. | <!--tool--><!--test-->
 | crypto | Directory | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. | <!--tool--><!--test-->
@@ -244,3 +243,14 @@ Good luck!
 There's a curated list of CTF tools, but without installers, here: https://github.com/apsdehal/aWEsoMe-cTf.
 
 There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
+
+## Useful CTF Libraries
+
+Previously, this repository included library installers.
+Because of how bespoke library install preferences are (e.g., unlike a tool, it's not clear if per-library venvs are a desired thing), we've stopped shipping them, and link them here for posterity.
+
+| binary | Library | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. |
+| binary | Library | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. |
+| binary | Library | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. |
+| binary | Library | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. |
+| crypto | Library | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |
