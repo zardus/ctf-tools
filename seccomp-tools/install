@@ -1,27 +1,3 @@
 #!/bin/bash -ex
 
-gem install --user-install seccomp-tools
-
-GEM_BIN_PATH=$(gem environment | grep "USER INSTALL" | awk -F ': ' '{ print $2 }')/bin
-
-MAGIC="# ctf-tools: gem install"
-for f in ~/.bashrc ~/.zshrc; do
-    if [[ -e "$f" ]]; then
-        if ! grep "$MAGIC" "$f" >/dev/null 2>&1; then
-            cat >> "$f" << EOF
-$MAGIC
-export PATH=\$PATH:$GEM_BIN_PATH
-EOF
-        fi
-    fi
-done
-
-f=~/.config/fish/config.fish
-if [[ -e "$f" ]]; then
-    if ! grep "$MAGIC" "$f" >/dev/null 2>&1; then
-        cat >> "$f" << EOF
-$MAGIC
-set -x PATH \$PATH $GEM_BIN_PATH
-EOF
-    fi
-fi
+gem install seccomp-tools

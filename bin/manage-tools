@@ -341,12 +341,28 @@ case $ACTION in
 		;;
 	bin)
 		verify_tool_sanity
-		cd bin
-		if [ -d ../$TOOL/bin ]; then
+		if [ -d $TOOL/gems/bin ]; then
+			tool_log "making wrappers for rubygems apps"
+
+			mkdir -p $TOOL/bin
+			for BIN in $PWD/$TOOL/gems/bin/*
+			do
+				cat <<END >$TOOL/bin/$(basename $BIN)
+export GEM_PATH=$PWD/$TOOL/gems
+export GEM_HOME=$PWD/$TOOL/gems
+$BIN "\$@"
+END
+			done
+
+			chmod 755 $TOOL/bin/*
+		fi
+
+		if [ -d $TOOL/bin ]; then
+			cd bin
 			ln -sf ../$TOOL/bin/* .
+			cd ..
 			tool_log "bin symlinks updated"
 		fi
-		cd ..
 		;;
 	install)
 		verify_tool_sanity
@@ -407,6 +423,9 @@ case $ACTION in
 		export PIPX_HOME=$PWD/pipx
 		export PIPX_MAN_DIR=$PWD/pipx
 		export PIPX_BIN_DIR=$PWD/bin
+
+		export GEM_HOME=$PWD/gems
+		export GEM_PATH=$PWD/gems
 
 		if [ "$VERBOSE_OUTPUT" -eq 1 ]; then
 			DISTRI=$DISTRI PATH=$CTF_TOOLS_ROOT/bin/:$PATH nice -n$NICE_LEVEL ./install 2>&1 | tee -a install.log
