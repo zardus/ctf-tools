@@ -28,4 +28,12 @@ RUN chown -R ctf:ctf /home/ctf/tools
 USER ctf
 RUN bin/manage-tools -s setup
 
+ARG PREINSTALL=""
+RUN <<END
+for TOOL in $PREINSTALL
+do
+	/home/ctf/tools/bin/manage-tools -s -v install $TOOL
+done
+END
+
 WORKDIR /home/ctf
