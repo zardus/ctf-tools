@@ -331,7 +331,7 @@ case $ACTION in
 		;;
 	bin)
 		verify_tool_sanity
-		if [ -d $TOOL/gems/bin ]; then
+		if [ ! -d $TOOL/bin ] && [ -d $TOOL/gems/bin ]; then
 			tool_log "making wrappers for rubygems apps"
 
 			mkdir -p $TOOL/bin

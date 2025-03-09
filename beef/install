@@ -3,4 +3,15 @@
 git clone --depth 1 https://github.com/beefproject/beef
 
 cd beef
-bundle
+rm Gemfile.lock
+bundle install
+cd ..
+
+mkdir bin
+cat <<END >bin/beef
+export GEM_PATH=$PWD/gems
+export GEM_HOME=$PWD/gems
+cd $PWD/beef # REQUIRED for ruby crap
+./beef "\$@"
+END
+chmod 755 bin/beef
