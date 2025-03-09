@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get -y install build-essential gcc g++ make cmake libboost-dev libprotobuf-dev protobuf-compiler libboost-thread-dev libboost-system-dev libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev libboost-regex-dev libboost-all-dev
-
