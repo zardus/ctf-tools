@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-ctf-tools-pip uninstall -y python-paddingoracle || true

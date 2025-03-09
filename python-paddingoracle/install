@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/mwielgoszewski/python-paddingoracle.git
-ctf-tools-pip install -e python-paddingoracle
