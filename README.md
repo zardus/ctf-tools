@@ -10,7 +10,6 @@ Installers for the following tools are included:
 
 | Category | Source | Tool | Description |
 |----------|--------|------|-------------|
-| binary | apt | [aflplusplus](https://github.com/AFLplusplus/AFLplusplus) | State-of-the-art fuzzer. | <!--deb-tool-->
 | binary | Directory | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool-->
 | binary | Directory | [angr-management](http://angr.io) | A GUI reverse engineering and decompilation tool. | <!--tool-->
 | binary | Directory | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. | <!--tool--><!--test-->
@@ -35,7 +34,6 @@ Installers for the following tools are included:
 | binary | Directory | [python-pin](https://github.com/blankwall/Python_Pin) | Python bindings for pin. | <!--tool--><!--test-->
 | binary | Directory | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--times-out-->
 | binary | Directory | [qira](http://qira.me) | Parallel, timeless debugger. | <!--tool--><!--times-out-->
-| binary | Directory | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. | <!--tool--><!--test-->
 | binary | Directory | [rappel](https://github.com/yrp604/rappel) | A linux-based assembly REPL. | <!--tool--><!--test-->
 | binary | Directory | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool--><!--test-->
 | binary | Directory | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool--><!--test-->
@@ -52,11 +50,9 @@ Installers for the following tools are included:
 | binary | Directory | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. | <!--tool--><!--no-test-->
 | binary | Directory | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
 | binary | Directory | [manticore](https://github.com/trailofbits/manticore) | Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool--><!--no-test-->
-| forensics | apt | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware (and arbitrary file) analysis tool. | <!--tool--><!--test-->
 | forensics | Directory | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. | <!--tool--><!--test-->
 | forensics | Directory | [exetractor](https://github.com/kholia/exetractor-clone) | Unpacker for packed Python executables. Supports PyInstaller and py2exe. | <!--tool--><!--test-->
 | forensics | Directory | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. | <!--tool--><!--test-->
-| forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. | <!--deb-tool-->
 | forensics | Directory | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool--><!--test-->
 | forensics | Directory | [peepdf](https://github.com/jesparza/peepdf) | Powerful Python tool to analyze PDF documents. | <!--tool--><!--test-->
 | forensics | Directory | [scrdec](https://gist.github.com/bcse/1834878) | A decoder for encoded Windows Scripts. | <!--tool--><!--test-->
@@ -86,10 +82,8 @@ Installers for the following tools are included:
 | web | Directory | [dirb](http://dirb.sourceforge.net/) | Web path scanner. | <!--tool--><!--test-->
 | web | Directory | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. | <!--tool--><!--test-->
 | web | Directory | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
-| web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. | <!--deb-tool--><!--test-->
 | web | Directory | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | web | Directory | [webgrep](https://github.com/dhondta/webgrep) | `grep` for Web pages, with JS deobfuscation, CSS unminifying and OCR on images. | <!--tool--><!--test-->
-| stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. | <!--deb-tool-->
 | stego | Directory | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool--><!--failing-->
 | stego | Directory | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegano-tools](https://github.com/dhondta/stegano-tools) | A collection of text and image steganography tools (incl LSB, PVD, PIT). | <!--tool--><!--test-->
@@ -98,8 +92,6 @@ Installers for the following tools are included:
 | stego | Directory | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool--><!--no-test-->
 | stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
-| networking | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. | <!--deb-tool-->
-| networking | apt | [bettercap](https://www.bettercap.org/) | Network shenanigans swiss army knife. | <!--deb-tool-->
 | android | Directory | [apktool](https://ibotpeaches.github.io/Apktool/) | Dissect, dis-assemble, and re-pack Android APKs | <!--tool--><!--test-->
 | android | Directory | [android-sdk](http://developer.android.com/sdk) | The android SDK (adb, emulator, etc). | <!--tool--><!--no-test-->
 | misc | Directory | [xspy](http://git.kali.org/gitweb/?p=packages/xspy.git;a=summary) | Tiny tool to spy on X sessions. | <!--tool--><!--test-->
@@ -240,11 +232,28 @@ There's a curated list of CTF tools, but without installers, here: https://githu
 
 There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
 
+## Useful CTF tools in apt repos
+
+As tools get officially packaged, we switch to just suggesting that you apt install them!
+
+| Category | Source | Tool | Description |
+|----------|--------|------|-------------|
+| binary | apt | [aflplusplus](https://github.com/AFLplusplus/AFLplusplus) | State-of-the-art fuzzer. |
+| binary | apt | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
+| forensics | apt | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware (and arbitrary file) analysis tool. |
+| forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. |
+| web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
+| stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. |
+| networking | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. |
+| networking | apt | [bettercap](https://www.bettercap.org/) | Network shenanigans swiss army knife. |
+
 ## Useful CTF Libraries
 
 Previously, this repository included library installers.
 Because of how bespoke library install preferences are (e.g., unlike a tool, it's not clear if per-library venvs are a desired thing), we've stopped shipping them, and link them here for posterity.
 
+| Category | Source | Tool | Description |
+|----------|--------|------|-------------|
 | binary | Library | [capstone](http://www.capstone-engine.org) | Multi-architecture disassembly framework. |
 | binary | Library | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. |
 | binary | Library | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. |
