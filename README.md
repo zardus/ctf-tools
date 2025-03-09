@@ -10,7 +10,6 @@ Installers for the following tools are included:
 |----------|--------|------|-------------|
 | binary | Directory | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool-->
 | binary | Directory | [angr-management](http://angr.io) | A GUI reverse engineering and decompilation tool. | <!--tool-->
-| binary | Directory | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. | <!--tool--><!--test-->
 | binary | Directory | [codereason](https://github.com/trailofbits/codereason) | Semantic Binary Code Analysis Framework. | <!--tool--><!--failing-->
 | binary | Directory | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
 | binary | Directory | [cross2](http://kozos.jp/books/asm/asm.html) | A set of cross-compilation tools from a Japanese book on C. | <!--tool--><!--no-test-->
@@ -214,6 +213,7 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | Category | Source | Tool | Description |
 |----------|--------|------|-------------|
 | binary | apt | [aflplusplus](https://github.com/AFLplusplus/AFLplusplus) | State-of-the-art fuzzer. |
+| binary | apt | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. | <!--tool--><!--test-->
 | binary | apt | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
 | forensics | apt | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware (and arbitrary file) analysis tool. |
 | forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. |

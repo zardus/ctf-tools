@@ -1,6 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/slimm609/checksec.sh
-mkdir bin
-cd bin
-ln -s ../checksec.sh/checksec .
