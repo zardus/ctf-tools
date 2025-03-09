@@ -50,7 +50,6 @@ Installers for the following tools are included:
 | binary | Directory | [taintgrind](https://github.com/wmkhoo/taintgrind) | A valgrind taint analysis tool. | <!--tool--><!--failing-->
 | binary | Directory | [valgrind](http://valgrind.org) | A Dynamic Binary Instrumentation framework with some built-in tools. | <!--tool--><!--test-->
 | binary | Directory | [villoc](https://github.com/wapiflapi/villoc) | Visualization of heap operations. | <!--tool--><!--test-->
-| binary | Directory | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. | <!--tool--><!--test-->
 | binary | Directory | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. | <!--tool--><!--no-test-->
 | binary | Directory | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
 | binary | Directory | [manticore](https://github.com/trailofbits/manticore) | Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool--><!--no-test-->
@@ -253,4 +252,5 @@ Because of how bespoke library install preferences are (e.g., unlike a tool, it'
 | binary | Library | [keystone](http://www.keystone-engine.org) | Lightweight multi-architecture assembler framework. |
 | binary | Library | [lief](https://lief.quarkslab.com/) | Library to Instrument Executable Formats. |
 | binary | Library | [unicorn](http://www.unicorn-engine.org) | Multi-architecture CPU emulator framework. |
+| binary | Library | [virtualsocket](https://github.com/antoniobianchi333/virtualsocket) | A nice library to interact with binaries. |
 | crypto | Library | [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle) | Padding oracle attack automation. |

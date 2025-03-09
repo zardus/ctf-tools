@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/antoniobianchi333/virtualsocket.git
-ctf-tools-pip install -e virtualsocket/
-
