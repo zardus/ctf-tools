@@ -1,37 +1,5 @@
 #!/bin/bash -ex
 
-git clone --depth 1 https://github.com/pwndbg/pwndbg
-
-source ctf-tools-venv-activate
-
-pushd pwndbg
-pip install -Ur ./requirements.txt
-
-git submodule update --init --recursive
-popd
-
-mkdir bin
-cat >> bin/pwndbg <<EOF
-#!/bin/sh
-exec gdb -q -ex init-pwndbg "\$@"
-EOF
-chmod +rx bin/pwndbg
-
-cd pwndbg
-# make sure gdbinit exists
-touch ~/.gdbinit
-if ! grep "init-pwndbg" ~/.gdbinit; then
-    cat >> ~/.gdbinit <<EOF
-
-####
-# added by ctf-tools
-define init-pwndbg
-    source $PWD/gdbinit.py
-end
-document init-pwndbg
-    Initializes the pwndbg gdb extension (https://github.com/pwndbg/pwndbg)
-end
-####
-
-EOF
-fi
+#git clone --depth 1 https://github.com/pwndbg/pwndbg
+wget https://github.com/pwndbg/pwndbg/releases/download/2025.02.19/pwndbg_2025.02.19_x86_64-portable.tar.xz
+tar xvf pwndbg_*-portable.tar.xz --strip-components 2 
