@@ -1,0 +1,207 @@
+diff --git a/block/gluster.c b/block/gluster.c
+index 0857c14..8dd3fad 100644
+--- a/block/gluster.c
++++ b/block/gluster.c
+@@ -511,7 +511,7 @@ static int qemu_gluster_create(const char *filename,
+     if (!fd) {
+         ret = -errno;
+     } else {
+-        if (!glfs_ftruncate(fd, total_size)) {
++        if (!glfs_ftruncate(fd, total_size, NULL, NULL)) {
+             if (prealloc && qemu_gluster_zerofill(fd, 0, total_size)) {
+                 ret = -errno;
+             }
+@@ -567,7 +567,7 @@ static int qemu_gluster_truncate(BlockDriverState *bs, int64_t offset)
+     int ret;
+     BDRVGlusterState *s = bs->opaque;
+ 
+-    ret = glfs_ftruncate(s->fd, offset);
++    ret = glfs_ftruncate(s->fd, offset, NULL, NULL);
+     if (ret < 0) {
+         return -errno;
+     }
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index f7a8bf2..6550b29 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -1,4 +1,5 @@
+ #include <stdio.h>
++#include <sys/sysmacros.h>
+ #include <sys/ipc.h>
+ #include <sys/msg.h>
+ #include <sys/sem.h>
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index d395f62..30a871f 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -92,6 +92,8 @@ int __clone2(int (*fn)(void *), void *child_stack_base,
+ #define tchars host_tchars /* same as target */
+ #define ltchars host_ltchars /* same as target */
+ 
++#define stime(x) clock_settime(CLOCK_REALTIME, (struct timespec*){x,0})
++
+ #include <linux/termios.h>
+ #include <linux/unistd.h>
+ #include <linux/cdrom.h>
+@@ -204,15 +206,6 @@ static type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5,	\
+ #define TARGET_NR__llseek TARGET_NR_llseek
+ #endif
+ 
+-#ifdef __NR_gettid
+-_syscall0(int, gettid)
+-#else
+-/* This is a replacement for the host gettid() and must return a host
+-   errno. */
+-static int gettid(void) {
+-    return -ENOSYS;
+-}
+-#endif
+ #if defined(TARGET_NR_getdents) && defined(__NR_getdents)
+ _syscall3(int, sys_getdents, uint, fd, struct linux_dirent *, dirp, uint, count);
+ #endif
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index c2ff970..e6c9f51 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -15,6 +15,7 @@
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
+ #include <sys/wait.h>
++#include <sys/sysmacros.h>
+ #include <unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+diff --git a/user-exec.c b/user-exec.c
+index 8ad89a4..50c7cba 100644
+--- a/user-exec.c
++++ b/user-exec.c
+@@ -58,7 +58,7 @@ static void exception_action(CPUState *cpu)
+ void cpu_resume_from_signal(CPUState *cpu, void *puc)
+ {
+ #ifdef __linux__
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+ #elif defined(__OpenBSD__)
+     struct sigcontext *uc = puc;
+ #endif
+@@ -172,7 +172,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ #elif defined(__OpenBSD__)
+     struct sigcontext *uc = puc;
+ #else
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+ #endif
+     unsigned long pc;
+     int trapno;
+@@ -227,7 +227,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ #elif defined(__OpenBSD__)
+     struct sigcontext *uc = puc;
+ #else
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+ #endif
+ 
+     pc = PC_sig(uc);
+@@ -289,7 +289,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ 
+ #ifdef __APPLE__
+ #include <sys/ucontext.h>
+-typedef struct ucontext SIGCONTEXT;
++typedef ucontext_t SIGCONTEXT;
+ /* All Registers access - only for local access */
+ #define REG_sig(reg_name, context)              \
+     ((context)->uc_mcontext->ss.reg_name)
+@@ -332,7 +332,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+     ucontext_t *uc = puc;
+ #else
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+ #endif
+     unsigned long pc;
+     int is_write;
+@@ -359,7 +359,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+                            void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     uint32_t *pc = uc->uc_mcontext.sc_pc;
+     uint32_t insn = *pc;
+     int is_write = 0;
+@@ -457,7 +457,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ #if defined(__NetBSD__)
+     ucontext_t *uc = puc;
+ #else
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+ #endif
+     unsigned long pc;
+     int is_write;
+@@ -484,7 +484,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ int cpu_signal_handler(int host_signum, void *pinfo, void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     uintptr_t pc = uc->uc_mcontext.pc;
+     uint32_t insn = *(uint32_t *)pc;
+     bool is_write;
+@@ -513,7 +513,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+                        void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     unsigned long pc;
+     int is_write;
+ 
+@@ -535,7 +535,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ int cpu_signal_handler(int host_signum, void *pinfo, void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     unsigned long ip;
+     int is_write = 0;
+ 
+@@ -566,7 +566,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+                        void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     unsigned long pc;
+     uint16_t *pinsn;
+     int is_write = 0;
+@@ -619,7 +619,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+                        void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     greg_t pc = uc->uc_mcontext.pc;
+     int is_write;
+ 
+@@ -635,7 +635,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+                        void *puc)
+ {
+     siginfo_t *info = pinfo;
+-    struct ucontext *uc = puc;
++    ucontext_t *uc = puc;
+     unsigned long pc = uc->uc_mcontext.sc_iaoq[0];
+     uint32_t insn = *(uint32_t *)pc;
+     int is_write = 0;
+diff --git a/util/memfd.c b/util/memfd.c
+index 7c40691..1f3de72 100644
+--- a/util/memfd.c
++++ b/util/memfd.c
+@@ -40,7 +40,7 @@
+ #include <sys/syscall.h>
+ #include <asm/unistd.h>
+ 
+-static int memfd_create(const char *name, unsigned int flags)
++int memfd_create(const char *name, unsigned int flags)
+ {
+ #ifdef __NR_memfd_create
+     return syscall(__NR_memfd_create, name, flags);

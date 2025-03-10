@@ -12,13 +12,8 @@ git clone --depth 1 https://github.com/BinaryAnalysisPlatform/qira.git
 export PATH=$PWD/nosudo:$PATH
 cd qira
 
-# pip install bap, indeed...
-sed -i 's/WITH_BAP = True/WITH_BAP = False/' middleware/qira_config.py
-sed -i '/eval $(opam config env)/d' qira
-sed -i 's/\.\/bap_install.sh/#.\/bap_install.sh/g' install.sh
-
-./install.sh
 git apply ../qira_fix.patch
+./install.sh
 
 cd ..
 mkdir -p bin
