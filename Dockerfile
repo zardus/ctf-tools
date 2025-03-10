@@ -4,6 +4,8 @@ FROM ubuntu:noble
 COPY .docker/apt-get-install /usr/local/bin/apt-get-install
 RUN chmod +x /usr/local/bin/apt-get-install
 
+RUN sed -i -e "s/Types: deb/Types: deb deb-src/g" /etc/apt/sources.list.d/ubuntu.sources
+
 RUN apt-get-install build-essential libtool g++ gcc rubygems \
     texinfo curl wget automake autoconf python3 python3-dev git \
     unzip virtualenvwrapper sudo git subversion virtualenvwrapper ca-certificates
