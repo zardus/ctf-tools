@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-dnf install -y boost cmake qt5-base qqt5-base-devel
