@@ -4,7 +4,7 @@ PREFIX=$PWD
 
 git clone --depth 1 https://github.com/gat3way/hashkill.git
 cd hashkill
-sed -i -e "s/1\.13/1\.14/g" configure
+sed -i -e "s/1\.13/1\.16/g" configure
 ./configure --prefix="$PREFIX" --with-json
 make -j
 make install
