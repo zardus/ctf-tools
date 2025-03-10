@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/kholia/exetractor-clone.git
-
-mkdir bin
-cd bin
-ln -s ../exetractor-clone/ArchiveViewer.py ../exetractor-clone/ArchiveExtractor.py ../exetractor-clone/exetractor.py .
-cd ..
