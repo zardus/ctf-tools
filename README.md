@@ -55,7 +55,6 @@ Installers for the following tools are included:
 | crypto | Directory | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool--><!--test-->
 | crypto | Directory | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. | <!--tool--><!--test-->
 | crypto | Directory | [libc-database](https://github.com/niklasb/libc-database) | Build a database of libc offsets to simplify exploitation. | <!--tool--><!--test-->
-| crypto | Directory | [littleblackbox](https://github.com/devttys0/littleblackbox) | Database of private SSL/SSH keys for embedded devices. | <!--tool--><!--test-->
 | crypto | Directory | [msieve](http://sourceforge.net/projects/msieve/) | Msieve is a C library implementing a suite of algorithms to factor large integers. | <!--tool--><!--test-->
 | crypto | Directory | [nonce-disrespect](https://github.com/nonce-disrespect/nonce-disrespect) | Nonce-Disrespecting Adversaries: Practical Forgery Attacks on GCM in TLS. | <!--tool--><!--test-->
 | crypto | Directory | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. | <!--tool--><!--test-->
