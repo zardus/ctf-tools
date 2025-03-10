@@ -1,0 +1,16 @@
+diff --git a/shared-ng.inc b/shared-ng.inc
+index 77e85cf..42b45ee 100644
+--- a/shared-ng.inc
++++ b/shared-ng.inc
+@@ -1,4 +1,4 @@
+-VERSION=$(cat firmware_mod_kit_version.txt)
++VERSION=$(cat "$(dirname "${BASH_SOURCE[0]}")"/firmware_mod_kit_version.txt)
+ IMAGE_PARTS="$DIR/image_parts"
+ LOGS="$DIR/logs"
+ CONFLOG="$LOGS/config.log"
+@@ -8,4 +8,4 @@ FSIMG="$IMAGE_PARTS/rootfs.img"
+ HEADER_IMAGE="$IMAGE_PARTS/header.img"
+ FOOTER_IMAGE="$IMAGE_PARTS/footer.img"
+ FWOUT="$DIR/new-firmware.bin"
+-BINWALK="./src/binwalk-2.1.1/src/scripts/binwalk -v"
++BINWALK="$(dirname "${BASH_SOURCE[0]}")/src/binwalk-2.1.1/src/scripts/binwalk -v"

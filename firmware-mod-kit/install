@@ -1,16 +1,29 @@
 #!/bin/bash -ex
 
-git clone --depth 1 https://github.com/mirror/firmware-mod-kit.git
-cd firmware-mod-kit/src
-./configure
+git clone --depth 1 https://github.com/rampageX/firmware-mod-kit
+pushd firmware-mod-kit
+git apply ../shared-ng.patch
+cd src
 make
-cd ../..
+popd
 
 mkdir -p bin
-for i in firmware-mod-kit/*.sh
+for i in $PWD/firmware-mod-kit/*.sh
 do
-	echo "$(dirname $(readlink -m $0))/$i \"\$@\"" > bin/$(basename $i)
+	cat <<END > bin/$(basename $i)
+#!/bin/bash
+export PATH="\$PATH:$(dirname $i)"
+exec $i "\$@"
+END
 	chmod 755 bin/$(basename $i)
 done
+
+pushd bin
+for i in $(file ../firmware-mod-kit/src/{*,*/*} | grep "ELF.*executable" | cut -d: -f1 | cut -b 25-)
+do
+	j=fmk-${i//\//-}
+	ln -s ../firmware-mod-kit/src/$i $j
+done
+popd
 
 sed -i -e "s/SUDO=\"sudo\"/SUDO=\"\"/" firmware-mod-kit/*.sh
