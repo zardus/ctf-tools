@@ -1,4 +1,5 @@
 #!/bin/bash -ex
 set -eu -o pipefail
 
-apt-get install -y libqt5widgets5
+apt-get install libboost-all-dev build-essential \ 
+                qtcreator qt5-default qtdeclarative5-dev
