@@ -1,0 +1,12 @@
+diff --git a/src/sectionheaders.hpp b/src/sectionheaders.hpp
+index 274d3a2..c65d44b 100644
+--- a/src/sectionheaders.hpp
++++ b/src/sectionheaders.hpp
+@@ -5,6 +5,7 @@
+ #include <set>
+ #include <string>
+ #include <vector>
++#include <cstdint>
+ #include <boost/cstdint.hpp>
+ 
+ #include "structures/capabilities.hpp"

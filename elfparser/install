@@ -3,18 +3,22 @@
 mkdir bin
 
 git clone https://github.com/mentebinaria/elfparser-ng elfparser-ng
+pushd elfparser-ng
+git apply ../cstdint.patch
+popd
+
 mkdir qt
-cd qt
+pushd qt
 cmake ../elfparser-ng
 make -j
 mv elfparser-ng ../bin/elfparser-gui-ng
-cd ..
+popd
 
 mkdir cli
-cd cli
+pushd cli
 cmake -D qt=no ../elfparser-ng
 make -j
 mv elfparser-cli-ng ../bin/
-cd ..
+popd
 
 rm -rf cli qt elfparser-ng
