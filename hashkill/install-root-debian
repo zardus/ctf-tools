@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-apt-get install -y libssl-dev pkg-config
