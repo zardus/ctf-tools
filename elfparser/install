@@ -1,4 +1,20 @@
 #!/bin/bash -ex
 
 mkdir bin
-wget -O - https://github.com/mentebinaria/elfparser-ng/releases/download/v1.6.0/elfparser-ng-1.6.0-linux-amd64.tar | tar xz -C bin --strip-components=1
+
+git clone https://github.com/mentebinaria/elfparser-ng elfparser-ng
+mkdir qt
+cd qt
+cmake ../elfparser-ng
+make -j
+mv elfparser-ng ../bin/elfparser-gui-ng
+cd ..
+
+mkdir cli
+cd cli
+cmake -D qt=no ../elfparser-ng
+make -j
+mv elfparser-cli-ng ../bin/
+cd ..
+
+rm -rf cli qt elfparser-ng
