@@ -2,7 +2,7 @@
 
 This is a collection of setup scripts to create an install of various security research tools.
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
-The install-scripts for these tools are checked regularly, the results can be found on [the build status page](_buildstatus/index.md).
+The install-scripts for these tools are checked every once in a while, so things should hopefully have a decent chance of working!
 
 Installers for the following tools are included:
 
@@ -127,15 +127,34 @@ Something not working?
 I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
 Maybe some kind soul will help!
 
-## Docker (version 1.7+)
+## Dockerized Tools
 
-By popular demand, a Dockerfile has been included.
+### Prebuilt Tool Containers
+
+You can get most of these tools in prebuilt containers from [https://hub.docker.com/r/ctftools](dockerhub).
+For example:
+
+```console
+$ echo hi | docker run -i ctftools/taintgrind taintgrind --taint-stdin=yes /bin/cat
+/home/ctf/tools/taintgrind/valgrind-3.21.0/build/bin/valgrind --tool=taintgrind --taint-stdin=yes /bin/cat
+==8== Taintgrind, the taint analysis tool
+==8== Copyright (C) 2010-2018, and GNU GPL'd, by Wei Ming Khoo.
+==8== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==8== Command: /bin/cat
+==8==
+0xFFFFFFFF: _syscall_read | Read:3 | 0x0 | 4a5a000_unknownobj
+hi
+==8== 
+```
+
+### Building Your Own
+
 You can build a docker image with:
 
 ```bash
 git clone https://github.com/zardus/ctf-tools
 cd ctf-tools
-docker build -t ctf-tools .
+docker build -t ctf-tools --build-arg PREINSTALLED=some-tool .
 ```
 
 And run it with:
@@ -144,13 +163,7 @@ And run it with:
 docker run -it ctf-tools
 ```
 
-The built image will have ctf-tools cloned and ready to go, but you will still need to install the tools themselves (see above).
-
-Alternatively, you can also pull ctf-tools (with some tools preinstalled) from dockerhub:
-
-```bash
-docker run -it zardus/ctf-tools
-```
+The built image will have ctf-tools cloned and ready to go and your tool installed.
 
 ## Kali Linux
 
