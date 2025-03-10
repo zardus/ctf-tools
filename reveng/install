@@ -1,12 +1,12 @@
 #!/bin/bash -ex
 
-wget https://downloads.sourceforge.net/project/reveng/1.5.1/reveng-1.5.1.tar.gz
-tar -xf reveng-1.5.1.tar.gz
-cd reveng-1.5.1
+wget https://downloads.sourceforge.net/project/reveng/3.0.6/reveng-3.0.6.tar.gz
+tar -xf reveng-3.0.6.tar.gz
+cd reveng-3.0.6
 sed -i -e "s/^#define BMP_BIT.*/#define BMP_BIT 64/" config.h
 sed -i -e "s/^#define BMP_SUB.*/#define BMP_SUB 32/" config.h
 make -j $(nproc)
 cd ..
 
 mkdir -p bin
-cp reveng-1.5.1/reveng bin
+cp reveng-3.0.6/reveng bin
