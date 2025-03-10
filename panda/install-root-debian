@@ -1,7 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get -y install nasm libssl-dev libpcap-dev subversion curl \
-    autoconf libtool libc++-dev llvm-3.3-dev clang-3.3 unzip \
-    protobuf-c-compiler protobuf-compiler libprotobuf-dev pkg-config \
-    libglib2.0-dev libdwarf-dev

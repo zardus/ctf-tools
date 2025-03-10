@@ -19,7 +19,6 @@ Installers for the following tools are included:
 | binary | Directory | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
 | binary | Directory | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
 | binary | Directory | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> <!--test-->
-| binary | Directory | [panda](https://github.com/moyix/panda) | Platform for Architecture-Neutral Dynamic Analysis. | <!--tool--><!--no-test-->
 | binary | Directory | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). | <!--tool--><!--no-test-->
 | binary | Directory | [pwndbg](https://github.com/zachriggle/pwndbg) | Enhanced environment for gdb. Especially for pwning. | <!--tool--><!--no-test-->
 | binary | Directory | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool--><!--no-test-->
@@ -222,6 +221,7 @@ We trust that you can do that yourself :-)
 
 | Category | Source | Tool | Description |
 |----------|--------|------|-------------|
+| binary | docker | [panda](https://github.com/moyix/panda) | Platform for Architecture-Neutral Dynamic Analysis. |
 | stego | Docker | [stego-toolkit](https://github.com/DominicBreuker/stego-toolkit) | A docker image with dozens of steg tools. |
 
 ## Useful CTF Libraries
