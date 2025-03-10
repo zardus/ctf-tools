@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-git clone https://github.com/mozilla/rr.git
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=.. -G Ninja ../rr
-ninja || ninja-build
-ninja install || ninja-build install

@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-echo 'kernel.perf_event_paranoid = 1' | sudo tee /etc/sysctl.d/10-rr.conf

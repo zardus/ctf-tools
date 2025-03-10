@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-
-pacman -Syu --noconfirm --needed \
-    ccache cmake gdb python2-pexpect ninja zlib
-./configure-system

@@ -1,7 +1,0 @@
-#!/bin/bash -ex
-
-dnf install -y \
-    ccache cmake make gcc gcc-c++ gdb \
-    glibc-devel glibc-devel.i686 libstdc++-devel libstdc++-devel.i686 zlib-devel \
-    python-pexpect man-pages ninja-build
-./configure-system
