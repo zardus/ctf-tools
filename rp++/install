@@ -1,16 +1,7 @@
 #!/bin/bash -ex
 
-
-# 64bit test
-if [[ $(uname -m) == 'x86_64' ]];
-then
-  BIN="rp-lin-x64" 
-else
-  BIN="rp-lin-x86" 
-fi
-
-wget https://github.com/downloads/0vercl0k/rp/$BIN
-mv $BIN rp++
+wget https://github.com/0vercl0k/rp/releases/download/v2.1.4/rp-lin-gcc.zip
+unzip rp-lin-gcc.zip
 mkdir bin
-chmod 755 rp++
-mv rp++ bin
+mv rp-lin bin/rp++
+chmod 755 bin/rp++
