@@ -3,7 +3,7 @@
 [ -e libc-database ] || git clone https://github.com/niklasb/libc-database
 
 mkdir -p bin
-for i in add dump find get identify
+for i in add dump find get identify download
 do
 	cat <<END > bin/libc-database-$i
 cd $PWD/libc-database/
@@ -12,4 +12,4 @@ END
 	chmod 755 bin/libc-database-$i
 done
 
-bin/libc-database-get
+bin/libc-database-get all
