@@ -1,5 +1,5 @@
 #!/bin/bash -ex
 set -eu -o pipefail
 
-apt-get -y install libssl-dev libffi-dev libtiff5-dev libjpeg8-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk libxml2-dev libxslt1-dev
+apt-get -y install libssl-dev libffi-dev libtiff5-dev libjpeg8-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk libxml2-dev libxslt1-dev
 
