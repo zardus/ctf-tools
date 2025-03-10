@@ -7,7 +7,7 @@ for i in add dump find get identify download
 do
 	cat <<END > bin/libc-database-$i
 cd $PWD/libc-database/
-./$i "$@"
+./$i "\$@"
 END
 	chmod 755 bin/libc-database-$i
 done
