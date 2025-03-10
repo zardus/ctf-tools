@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get -y install libc6-dev-i386 libc6-dev
