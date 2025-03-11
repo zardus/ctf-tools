@@ -1,0 +1,10 @@
+#!/bin/bash -ex
+
+git clone https://github.com/zardus/pwnsh
+pushd pwnsh
+./update-syscalls.sh
+popd
+
+mkdir bin
+pushd bin
+ln -s ../pwnsh/scripts/* .
