@@ -23,6 +23,7 @@ jobs:
   toolcheck:
     needs: toollist
     strategy:
+      fail-fast: false
       matrix:
         tool: ${{ fromJSON(needs.toollist.outputs.tools) }}
     runs-on: ubuntu-latest
