@@ -10,13 +10,16 @@ jobs:
   toollist:
     runs-on: ubuntu-latest
     outputs:
-      tools: ${{ steps.tools.outputs }}
+      tools: ${{ steps.tools.outputs.tools }}
     steps:
     - uses: actions/checkout@master
     - name: Tools
       id: tools
       run: |
-        cat README.md | grep -- --tool-- | grep -v -- --no-test-- | tr '[]' ' ' | awk '{print $6}' | jq -R . | jq -c -s . >> "$GITHUB_OUTPUT"
+        (
+          echo -n "tools=";
+          cat README.md | grep -- --tool-- | grep -v -- --no-test-- | tr '[]' ' ' | awk '{print $6}' | jq -R . | jq -c -s .;
+        ) >> "$GITHUB_OUTPUT"
   toolcheck:
     needs: toollist
     strategy:
