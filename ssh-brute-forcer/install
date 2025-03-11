@@ -1,3 +1,0 @@
-#!/bin/bash
-
-git clone --depth 1 https://github.com/R4stl1n/SSH-Brute-Forcer
