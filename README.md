@@ -12,6 +12,7 @@ Installers for the following tools are included:
 | binary | Directory | [angr-management](http://angr.io) | A GUI reverse engineering and decompilation tool. | <!--tool-->
 | binary | Directory | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
 | binary | Directory | [cross2](http://kozos.jp/books/asm/asm.html) | A set of cross-compilation tools from a Japanese book on C. | <!--tool--><!--no-test-->
+| binary | Directory | [decomp2dbg](https://github.com/mahaloz/decomp2dbg) |  A plugin to introduce interactive symbols into your debugger from your decompiler. | <!--tool-->
 | binary | Directory | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | A set of utilities for working with ELF files. | <!--tool--><!--test-->
 | binary | Directory | [elfparser](https://github.com/mentebinaria/elfparser-ng) | Multiplatform CLI and GUI tool to show information about ELF files. | <!--tool--><!--test-->
 | binary | Directory | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool--><!--test-->

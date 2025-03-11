@@ -1,0 +1,32 @@
+#!/bin/bash -ex
+
+pipx install decomp2dbg
+[ -d ../gdb/venv ] && ../gdb/venv/bin/pip install decomp2dbg
+[ -d ../ghidra/venv ] && ../ghidra/venv/bin/pip install decomp2dbg
+[ -d ../angr-management/pipx/venvs ] && ../angr-management/pipx/venvs/angr-management/bin/python -m pip install decomp2dbg
+
+coproc bin/decomp2dbg --install
+
+# ida
+echo n >& ${COPROC[1]}
+
+# binja
+echo n >& ${COPROC[1]}
+
+# ghidra
+echo y >& ${COPROC[1]}
+echo >& ${COPROC[1]}
+
+# angr-management
+echo y >& ${COPROC[1]}
+echo $PWD/../angr-management/pipx/venvs/angr-management/lib/python3.12/site-packages/angrmanagement/plugins >& ${COPROC[1]}
+
+# gdb
+echo y >& ${COPROC[1]}
+echo >& ${COPROC[1]}
+
+if grep -E "(Stopping|Errno)" <& ${COPROC[0]}
+then
+	echo "FAILED"
+	exit 1
+fi
