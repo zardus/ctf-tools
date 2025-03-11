@@ -1,5 +1,3 @@
 #!/bin/bash -ex
 
-export PIPX_DEFAULT_PYTHON=$(which pypy3)
-
-pipx install "manticore[native]"
+pipx install --python $(which pypy3) "manticore[native]"
