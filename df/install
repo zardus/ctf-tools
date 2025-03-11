@@ -1,10 +1,14 @@
 #!/bin/bash -ex
 
-wget -O - http://www.bay12games.com/dwarves/df_43_05_linux.tar.bz2 | tar xj
+mkdir df_linux
+pushd df_linux
+wget -O - https://www.bay12games.com/dwarves/df_51_06_linux.tar.bz2 | tar xj
+popd
 
 mkdir -p bin
 cat <<END > bin/dwarf_fortress
-cd $PWD/df_linux
-./df
+#/bin/bash
+cd $PWD/run_df
+./df "\$@"
 END
 chmod 755 bin/dwarf_fortress
