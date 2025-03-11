@@ -1,0 +1,72 @@
+diff --git a/break_jsteg.c b/break_jsteg.c
+index 8b3cef9..c630794 100644
+--- a/break_jsteg.c
++++ b/break_jsteg.c
+@@ -68,7 +68,7 @@ int break_jsteg(struct jstegobj *, struct arc4_stream *);
+ 
+ int break_jsteg_filetest(char *filename, struct jstegobj *obj)
+ {
+-	extern int noprint;
++	static int noprint;
+ 
+     const char *magic_str = magic_buffer(ms_cookie, obj->header, sizeof(obj->header));
+ 	if (NULL == magic_str)
+@@ -224,7 +224,7 @@ crack_jsteg(char *filename, char *word, void *obj)
+ 
+ 	tas = as;
+ 	if (break_jsteg(jstegob, &tas)) {
+-		extern int noprint;
++		static int noprint;
+ 		int i;
+ 		u_int8_t header[JSTEGHEADER];
+ 
+diff --git a/break_outguess.c b/break_outguess.c
+index 5ca351b..550737c 100644
+--- a/break_outguess.c
++++ b/break_outguess.c
+@@ -258,7 +258,7 @@ crack_outguess(char *filename, char *word, void *obj)
+ 	tit = it;
+ 	if (break_outguess(ogob, &tas, &tit, &buf, &buflen)) {
+ 		int i;
+-		extern int noprint;
++		static int noprint;
+ 		fprintf(stdout, "%s : outguess[v0.13b](%s)[",
+ 			filename, word);
+ 		noprint = 0;
+diff --git a/common.c b/common.c
+index 43573e6..224ae79 100644
+--- a/common.c
++++ b/common.c
+@@ -163,8 +163,8 @@ stego_set_eoi_callback(void (*cb)(void *))
+ void
+ stego_set_callback(void (*cb)(int, short), enum order order)
+ {
+-	extern void (*stego_mcu_order)(int, short);
+-	extern void (*stego_natural_order)(int, short);
++	static void (*stego_mcu_order)(int, short);
++	static void (*stego_natural_order)(int, short);
+ 
+ 	switch (order) {
+ 	case ORDER_MCU:
+diff --git a/stegdetect.c b/stegdetect.c
+index 330fd9b..fd53e5d 100644
+--- a/stegdetect.c
++++ b/stegdetect.c
+@@ -78,7 +78,7 @@ char *progname;
+ float DCThist[257];
+ float scale = 1;		/* Sensitivity scaling */
+ 
+-extern int debug;
++int debug;
+ static int quiet = 0;
+ static int ispositive = 0;	/* Current images contain stego */
+ static char *transformname;	/* Current transform name */
+@@ -1023,7 +1023,7 @@ out:
+ detect_print(void)
+ {
+     int i;
+-    extern int noprint;
++    static int noprint;
+     u_char *buf = detect_buffer;
+     size_t buflen = detect_buflen;
+     char *what = "appended";
