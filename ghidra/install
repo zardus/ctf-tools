@@ -1,7 +1,15 @@
 #!/bin/bash -ex
 
+# try to get the best of both worlds for local tweaking and global installs
+virtualenv --system-site-packages venv
+
 [ -e https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_11.3.1_build/ghidra_11.3.1_PUBLIC_20250219.zip ] || wget https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_11.3.1_build/ghidra_11.3.1_PUBLIC_20250219.zip
 [ -e ghidra_11.3.1_PUBLIC ] || unzip ghidra_11.3.1_PUBLIC_20250219.zip
+
 mkdir -p bin
-cd bin
-ln -s ../*/ghidraRun ghidra
+cat <<END > bin/ghidra
+#!/bin/bash
+[ -n "\$VIRTUAL_ENV" ] || source $PWD/venv/bin/activate
+$PWD/ghidra_11.3.1_PUBLIC/ghidraRun "\$@"
+END
+chmod 755 bin/ghidra
