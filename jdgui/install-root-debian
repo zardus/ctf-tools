@@ -17,4 +17,4 @@ case "$(lsb_release -cs)" in
 		;;
 esac
 
-sudo apt install jarwrapper
+sudo apt install -y jarwrapper
