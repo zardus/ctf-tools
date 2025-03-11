@@ -17,16 +17,16 @@ Installers for the following tools are included:
 | binary | Directory | [elfparser](https://github.com/mentebinaria/elfparser-ng) | Multiplatform CLI and GUI tool to show information about ELF files. | <!--tool--><!--test-->
 | binary | Directory | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool--><!--test-->
 | binary | Directory | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--failing-->
-| binary | Directory | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
+| binary | Directory | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool-->
 | binary | Directory | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
 | binary | Directory | [IDA Free](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool-->
 | binary | Directory | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> <!--test-->
-| binary | Directory | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). | <!--tool--><!--no-test-->
-| binary | Directory | [pwndbg](https://github.com/pwndbg/pwndbg) | Enhanced environment for gdb. Especially for pwning. | <!--tool--><!--no-test-->
+| binary | Directory | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). | <!--tool-->
+| binary | Directory | [pwndbg](https://github.com/pwndbg/pwndbg) | Enhanced environment for gdb. Especially for pwning. | <!--tool-->
 | binary | Directory | [pwnsh](https://github.com/zardus/pwnsh) | Useful shell scripts for assembly, exploitation, etc. | <!--tool-->
-| binary | Directory | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool--><!--no-test-->
-| binary | Directory | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--times-out-->
-| binary | Directory | [qira](http://qira.me) | Parallel, timeless debugger. | <!--tool--><!--times-out-->
+| binary | Directory | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool-->
+| binary | Directory | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--no-test-->
+| binary | Directory | [qira](http://qira.me) | Parallel, timeless debugger. | <!--tool--><!--no-test-->
 | binary | Directory | [rappel](https://github.com/yrp604/rappel) | A linux-based assembly REPL. | <!--tool--><!--test-->
 | binary | Directory | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool--><!--test-->
 | binary | Directory | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool--><!--test-->
@@ -36,7 +36,7 @@ Installers for the following tools are included:
 | binary | Directory | [valgrind](http://valgrind.org) | A Dynamic Binary Instrumentation framework with some built-in tools. | <!--tool--><!--test-->
 | binary | Directory | [villoc](https://github.com/wapiflapi/villoc) | Visualization of heap operations. | <!--tool--><!--test-->
 | binary | Directory | [xrop](https://github.com/acama/xrop) | Gadget finder. | <!--tool--><!--failing-->
-| binary | Directory | [manticore](https://github.com/trailofbits/manticore) | Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool--><!--no-test-->
+| binary | Directory | [manticore](https://github.com/trailofbits/manticore) | Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
 | forensics | Directory | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | Tools for firmware packing/unpacking. | <!--tool--><!--test-->
 | forensics | Directory | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool--><!--test-->
 | forensics | Directory | [peepdf](https://github.com/cert-ee/peepdf) | Powerful Python tool to analyze PDF documents. | <!--tool--><!--test-->
@@ -61,15 +61,15 @@ Installers for the following tools are included:
 | crypto | Directory | [yafu](http://sourceforge.net/projects/yafu/) | Automated integer factorization. | <!--tool--><!--test-->
 | web | Directory | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--failing-->
 | web | Directory | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool--><!--test-->
-| web | Directory | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
+| web | Directory | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool-->
 | web | Directory | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | web | Directory | [webgrep](https://github.com/dhondta/webgrep) | `grep` for Web pages, with JS deobfuscation, CSS unminifying and OCR on images. | <!--tool--><!--test-->
 | stego | Directory | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegano-tools](https://github.com/dhondta/stegano-tools) | A collection of text and image steganography tools (incl LSB, PVD, PIT). | <!--tool--><!--test-->
 | stego | Directory | [stegdetect](http://www.outguess.org/) | Stenography detection/breaking tool. | <!--tool--><!--test-->
 | stego | Directory | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool--><!--test-->
-| stego | Directory | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool--><!--no-test-->
-| stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool--><!--no-test-->
+| stego | Directory | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool-->
+| stego | Directory | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool-->
 | misc | Directory | [xspy](https://gitlab.com/kalilinux/packages/xspy) | Tiny tool to spy on X sessions. | <!--tool--><!--test-->
 | misc | Directory | [jdgui](http://jd.benow.ca/) | Java decompiler. | <!--tool--><!--test-->
 | misc | Directory | [veles](https://codisec.com/veles/) | Binary data analysis and visualization tool. | <!--tool--><!--test-->

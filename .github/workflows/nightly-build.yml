@@ -1,0 +1,30 @@
+name: Nightly Build and Push
+
+on: push
+on:
+  schedule:
+  - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  toollist:
+    runs-on: ubuntu-latest
+    outputs:
+      tools: ${{ steps.tools.outputs.tools }}
+    steps:
+      - name: Tools
+        id: tools
+        run: |
+          cat README.md | grep -- --tool-- | grep -v -- --no-test-- | sed -e 's/.*\[//' -e 's/\].*//' | jq -R . | jq -s . >> "$GITHUB_OUTPUT"
+  toolcheck:
+    needs: toollist
+    strategy:
+      matrix:
+        tool: ${{ fromJSON(needs.toollist.outputs.tools) }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: docker/setup-buildx-action@master
+    - name: Build Tool
+      run: |
+        docker build -t ctftools/${{ matrix.tool }} --build-arg PREINSTALL="${{ matrix.tool }}" .
