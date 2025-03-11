@@ -19,6 +19,7 @@ Installers for the following tools are included:
 | binary | Directory | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--failing-->
 | binary | Directory | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool--><!--no-test-->
 | binary | Directory | [hongfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool--><!--test-->
+| binary | Directory | [IDA Free](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool-->
 | binary | Directory | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> <!--test-->
 | binary | Directory | [preeny](https://github.com/zardus/preeny) | A collection of helpful preloads (compiled for many architectures!). | <!--tool--><!--no-test-->
 | binary | Directory | [pwndbg](https://github.com/pwndbg/pwndbg) | Enhanced environment for gdb. Especially for pwning. | <!--tool--><!--no-test-->

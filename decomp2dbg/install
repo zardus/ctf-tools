@@ -2,13 +2,20 @@
 
 pipx install decomp2dbg
 [ -d ../gdb/venv ] && ../gdb/venv/bin/pip install decomp2dbg
+[ -d ../ida/venv ] && ../ida/venv/bin/pip install decomp2dbg
 [ -d ../ghidra/venv ] && ../ghidra/venv/bin/pip install decomp2dbg
 [ -d ../angr-management/pipx/venvs ] && ../angr-management/pipx/venvs/angr-management/bin/python -m pip install decomp2dbg
 
 coproc bin/decomp2dbg --install
 
 # ida
-echo n >& ${COPROC[1]}
+if [ -d $PWD/../ida/*/plugins ]
+then
+	echo y >& ${COPROC[1]}
+	echo $PWD/../ida/*/plugins >& ${COPROC[1]}
+else
+	echo n >& ${COPROC[1]}
+fi
 
 # binja
 echo n >& ${COPROC[1]}
@@ -18,8 +25,13 @@ echo y >& ${COPROC[1]}
 echo >& ${COPROC[1]}
 
 # angr-management
-echo y >& ${COPROC[1]}
-echo $PWD/../angr-management/pipx/venvs/angr-management/lib/python3.12/site-packages/angrmanagement/plugins >& ${COPROC[1]}
+if [ -d $PWD/../angr-management/pipx/venvs ]
+then
+	echo y >& ${COPROC[1]}
+	echo $PWD/../angr-management/pipx/venvs/angr-management/lib/python3.12/site-packages/angrmanagement/plugins >& ${COPROC[1]}
+else
+	echo n >& ${COPROC[1]}
+fi
 
 # gdb
 echo y >& ${COPROC[1]}

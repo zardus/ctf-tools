@@ -1,0 +1,20 @@
+#!/bin/bash -ex
+
+# our venv shenanigans
+virtualenv --system-site-packages venv
+
+tar xvf ~/Downloads/IDA*.tar.gz
+
+IDA_DIR=$(dirname */libida.so)
+
+pushd $IDA_DIR
+echo 0 | ./idapyswitch
+popd
+
+mkdir bin
+cat <<END >bin/ida64
+#!/bin/bash
+[ -n "\$VIRTUAL_ENV" ] || source $PWD/venv/bin/activate
+exec $PWD/[^b]*/ida64 "\$@"
+END
+chmod 755 bin/ida64
