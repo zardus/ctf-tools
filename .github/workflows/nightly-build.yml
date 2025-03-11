@@ -16,6 +16,8 @@ jobs:
     - name: Tools
       id: tools
       run: |
+        pwd >&2
+        ls >&2
         cat README.md | grep -- --tool-- | grep -v -- --no-test-- | sed -e 's/.*\[//' -e 's/\].*//' | jq -R . | jq -s . >> "$GITHUB_OUTPUT"
   toolcheck:
     needs: toollist
