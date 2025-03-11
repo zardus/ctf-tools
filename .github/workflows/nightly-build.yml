@@ -12,10 +12,11 @@ jobs:
     outputs:
       tools: ${{ steps.tools.outputs.tools }}
     steps:
-      - name: Tools
-        id: tools
-        run: |
-          cat README.md | grep -- --tool-- | grep -v -- --no-test-- | sed -e 's/.*\[//' -e 's/\].*//' | jq -R . | jq -s . >> "$GITHUB_OUTPUT"
+    - uses: actions/checkout@master
+    - name: Tools
+      id: tools
+      run: |
+        cat README.md | grep -- --tool-- | grep -v -- --no-test-- | sed -e 's/.*\[//' -e 's/\].*//' | jq -R . | jq -s . >> "$GITHUB_OUTPUT"
   toolcheck:
     needs: toollist
     strategy:
