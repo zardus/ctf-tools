@@ -1,9 +1,12 @@
 #!/bin/bash -ex
 
-REL_PATH=$(curl https://www.torproject.org/projects/torbrowser.html.en#downloads | grep -i tor-browser-linux | grep hardened | grep td  | sed -e 's/.*href="//' -e 's/">.*//')
-wget https://www.torproject.org/projects/$REL_PATH -O - | tar xvJ
+REL_PATH=$(curl https://www.torproject.org/download/ | grep -i tor-browser-linux-x86_64 | grep 'xz"' | sed -e 's/.*href="//' -e 's/">.*//')
+wget https://www.torproject.org/$REL_PATH -O - | tar xvJ
 
 mkdir -p bin
-cd bin
-ln -s ../tor-browser/start-tor-browser.desktop tor-browser
-cd ..
+cat <<END >bin/tor-browser
+#!/bin/bash
+cd $PWD/tor-browser
+./start-tor-browser.desktop "\$@"
+END
+chmod 755 bin/*
