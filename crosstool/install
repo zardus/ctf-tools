@@ -17,7 +17,7 @@ do
 	../build-sample.sh $sample || echo "$sample" >> ../toolchains/broken
 	./ct-ng clean
 done
-popd ..
+popd
 
 mkdir -p bin
 pushd bin
