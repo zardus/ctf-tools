@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get -y install libbz2-dev libfftw3-dev libsndfile1-dev libsamplerate0-dev vamp-plugin-sdk librubberband-dev libsord-dev liblo-dev liblrdf0-dev liboggz2-dev libfishsound1-dev libid3tag0-dev libportaudio-dev libmad0-dev qt5-qmake qt5-default libasound-dev

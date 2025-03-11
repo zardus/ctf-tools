@@ -1,6 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-pacman -Syu --noconfirm --needed bzip2 fftw libsndfile libsamplerate \
-    vamp-plugin-sdk rubberband sord liblo liblrdf liboggz libfishsound \
-    libid3tag portaudio libmad qt5-base

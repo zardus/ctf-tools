@@ -61,7 +61,6 @@ Installers for the following tools are included:
 | web | Directory | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool--><!--no-test-->
 | web | Directory | [subbrute](https://github.com/TheRook/subbrute) | A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool--><!--test-->
 | web | Directory | [webgrep](https://github.com/dhondta/webgrep) | `grep` for Web pages, with JS deobfuscation, CSS unminifying and OCR on images. | <!--tool--><!--test-->
-| stego | Directory | [sound-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. | <!--tool--><!--failing-->
 | stego | Directory | [steganabara](http://www.caesum.com/handbook/stego.htm) | Another image stenography solver. | <!--tool--><!--test-->
 | stego | Directory | [stegano-tools](https://github.com/dhondta/stegano-tools) | A collection of text and image steganography tools (incl LSB, PVD, PIT). | <!--tool--><!--test-->
 | stego | Directory | [stegdetect](http://www.outguess.org/) | Stenography detection/breaking tool. | <!--tool--><!--test-->
@@ -221,6 +220,7 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | web | apt | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. |
 | web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
 | stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. |
+| stego | apt | [sonic-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
 | networking | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. |
 | networking | apt | [bettercap](https://www.bettercap.org/) | Network shenanigans swiss army knife. |
 | misc | apt | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. |
