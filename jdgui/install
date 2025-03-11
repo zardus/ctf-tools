@@ -1,10 +1,6 @@
 #!/bin/bash -ex
 
-[ -e jd-gui-1.4.0.jar ] || wget https://github.com/java-decompiler/jd-gui/releases/download/v1.4.0/jd-gui-1.4.0.jar
-
-mkdir -p bin
-cat <<END > bin/jd-gui
-#/bin/bash -e
-java -jar $PWD/jd-gui-1.4.0.jar "\$@"
-END
-chmod 755 bin/jd-gui
+mkdir bin
+[ -e bin/jd-gui.jar ] || wget https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar -O bin/jd-gui.jar
+chmod 755 bin/jd-gui.jar
+chmod 755 bin/jd-gui.jar
