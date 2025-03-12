@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-wget http://www.mscs.dal.ca/~selinger/md5collision/downloads/evilize-0.2.tar.gz
+wget https://www.mscs.dal.ca/~selinger/md5collision/downloads/evilize-0.2.tar.gz
 tar zvxf evilize-0.2.tar.gz
 cd evilize-0.2
 make -j $(nproc)

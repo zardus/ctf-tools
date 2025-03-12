@@ -3,7 +3,7 @@
 FILE=cross2-20130826.tgz
 INSTALL_DIR=$PWD
 
-[ ! -e $FILE ] && wget http://kozos.jp/books/asm/$FILE
+[ ! -e $FILE ] && wget https://kozos.jp/books/asm/$FILE
 tar xf $FILE
 
 cd cross2/toolchain
