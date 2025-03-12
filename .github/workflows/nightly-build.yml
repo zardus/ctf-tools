@@ -38,3 +38,4 @@ jobs:
       run: |
         NAME=$(echo ${{ matrix.tool }} | tr -cd '0-9A-Za-z-_')
         docker build -t ctftools/$NAME --build-arg PREINSTALL="${{ matrix.tool }}" .
+        docker push ctftools/$NAME
