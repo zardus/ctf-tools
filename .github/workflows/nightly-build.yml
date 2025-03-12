@@ -25,7 +25,7 @@ jobs:
             else
               cat
             fi
-          ) | tr '[]' ' ' | awk '{print $6}' | jq -R . | jq -c -s .;
+          ) | tr '[]' ' ' | awk '{print $4}' | jq -R . | jq -c -s .;
         ) >> "$GITHUB_OUTPUT"
   toolcheck:
     needs: toollist
