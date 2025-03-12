@@ -18,7 +18,14 @@ jobs:
       run: |
         (
           echo -n "tools=";
-          cat README.md | grep -- --tool-- | grep -v -- --no-test-- | tr '[]' ' ' | awk '{print $6}' | jq -R . | jq -c -s .;
+          cat README.md | grep -- --tool-- | grep -v -- --no-test-- | (
+            if [ ${{ github.event_name }} != "schedule" ]
+            then
+              grep -v -- --slow-test--
+            else
+              cat
+            fi
+          ) | tr '[]' ' ' | awk '{print $6}' | jq -R . | jq -c -s .;
         ) >> "$GITHUB_OUTPUT"
   toolcheck:
     needs: toollist
