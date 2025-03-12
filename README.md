@@ -79,11 +79,8 @@ There are also some installers for non-CTF stuff to break the monotony!
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| C magic | [C-bind](https://github.com/zwimer/C-bind) | A library used to enable function binding in C! |
-| game | [Dwarf Fortress](http://www.bay12games.com/dwarves/) | Something to help you relax after a CTF! |
-| library collection | [single\_file\_libs](https://github.com/nothings/single_file_libs) | A large collection of useful single file include libraries written for C/C++ |
-| dolphin | [sudolphin](https://sudolph.in/) | If your friend ever leaves their laptop unlocked, `curl -sSL sh.sudolph.in \| sh` then wait and see! |
-| tor-browser | [tor-browser](https://www.torproject.org/projects/torbrowser.html.en) | Useful when you need to hit a web challenge from different IPs. |
+| game | [Dwarf Fortress](http://www.bay12games.com/dwarves/) | Something to help you relax after a CTF! | <!--tool-->
+| tor-browser | [tor-browser](https://www.torproject.org/projects/torbrowser.html.en) | Useful when you need to hit a web challenge from different IPs. | <!--tool-->
 
 ## Usage
 
