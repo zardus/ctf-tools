@@ -10,6 +10,7 @@ Installers for the following tools are included:
 |----------|--------|------|-------------|
 | binary | Directory | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool-->
 | binary | Directory | [angr-management](http://angr.io) | A GUI reverse engineering and decompilation tool. | <!--tool-->
+| binary | Directory | [beef](https://github.com/beefproject/beef) | Browser exploitation framework. | <!--tool-->
 | binary | Directory | [crosstool-ng](http://crosstool-ng.org/) | Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
 | binary | Directory | [cross2](http://kozos.jp/books/asm/asm.html) | A set of cross-compilation tools from a Japanese book on C. | <!--tool--><!--no-test-->
 | binary | Directory | [decomp2dbg](https://github.com/mahaloz/decomp2dbg) |  A plugin to introduce interactive symbols into your debugger from your decompiler. | <!--tool-->
