@@ -1,0 +1,17 @@
+#!/bin/bash -ex
+
+virtualenv venv
+source venv/bin/activate
+
+git clone --depth 1 https://github.com/Ganapati/RsaCtfTool
+pushd RsaCtfTool
+pip install -r requirements.txt
+popd
+
+mkdir bin
+cat <<END >bin/RsaCtfTool.py
+#!/bin/bash
+source $PWD/venv/bin/activate
+exec $PWD/RsaCtfTool/RsaCtfTool.py "\$@"
+END
+chmod 755 bin/*

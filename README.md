@@ -57,6 +57,7 @@ Installers for the following tools are included:
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | SSL PEM file cracker. | <!--tool-->
 | crypto | [pkcrack](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) | PkZip encryption cracker. | <!--tool-->
 | crypto | [reveng](http://reveng.sourceforge.net/) | CRC finder. | <!--tool-->
+| crypto | [rsactftool](https://github.com/RsaCtfTool/RsaCtfTool) | RSA attack tool. | <!--tool-->
 | crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. | <!--tool-->
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. | <!--tool-->
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool-->
