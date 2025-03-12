@@ -11,7 +11,7 @@ Installers for the following tools are included:
 | binary | [angr](http://angr.io) | ![Last Build](https://img.shields.io/docker/v/ctftools/angr?label=built) Next-generation binary analysis engine from Shellphish. | <!--tool-->
 | binary | [angr-management](http://angr.io) | ![Last Build](https://img.shields.io/docker/v/ctftools/angr-management?label=built) A GUI reverse engineering and decompilation tool. | <!--tool-->
 | binary | [beef](https://github.com/beefproject/beef) | ![Last Build](https://img.shields.io/docker/v/ctftools/beef?label=built) Browser exploitation framework. | <!--tool-->
-| binary | [crosstool](http://crosstool-ng.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/crosstool-ng?label=built) Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
+| binary | [crosstool](http://crosstool-ng.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/crosstool?label=built) Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
 | binary | [cross2](http://kozos.jp/books/asm/asm.html) | ![Last Build](https://img.shields.io/docker/v/ctftools/cross2?label=built) A set of cross-compilation tools from a Japanese book on C. | <!--tool--><!--no-test-->
 | binary | [decomp2dbg](https://github.com/mahaloz/decomp2dbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/decomp2dbg?label=built)  A plugin to introduce interactive symbols into your debugger from your decompiler. | <!--tool-->
 | binary | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | ![Last Build](https://img.shields.io/docker/v/ctftools/elfkickers?label=built) A set of utilities for working with ELF files. | <!--tool-->
