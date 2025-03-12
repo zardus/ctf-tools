@@ -123,7 +123,7 @@ If you want to add other packages to this environment, look under the `ctf-tools
 ## Help!
 
 Something not working?
-I didn't write (almost) any of these tools, but hit up [#ctf-tools on freenode](http://webchat.freenode.net/?channels=#ctf-tools) if you're desperate.
+I didn't write (almost) any of these tools, but hit up [the discord](https://discord.gg/KRcjyn4pBH) if you're desperate.
 Maybe some kind soul will help!
 
 ## Dockerized Tools
@@ -166,10 +166,8 @@ The built image will have ctf-tools cloned and ready to go and your tool install
 
 ## Kali Linux
 
-Kali Linux (Sana and Rolling), due to manually setting certain libraries to not use the latest version available (sometimes being out of date by years) causes some tools to not install at all, or fail in strange ways. AFL and Panda comes to mind, in fact any tool that uses QEMU 2.30 will probably fail during compilation under Kali.
-Overriding these libraries breaks other tools included in Kali so your only solution is to either live with some of Kali's tools being broken, or running another distribution separately such as Ubuntu.
-
-Most tools aren't affected though.
+Kali Linux (Sana and Rolling), due to manually setting certain libraries to not use the latest version available (sometimes being out of date by years) causes some tools to not install at all, or fail in strange ways.
+Overriding these libraries breaks other tools included in Kali so your only solution is to either live with some of Kali's tools being broken, use docker, or running another distribution separately such as Ubuntu.
 
 ## Adding Tools
 
@@ -177,7 +175,8 @@ To add a tool (say, named *toolname*), do the following:
 
 1. Create a `toolname` directory.
 2. Create an `install` script.
-3. (optional) if special uninstall steps are required, create an `uninstall` script.
+3. Add it to the readme.
+4. (optional) if special uninstall steps are required, create an `uninstall` script.
 
 ### Install Scripts
 
