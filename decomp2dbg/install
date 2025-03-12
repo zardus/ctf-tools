@@ -35,7 +35,7 @@ fi
 
 # gdb
 echo y >& ${COPROC[1]}
-echo >& ${COPROC[1]}
+echo $HOME/.gdbinit >& ${COPROC[1]}
 
 if grep -B10 -E "(Stopping|Errno)" <& ${COPROC[0]}
 then
