@@ -73,10 +73,11 @@ Installers for the following tools are included:
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool-->
 | stego | [stegosaurus](https://github.com/AngelKitty/stegosaurus) | A steganography tool for embedding arbitrary payloads in Python bytecode (pyc or pyo) files. | <!--tool-->
 | stego | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool-->
-| misc | [xspy](https://gitlab.com/kalilinux/packages/xspy) | Tiny tool to spy on X sessions. | <!--tool-->
 | misc | [jdgui](http://jd.benow.ca/) | Java decompiler. | <!--tool-->
-| misc | [veles](https://codisec.com/veles/) | Binary data analysis and visualization tool. | <!--tool-->
 | misc | [python2](https://www.python.org/downloads/release/python-2718/) | For when you really need it... | <!--tool-->
+| misc | [social-analyzer](https://github.com/qeeqbox/social-analyzer) | Social media reconnaisance tool... | <!--tool-->
+| misc | [veles](https://codisec.com/veles/) | Binary data analysis and visualization tool. | <!--tool-->
+| misc | [xspy](https://gitlab.com/kalilinux/packages/xspy) | Tiny tool to spy on X sessions. | <!--tool-->
 
 There are also some installers for non-CTF stuff to break the monotony!
 
