@@ -37,7 +37,7 @@ fi
 echo y >& ${COPROC[1]}
 echo >& ${COPROC[1]}
 
-if grep -E "(Stopping|Errno)" <& ${COPROC[0]}
+if grep -B10 -E "(Stopping|Errno)" <& ${COPROC[0]}
 then
 	echo "FAILED"
 	exit 1
