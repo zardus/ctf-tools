@@ -21,7 +21,7 @@ Installers for the following tools are included:
 | binary | [gef](https://github.com/hugsy/gef) | ![Last Build](https://img.shields.io/docker/v/ctftools/gef?label=built) Enhanced environment for gdb. | <!--tool-->
 | binary | [ghidra](https://ghidra-sre.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/ghidra?label=built) Open-source reverse engineering and decompilation tool. | <!--tool-->
 | binary | [honggfuzz](https://github.com/google/honggfuzz) | ![Last Build](https://img.shields.io/docker/v/ctftools/honggfuzz?label=built) A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool-->
-| binary | [IDA Free](https://hex-rays.com/ida-free) | ![Last Build](https://img.shields.io/docker/v/ctftools/IDA Free?label=built) Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool--><!--no-test-->
+| binary | [IDA Free](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool--><!--no-test-->
 | binary | [one_gadget](https://github.com/david942j/one_gadget) | ![Last Build](https://img.shields.io/docker/v/ctftools/one_gadget?label=built) Magic gadget search for libc. | <!--tool--> 
 | binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for many architectures!). | <!--tool-->
 | binary | [pwndbg](https://github.com/pwndbg/pwndbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwndbg?label=built) Enhanced environment for gdb. Especially for pwning. | <!--tool-->
