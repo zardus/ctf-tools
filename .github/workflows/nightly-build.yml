@@ -32,4 +32,5 @@ jobs:
     - uses: docker/setup-buildx-action@master
     - name: Build Tool
       run: |
-        docker build -t ctftools/${{ matrix.tool }} --build-arg PREINSTALL="${{ matrix.tool }}" .
+        read NAME < <(echo ${{ matrix.tool }} | tr -cd '0-9A-Za-z-')
+        docker build -t ctftools/$NAME --build-arg PREINSTALL="${{ matrix.tool }}" .
