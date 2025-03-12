@@ -19,6 +19,7 @@ Installers for the following tools are included:
 | binary | Directory | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | Tool to create MD5 colliding binaries | <!--tool-->
 | binary | Directory | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--slow-test-->
 | binary | Directory | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool-->
+| binary | Directory | [ghidra](https://ghidra-sre.org/) | Open-source reverse engineering and decompilation tool. | <!--tool-->
 | binary | Directory | [honggfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool-->
 | binary | Directory | [IDA Free](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool--><!--no-test-->
 | binary | Directory | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> 
