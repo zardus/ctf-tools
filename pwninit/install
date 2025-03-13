@@ -1,0 +1,6 @@
+#!/bin/bash -ex
+
+mkdir bin
+pushd bin
+wget https://github.com/io12/pwninit/releases/download/3.3.1/pwninit
+chmod 755 pwninit

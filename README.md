@@ -24,6 +24,7 @@ Installers for the following tools are included:
 | binary | [IDA Free](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool--><!--no-test-->
 | binary | [one_gadget](https://github.com/david942j/one_gadget) | ![Last Build](https://img.shields.io/docker/v/ctftools/one_gadget?label=built) Magic gadget search for libc. | <!--tool--> 
 | binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for many architectures!). | <!--tool-->
+| binary | [pwninit](https://github.com/io12/pwninit) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwninit?label=built) Script to automate starting pwning challenges. | <!--tool-->
 | binary | [pwndbg](https://github.com/pwndbg/pwndbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwndbg?label=built) Enhanced environment for gdb. Especially for pwning. | <!--tool-->
 | binary | [pwnsh](https://github.com/zardus/pwnsh) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwnsh?label=built) Useful shell scripts for assembly, exploitation, etc. | <!--tool-->
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwntools?label=built) Useful CTF utilities. | <!--tool-->
