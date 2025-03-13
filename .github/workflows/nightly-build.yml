@@ -47,7 +47,8 @@ jobs:
     - name: Build Tool
       run: |
         NAME=$(echo ${{ matrix.tool }} | tr -cd '0-9A-Za-z-_')
-        docker build -t ctftools/$NAME --build-arg PREINSTALL="${{ matrix.tool }}" .
+        EXTRA=$( grep -qE "^(featherduster|volatility|qira)$" <<< "${{ matrix.tool }}" && echo python2 )
+        docker build -t ctftools/$NAME --build-arg PREINSTALL="$EXTRA ${{ matrix.tool }}" .
         docker push ctftools/$NAME
         docker tag ctftools/$NAME ctftools/$NAME:$(date +%Y-%m-%d)
         docker push ctftools/$NAME:$(date +%Y-%m-%d)
