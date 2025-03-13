@@ -31,7 +31,7 @@ Installers for the following tools are included:
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwntools?label=built) Useful CTF utilities. | <!--tool-->
 | binary | [qemu](http://qemu.org) | ![Last Build](https://img.shields.io/docker/v/ctftools/qemu?label=built) Latest version of qemu! | <!--tool--><!--slow-test-->
 | binary | [qiling](https://github.com/qilingframework/qiling) | ![Last Build](https://img.shields.io/docker/v/ctftools/qiling?label=built) A dynamic binary instrumentation framework. | <!--tool-->
-| binary | [qira](http://qira.me) | ![Last Build](https://img.shields.io/docker/v/ctftools/qira?label=built) Parallel, timeless debugger. | <!--tool--><!--no-test-->
+| binary | [qira](http://qira.me) | ![Last Build](https://img.shields.io/docker/v/ctftools/qira?label=built) Parallel, timeless debugger. | <!--tool--><!--slow-test-->
 | binary | [rappel](https://github.com/yrp604/rappel) | ![Last Build](https://img.shields.io/docker/v/ctftools/rappel?label=built) A linux-based assembly REPL. | <!--tool-->
 | binary | [ropper](https://github.com/sashs/Ropper) | ![Last Build](https://img.shields.io/docker/v/ctftools/ropper?label=built) Another gadget finder. | <!--tool-->
 | binary | [rp++](https://github.com/0vercl0k/rp) | ![Last Build](https://img.shields.io/docker/v/ctftools/rp?label=built) Another gadget finder. | <!--tool-->
