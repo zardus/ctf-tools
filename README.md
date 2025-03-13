@@ -22,6 +22,7 @@ Installers for the following tools are included:
 | binary | [ghidra](https://ghidra-sre.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/ghidra?label=built) Open-source reverse engineering and decompilation tool. | <!--tool-->
 | binary | [honggfuzz](https://github.com/google/honggfuzz) | ![Last Build](https://img.shields.io/docker/v/ctftools/honggfuzz?label=built) A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool-->
 | binary | [IDA Free](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool--><!--no-test-->
+| binary | [manticore](https://github.com/trailofbits/manticore) | ![Last Build](https://img.shields.io/docker/v/ctftools/manticore?label=built) Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
 | binary | [one_gadget](https://github.com/david942j/one_gadget) | ![Last Build](https://img.shields.io/docker/v/ctftools/one_gadget?label=built) Magic gadget search for libc. | <!--tool--> 
 | binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for many architectures!). | <!--tool-->
 | binary | [pwninit](https://github.com/io12/pwninit) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwninit?label=built) Script to automate starting pwning challenges. | <!--tool-->
@@ -29,6 +30,7 @@ Installers for the following tools are included:
 | binary | [pwnsh](https://github.com/zardus/pwnsh) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwnsh?label=built) Useful shell scripts for assembly, exploitation, etc. | <!--tool-->
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwntools?label=built) Useful CTF utilities. | <!--tool-->
 | binary | [qemu](http://qemu.org) | ![Last Build](https://img.shields.io/docker/v/ctftools/qemu?label=built) Latest version of qemu! | <!--tool--><!--slow-test-->
+| binary | [qiling](https://github.com/qilingframework/qiling) | ![Last Build](https://img.shields.io/docker/v/ctftools/qiling?label=built) A dynamic binary instrumentation framework. | <!--tool-->
 | binary | [qira](http://qira.me) | ![Last Build](https://img.shields.io/docker/v/ctftools/qira?label=built) Parallel, timeless debugger. | <!--tool--><!--no-test-->
 | binary | [rappel](https://github.com/yrp604/rappel) | ![Last Build](https://img.shields.io/docker/v/ctftools/rappel?label=built) A linux-based assembly REPL. | <!--tool-->
 | binary | [ropper](https://github.com/sashs/Ropper) | ![Last Build](https://img.shields.io/docker/v/ctftools/ropper?label=built) Another gadget finder. | <!--tool-->
@@ -39,8 +41,6 @@ Installers for the following tools are included:
 | binary | [valgrind](http://valgrind.org) | ![Last Build](https://img.shields.io/docker/v/ctftools/valgrind?label=built) A Dynamic Binary Instrumentation framework with some built-in tools. | <!--tool-->
 | binary | [villoc](https://github.com/wapiflapi/villoc) | ![Last Build](https://img.shields.io/docker/v/ctftools/villoc?label=built) Visualization of heap operations. | <!--tool-->
 | binary | [xrop](https://github.com/acama/xrop) | ![Last Build](https://img.shields.io/docker/v/ctftools/xrop?label=built) Gadget finder. | <!--tool--><!--failing-->
-| binary | [manticore](https://github.com/trailofbits/manticore) | ![Last Build](https://img.shields.io/docker/v/ctftools/manticore?label=built) Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
-| binary | [qiling](https://github.com/qilingframework/qiling) | ![Last Build](https://img.shields.io/docker/v/ctftools/qiling?label=built) A dynamic binary instrumentation framework. | <!--tool-->
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | ![Last Build](https://img.shields.io/docker/v/ctftools/firmware-mod-kit?label=built) Tools for firmware packing/unpacking. | <!--tool-->
 | forensics | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | ![Last Build](https://img.shields.io/docker/v/ctftools/pdf-parser?label=built) Tool for digging in PDF files | <!--tool-->
 | forensics | [peepdf](https://github.com/cert-ee/peepdf) | ![Last Build](https://img.shields.io/docker/v/ctftools/peepdf?label=built) Powerful Python tool to analyze PDF documents. | <!--tool-->
