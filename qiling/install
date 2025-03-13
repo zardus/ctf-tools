@@ -1,0 +1,20 @@
+#!/bin/bash -ex
+
+virtualenv venv
+source venv/bin/activate
+
+git clone -b dev --depth 1 https://github.com/qilingframework/qiling.git
+pushd qiling
+git submodule update --init --recursive
+pip install .
+popd
+
+cp qiling/qltui.py venv/lib/python3.12/site-packages
+
+mkdir -p bin
+cat <<END >bin/qltool
+#!/bin/bash
+source $PWD/venv/bin/activate
+exec $PWD/qiling/qltool "\$@"
+END
+chmod 755 bin/qltool

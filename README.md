@@ -39,6 +39,7 @@ Installers for the following tools are included:
 | binary | [villoc](https://github.com/wapiflapi/villoc) | ![Last Build](https://img.shields.io/docker/v/ctftools/villoc?label=built) Visualization of heap operations. | <!--tool-->
 | binary | [xrop](https://github.com/acama/xrop) | ![Last Build](https://img.shields.io/docker/v/ctftools/xrop?label=built) Gadget finder. | <!--tool--><!--failing-->
 | binary | [manticore](https://github.com/trailofbits/manticore) | ![Last Build](https://img.shields.io/docker/v/ctftools/manticore?label=built) Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
+| binary | [qiling](https://github.com/qilingframework/qiling) | ![Last Build](https://img.shields.io/docker/v/ctftools/qiling?label=built) A dynamic binary instrumentation framework. | <!--tool-->
 | forensiry | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | ![Last Build](https://img.shields.io/docker/v/ctftools/firmware-mod-kit?label=built) Tools for firmware packing/unpacking. | <!--tool-->
 | forensiry | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | ![Last Build](https://img.shields.io/docker/v/ctftools/pdf-parser?label=built) Tool for digging in PDF files | <!--tool-->
 | forensiry | [peepdf](https://github.com/cert-ee/peepdf) | ![Last Build](https://img.shields.io/docker/v/ctftools/peepdf?label=built) Powerful Python tool to analyze PDF documents. | <!--tool-->
