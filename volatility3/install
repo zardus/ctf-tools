@@ -1,0 +1,3 @@
+#!/bin/bash -ex
+
+pipx install volatility3
