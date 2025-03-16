@@ -7,13 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  listcheck:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Verify Tool List
+      id: verify
+      run: |
+        diff <(
+          grep -- --tool-- README.md | tr '[]' ' ' |
+          awk '{print $4}' | sort
+        ) <(
+          ls */install | xargs -n1 dirname | sort
+        )
   toollist:
     runs-on: ubuntu-latest
     outputs:
       tools: ${{ steps.tools.outputs.tools }}
     steps:
     - uses: actions/checkout@master
-    - name: Tools
+    - name: List Tools
       id: tools
       run: |
         (
