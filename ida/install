@@ -1,15 +1,20 @@
 #!/bin/bash -ex
 
 # our venv shenanigans
-virtualenv --system-site-packages venv
+python3.13 -m venv venv
+source venv/bin/activate
 
 tar xvf ~/Downloads/IDA*.tar.gz
 
 IDA_DIR=$(dirname */libida.so)
 
 pushd $IDA_DIR
-echo 0 | ./idapyswitch
+./idapyswitch --force-path /usr/lib/x86_64-linux-gnu/libpython3.13.so.1.0
 popd
+
+# install this here
+pip install ida-pro-mcp
+ida-pro-mcp --install
 
 mkdir bin
 cat <<END >bin/ida64

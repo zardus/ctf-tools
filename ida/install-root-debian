@@ -1,0 +1,3 @@
+#!/bin/bash -ex
+
+apt-get install python3.13-venv libpython3.13
