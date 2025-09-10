@@ -79,7 +79,7 @@ Installers for the following tools are included:
 | stego | [zsteg](https://github.com/zed-0xff/zsteg) | ![Last Build](https://img.shields.io/docker/v/ctftools/zsteg?label=built) detect stegano-hidden data in PNG & BMP. | <!--tool-->
 | misc | [jdgui](http://jd.benow.ca/) | ![Last Build](https://img.shields.io/docker/v/ctftools/jdgui?label=built) Java decompiler. | <!--tool-->
 | misc | [python2](https://www.python.org/downloads/release/python-2718/) | ![Last Build](https://img.shields.io/docker/v/ctftools/python2?label=built) For when you really need it... | <!--tool-->
-| misc | [social-analyzer](https://github.com/qeeqbox/social-analyzer) | ![Last Build](https://img.shields.io/docker/v/ctftools/social-analyzer?label=built) Social media reconnaisance tool... | <!--tool-->
+| misc | [social-analyzer](https://github.com/qeeqbox/social-analyzer) | ![Last Build](https://img.shields.io/docker/v/ctftools/social-analyzer?label=built) Social media reconnaissance tool... | <!--tool-->
 | misc | [veles](https://codisec.com/veles/) | ![Last Build](https://img.shields.io/docker/v/ctftools/veles?label=built) Binary data analysis and visualization tool. | <!--tool-->
 | misc | [xspy](https://gitlab.com/kalilinux/packages/xspy) | ![Last Build](https://img.shields.io/docker/v/ctftools/xspy?label=built) Tiny tool to spy on X sessions. | <!--tool-->
 
