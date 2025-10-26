@@ -82,6 +82,7 @@ Installers for the following tools are included:
 | misc | [social-analyzer](https://github.com/qeeqbox/social-analyzer) | ![Last Build](https://img.shields.io/docker/v/ctftools/social-analyzer?label=built) Social media reconnaissance tool... | <!--tool-->
 | misc | [veles](https://codisec.com/veles/) | ![Last Build](https://img.shields.io/docker/v/ctftools/veles?label=built) Binary data analysis and visualization tool. | <!--tool-->
 | misc | [xspy](https://gitlab.com/kalilinux/packages/xspy) | ![Last Build](https://img.shields.io/docker/v/ctftools/xspy?label=built) Tiny tool to spy on X sessions. | <!--tool-->
+| osint | [sherlock](https://github.com/sherlock-project/sherlock) | ![Last Build](https://img.shields.io/docker/v/ctftools/shelock?label=built) Tools for Hunt down social media accounts by username across 400+ social networks . | <!--tool-->
 
 There are also some installers for non-CTF stuff to break the monotony!
 
