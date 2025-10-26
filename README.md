@@ -82,7 +82,7 @@ Installers for the following tools are included:
 | misc | [social-analyzer](https://github.com/qeeqbox/social-analyzer) | ![Last Build](https://img.shields.io/docker/v/ctftools/social-analyzer?label=built) Social media reconnaissance tool... | <!--tool-->
 | misc | [veles](https://codisec.com/veles/) | ![Last Build](https://img.shields.io/docker/v/ctftools/veles?label=built) Binary data analysis and visualization tool. | <!--tool-->
 | misc | [xspy](https://gitlab.com/kalilinux/packages/xspy) | ![Last Build](https://img.shields.io/docker/v/ctftools/xspy?label=built) Tiny tool to spy on X sessions. | <!--tool-->
-| osint | [sherlock](https://github.com/sherlock-project/sherlock) | ![Last Build](https://img.shields.io/docker/v/ctftools/shelock?label=built) Tools for Hunt down social media accounts by username across 400+ social networks . | <!--tool-->
+
 
 There are also some installers for non-CTF stuff to break the monotony!
 
@@ -232,6 +232,7 @@ As tools get officially packaged, we switch to just suggesting that you apt inst
 | networking | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. |
 | networking | apt | [bettercap](https://www.bettercap.org/) | Network shenanigans swiss army knife. |
 | misc | apt | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. |
+| osint | apt | [sherlock](https://github.com/sherlock-project/sherlock) | Tools for Hunt down social media accounts by username across 400+ social networks . |
 
 ## Useful CTF tools in docker images
 
