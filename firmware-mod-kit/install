@@ -2,7 +2,6 @@
 
 git clone --depth 1 https://github.com/rampageX/firmware-mod-kit
 pushd firmware-mod-kit
-git apply ../shared-ng.patch
 cd src
 make
 popd
