@@ -1,3 +1,4 @@
 #!/bin/bash -ex
 
 pipx install angr
+"$(dirname "${BASH_SOURCE[0]}")"/pipx/venvs/angr/bin/python -m pip install ipython

@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+"$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/../pipx/venvs/angr/bin/ipython "$@"
