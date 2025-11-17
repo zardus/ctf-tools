@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
-curl https://sourceware.org/pub/valgrind/valgrind-3.21.0.tar.bz2 | tar xj
-cd valgrind-3.21.0
+curl https://sourceware.org/pub/valgrind/valgrind-3.25.1.tar.bz2 | tar xj
+cd valgrind-3.25.1
 
 git clone --depth 1 https://github.com/wmkhoo/taintgrind.git
 cd taintgrind
@@ -11,10 +11,10 @@ cd ../../
 mkdir -p bin
 cat <<END >bin/taintgrind
 #!/bin/bash
-exec $PWD/valgrind-3.21.0/build/bin/taintgrind "\$@"
+exec $PWD/valgrind-3.25.1/build/bin/taintgrind "\$@"
 END
 cat <<END >bin/taintgrind-log2dot
 #!/bin/bash
-exec python3 $PWD/valgrind-3.21.0/taintgrind/log2dot.py "\$@"
+exec python3 $PWD/valgrind-3.25.1/taintgrind/log2dot.py "\$@"
 END
 chmod 755 bin/*
