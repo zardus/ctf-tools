@@ -3,9 +3,6 @@
 mkdir bin
 
 git clone https://github.com/mentebinaria/elfparser-ng elfparser-ng
-pushd elfparser-ng
-git apply ../cstdint.patch
-popd
 
 mkdir qt
 pushd qt
