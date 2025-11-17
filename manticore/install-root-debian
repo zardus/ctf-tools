@@ -2,4 +2,4 @@
 
 set -eu -o pipefail
 
-apt-get -y install pypy3 pypy3-dev
+apt-get -y install pypy3 pypy3-dev rustc cargo
