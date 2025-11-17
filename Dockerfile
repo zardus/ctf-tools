@@ -19,9 +19,10 @@ RUN echo "ctf ALL=NOPASSWD: ALL" > /etc/sudoers.d/ctf
 
 USER ctf
 WORKDIR /home/ctf/tools
+ADD --chown=ctf:ctf bin/manage-tools /home/ctf/tools/bin/manage-tools
+RUN bin/manage-tools -s setup
 ADD --chown=ctf:ctf .git /home/ctf/tools/.git
 RUN git checkout .
-RUN bin/manage-tools -s setup
 
 ARG PREINSTALL=""
 RUN <<END
