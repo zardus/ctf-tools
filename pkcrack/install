@@ -1,8 +1,9 @@
 #!/bin/bash -ex
 
-wget https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack/pkcrack-1.2.2.tar.gz
-tar xzf pkcrack-1.2.2.tar.gz
-cd pkcrack-1.2.2/src
+git clone --depth 1 https://github.com/keyunluo/pkcrack pkcrack-src
+mkdir -p pkcrack-src/build
+cd pkcrack-src/build
+cmake ..
 make
 
 mkdir -p ../../bin
