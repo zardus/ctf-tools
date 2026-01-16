@@ -2,6 +2,16 @@
 
 [ -e libc-database ] || git clone https://github.com/niklasb/libc-database
 
+# Patch libc-database to handle large RPM files (>4GB) by using rpm2archive as fallback
+# rpm2cpio doesn't support files over 4GB, but rpm2archive does
+cp extract_rpm.sh libc-database/common/
+chmod +x libc-database/common/extract_rpm.sh
+
+# Replace rpm2cpio|cpio pipeline with our wrapper script
+perl -i -0pe 's/\(rpm2cpio pkg\.rpm \|\| die "rpm2cpio failed"\) \| \\\n\s+\(cpio -id --quiet \|\| die "cpio failed"\)/bash "\$SCRIPT_DIR\/common\/extract_rpm.sh" pkg.rpm || die "rpm extraction failed"/g' libc-database/common/libc.sh
+# Add SCRIPT_DIR variable near the top of libc.sh
+sed -i '1a SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"' libc-database/common/libc.sh
+
 mkdir -p bin
 for i in add dump find get identify download
 do

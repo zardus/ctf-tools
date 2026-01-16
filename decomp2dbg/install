@@ -20,9 +20,8 @@ fi
 # binja
 echo n >& ${COPROC[1]}
 
-# ghidra
-echo y >& ${COPROC[1]}
-echo >& ${COPROC[1]}
+# ghidra - temporarily disabled due to libbs missing libbs_vendored directory
+echo n >& ${COPROC[1]}
 
 # angr-management
 if [ -d $PWD/../angr-management/pipx/venvs ]
