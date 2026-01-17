@@ -7,5 +7,5 @@ cmake ..
 make
 
 mkdir -p ../../bin
-cp extract findkey makekey pkcrack zipdecrypt ../../bin
+cp ../bin/extract ../bin/findkey ../bin/makekey ../bin/pkcrack ../bin/zipdecrypt ../../bin
 cd ../../
