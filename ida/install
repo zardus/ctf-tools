@@ -1,25 +1,15 @@
 #!/bin/bash -ex
 
-# our venv shenanigans
-python3.13 -m venv venv
-source venv/bin/activate
-
-tar xvf ~/Downloads/IDA*.tar.gz
-
+IDA_TAR=$(ls -dtr ~/Downloads/ida*.tar.?z ~/Downloads/IDA*.tar.?z 2>/dev/null | sort | tail -n1)
+tar xvf "$IDA_TAR"
 IDA_DIR=$(dirname */libida.so)
 
-pushd $IDA_DIR
-./idapyswitch --force-path /usr/lib/x86_64-linux-gnu/libpython3.13.so.1.0
-popd
-
-# install this here
-pip install ida-pro-mcp
-ida-pro-mcp --install
+git clone https://github.com/mrexodia/ida-pro-mcp.git
+uv run --project ida-pro-mcp $IDA_DIR/idalib/python/py-activate-idalib.py
 
 mkdir bin
-cat <<END >bin/ida64
+cat <<END >bin/ida
 #!/bin/bash
-[ -n "\$VIRTUAL_ENV" ] || source $PWD/venv/bin/activate
-exec $PWD/[^b]*/ida64 "\$@"
+exec $PWD/[^b]*/ida "\$@"
 END
-chmod 755 bin/ida64
+chmod 755 bin/ida
