@@ -63,8 +63,11 @@ stdenv.mkDerivation rec {
   ];
 
   # crosstool-ng ships a ./bootstrap that regenerates the autotools files.
+  # Patch the source scripts' shebangs first: ./bootstrap (and the scripts it
+  # calls) use `#!/usr/bin/env`, which does not exist in a strict build sandbox.
   preConfigure = ''
-    ./bootstrap
+    patchShebangs .
+    bash ./bootstrap
   '';
 
   configureFlags = [ "--prefix=${placeholder "out"}" ];

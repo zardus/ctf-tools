@@ -43,7 +43,20 @@
       pkgDir = ./nix/pkgs;
       customNames = builtins.attrNames
         (lib.filterAttrs (_: t: t == "directory") (builtins.readDir pkgDir));
+
+      # Tools CI builds and pushes to Cachix. We only cache our *own* derivations
+      # (the ~31 nixpkgs passthroughs are already served by cache.nixos.org), and
+      # drop the few that are too heavy for GitHub's free runners (a full
+      # gcc-from-source toolchain). The per-sample crosstool-ng-<...> toolchains
+      # are likewise excluded from CI — build them out-of-band. This mirrors the
+      # old repo's <!--slow-test-->/<!--no-test--> markers.
+      ciExclude = [
+        "cross2"        # gcc-3.4.6 + newlib from source
+      ];
     in {
+      # Plain list of attr names for the CI build/docker matrices.
+      ciTargets = lib.subtractLists ciExclude customNames;
+
       packages = forAll ({ pkgs, pkgsPy2, ... }:
         let
           # tools we take straight from nixpkgs (see nix/passthrough.nix)

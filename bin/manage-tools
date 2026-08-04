@@ -113,6 +113,61 @@ function do_uninstall()
 		|| TOOL="$t" tool_log "not present in nix profile"
 }
 
+# Bootstrap the machine for Nix-based installs: ensure nix exists, flakes are
+# enabled, and the ctftools binary cache is configured (so installs are
+# prebuilt). Idempotent.
+CACHE_URL="https://ctftools.cachix.org"
+CACHE_KEY="ctftools.cachix.org-1:sBvy7vTAU6dLkJJizYtgYh4/NzpxjwRBrBGJLrVAzgA="
+
+function do_setup()
+{
+	# 1. Nix present?
+	if ! command -v nix >/dev/null 2>&1; then
+		TOOL=setup tool_log "Nix is not installed. Install it, then re-run 'setup':"
+		TOOL=setup tool_log "  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install"
+		TOOL=setup tool_log "  (or see https://nixos.org/download)"
+		return 1
+	fi
+	TOOL=setup tool_log "found $(nix --version)"
+
+	local conf="${NIX_USER_CONF_DIR:-$HOME/.config/nix}/nix.conf"
+	mkdir -p "$(dirname "$conf")"; touch "$conf"
+
+	# 2. Enable flakes + the unified CLI if not already active.
+	if nix show-config 2>/dev/null | grep -qE '^experimental-features.*flakes'; then
+		TOOL=setup tool_log "flakes already enabled"
+	elif grep -qE '^experimental-features' "$conf"; then
+		TOOL=setup tool_log "add 'nix-command flakes' to experimental-features in $conf"
+	else
+		echo 'experimental-features = nix-command flakes' >> "$conf"
+		TOOL=setup tool_log "enabled nix-command + flakes in $conf"
+	fi
+
+	# 3. Configure the ctftools binary cache so installs download prebuilt.
+	#    Prefer cachix (it also sorts out trusted-users on daemon installs).
+	if command -v cachix >/dev/null 2>&1; then
+		cachix use ctftools && TOOL=setup tool_log "configured ctftools cache via cachix"
+	elif grep -q 'ctftools.cachix.org' "$conf"; then
+		TOOL=setup tool_log "ctftools cache already in $conf"
+	else
+		{
+			echo "extra-substituters = $CACHE_URL"
+			echo "extra-trusted-public-keys = $CACHE_KEY"
+		} >> "$conf"
+		TOOL=setup tool_log "added ctftools cache to $conf"
+		TOOL=setup tool_log "(on a multi-user/daemon install this only applies if you're a trusted-user;"
+		TOOL=setup tool_log " otherwise install cachix and run 'cachix use ctftools', or pass --accept-flake-config)"
+	fi
+
+	# 4. PATH sanity.
+	case ":$PATH:" in
+		*":$HOME/.nix-profile/bin:"*) : ;;
+		*) TOOL=setup tool_log "ensure ~/.nix-profile/bin is on your PATH (re-login or source your Nix profile script)" ;;
+	esac
+
+	TOOL=setup tool_log "setup complete — try: $(basename "$0") install <tool>"
+}
+
 ## ---- argument parsing --------------------------------------------------
 
 [[ $# -eq 0 ]] && { usage; exit 1; }
@@ -189,9 +244,7 @@ case "$ACTION" in
 		;;
 
 	setup)
-		TOOL="setup" tool_log "ctf-tools is Nix-native; there is nothing to bootstrap."
-		TOOL="setup" tool_log "Tools install into your Nix profile (~/.nix-profile/bin), which is already on your PATH."
-		TOOL="setup" tool_log "Try:  $(basename $0) install <tool>   or   nix profile install $FLAKE#<tool>"
+		do_setup
 		;;
 
 	*)
