@@ -29,6 +29,36 @@ jobs:
         name: Read .#ciTargets
         run: echo "tools=$(nix eval --json .#ciTargets)" >> "$GITHUB_OUTPUT"
 
+  manage-tools:
+    name: manage-tools (ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - name: setup (bootstraps flakes + cache config)
+        run: ./bin/manage-tools setup
+      - name: list
+        run: |
+          ./bin/manage-tools list | tee /tmp/tools.txt
+          grep -qx pwntools /tmp/tools.txt
+          test "$(wc -l < /tmp/tools.txt)" -gt 50
+      - name: search
+        run: ./bin/manage-tools search stego | grep -qi steg
+      - name: install / list -i / uninstall round-trip
+        run: |
+          before=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l || echo 0)
+          ./bin/manage-tools install hash-identifier
+          after=$(ls "$HOME/.nix-profile/bin" | wc -l)
+          test "$after" -gt "$before"                       # something got installed
+          ./bin/manage-tools list -i                        # must not error
+          ./bin/manage-tools uninstall hash-identifier
+          final=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l || echo 0)
+          test "$final" -lt "$after"                         # ... and removed
+
   build:
     name: build ${{ matrix.tool }}
     needs: tools
