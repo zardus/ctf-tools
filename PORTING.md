@@ -41,12 +41,19 @@ All build and, where they produce a CLI, were run to confirm they work.
 - **cross2** — the 2006-era `binutils-2.21.1` + `gcc-3.4.6` + `newlib-1.20.0`
   toolchain, built from pinned sources (upstream book patches vendored under
   `nix/pkgs/cross2/patch/`).
-- **crosstool** — the `ct-ng` driver, plus each crosstool-NG sample toolchain as
-  its own output `crosstool-ng-<sample>`, built offline via a pinned
-  fixed-output "sources" derivation feeding a sandboxed `ct-ng build`. Verified
-  cross-compiling with `riscv32-unknown-elf`, `moxie-unknown-elf` (newlib), and
-  `bpf-unknown-none`. Samples are pinned incrementally (`pin-samples.sh`); an
-  unpinned or upstream-broken sample fails only itself, never the rest.
+- **crosstool** — the `ct-ng` driver, plus each buildable crosstool-NG sample
+  toolchain as its own output `crosstool-ng-<sample>`, built offline via a
+  pinned fixed-output "sources" derivation feeding a sandboxed `ct-ng build`.
+  Verified cross-compiling (riscv32, moxie/newlib, picolibc, bpf, ...). Ten
+  bare-metal samples (newlib / picolibc / mingw) are pinned and surfaced;
+  add more with `pin-samples.sh`. **The glibc/uclibc/musl (Linux) samples are
+  currently NOT buildable**: this crosstool-NG commit resolves the `gettext`
+  companion to version 0.26, which is not published on GNU's servers, so their
+  source download fails upstream (the same class of "broken sample" the shell
+  installer tolerated). To add them, bump the pinned ct-ng or override the
+  companion-lib versions in `mk-toolchain.nix`. The per-sample toolchains are
+  intentionally kept out of CI (a gcc-from-source build is too heavy for free
+  runners); build them on demand.
 - **preeny** — builds both 64-bit **and** 32-bit i686 LD_PRELOAD modules (CTF
   binaries are frequently 32-bit), matching upstream's multi-arch build.
 - **beef** — full Ruby app via `bundlerEnv` (gemset pinned).

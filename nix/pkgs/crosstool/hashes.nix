@@ -28,4 +28,16 @@
   #   a per-sample upstream incompatibility that CI tolerates. Left pinned so the
   #   source FOD is reproducible and the sample is easy to revisit.
   "avr" = "sha256-sh2pxBjwi7ex+E2/nmr57hrotrFMHLZQiUK47Se5K0A=";
+
+  # --- Additional bare-metal samples (newlib / picolibc / mingw). ---
+  # Linux/glibc/uclibc/musl samples are omitted: this ct-ng resolves gettext to
+  # 0.26, which is not published on GNU's servers, so their source download
+  # fails upstream. Bump ctng or override companion versions to add them.
+  "arm-picolibc-eabi"    = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
+  "arm-unknown-eabi"     = "sha256-j+m8RHC8MPGrNE9LDOiMHUH/GOIytL5RgG6Y5jt3ziE=";
+  "i686-w64-mingw32"     = "sha256-lDPp1o2MOvokOpv3+JRRMPtCt+cQRTvbzG1f/7H2wmI=";
+  "riscv32-hifive1-elf"  = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
+  "riscv32-picolibc-elf" = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
+  "riscv64-multilib-elf" = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
+  "sh-unknown-elf"       = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
 }
