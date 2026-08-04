@@ -31,13 +31,13 @@
 
 stdenv.mkDerivation rec {
   pname = "crosstool-ng";
-  version = "unstable-2024-c893759";
+  version = "1.28.0";
 
   src = fetchFromGitHub {
     owner = "crosstool-ng";
     repo = "crosstool-ng";
-    rev = "c8937598ac071322b7095e30bed4760d3c9c50ec";
-    hash = "sha256-V1FXB7w2eEpWiSCO0Anh+V2zgJGaZ9750T3UISet/Xw=";
+    rev = "crosstool-ng-${version}";
+    hash = "sha256-ytTgr2sQKV6BarYtiqjpcNcx7gKzM0BUaML92CrsuPo=";
   };
 
   nativeBuildInputs = [

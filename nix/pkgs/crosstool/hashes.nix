@@ -1,43 +1,78 @@
 # Fixed-output hashes for the per-sample source-tarball sets fetched by
-# crosstool-NG (see ./mk-toolchain.nix). Keys are the *sanitized* sample names
-# (commas / non [a-zA-Z0-9_-] replaced with '-'), values are the SRI sha256 of
-# the recursive tarball directory.
-#
-# HOW TO PIN A NEW SAMPLE (trust-on-first-use):
-#   1. Add an entry with `lib.fakeHash` (or omit it -- mk-toolchain defaults to
-#      fakeHash), or just build `.passthru.toolchains.<name>`.
-#   2. Nix reports `got: sha256-...`; paste that value here.
-# Samples without an entry here still appear in `passthru.toolchains`, but their
-# source download derivation will fail the hash check until pinned. CI tolerates
-# per-sample failures, so the full matrix can be filled in incrementally.
+# crosstool-NG 1.28.0 (see ./mk-toolchain.nix). Keys are the *sanitized* sample
+# names; values are the SRI sha256 of the recursive tarball directory.
+# Pin more with ./pin-samples.sh (run serially to avoid throttling GNU mirrors).
 {
-  # --- Pinned source sets. Toolchain build status noted per entry. ---
-  # riscv32-unknown-elf: CT_LIBC_NONE (freestanding) -- toolchain builds; verified
-  #   it cross-compiles+links a freestanding RISC-V ELF.
-  "riscv32-unknown-elf" = "sha256-Gv40eYP5PoKSS8LWzpWcWkNIQwFJ2A7c2OTDincjgkk=";
-  # bpf-unknown-none: CT_LIBC_NONE, no multilib/gdb -- fast; verified it
-  #   cross-compiles C to real eBPF machine code. (Same source set as riscv32.)
-  "bpf-unknown-none" = "sha256-Gv40eYP5PoKSS8LWzpWcWkNIQwFJ2A7c2OTDincjgkk=";
-  # moxie-unknown-elf: newlib -- toolchain builds; verified it cross-compiles a
-  #   hosted printf hello-world into a real Moxie ELF (newlib libc linked in).
-  "moxie-unknown-elf" = "sha256-G9qHxo+M6DfTYh7YP40jCzTtFr8SWPJzsvtYj/IQJaM=";
-  # arm-none-eabi: newlib, multilib -- toolchain builds (heavy multilib build).
-  "arm-none-eabi" = "sha256-j+m8RHC8MPGrNE9LDOiMHUH/GOIytL5RgG6Y5jt3ziE=";
-  # avr: avr-libc -- source set pins fine, but the toolchain build currently
-  #   fails in avr-libc's configure ("Wrong assembler found") with binutils 2.47;
-  #   a per-sample upstream incompatibility that CI tolerates. Left pinned so the
-  #   source FOD is reproducible and the sample is easy to revisit.
-  "avr" = "sha256-sh2pxBjwi7ex+E2/nmr57hrotrFMHLZQiUK47Se5K0A=";
-
-  # --- Additional bare-metal samples (newlib / picolibc / mingw). ---
-  # Linux/glibc/uclibc/musl samples are omitted: this ct-ng resolves gettext to
-  # 0.26, which is not published on GNU's servers, so their source download
-  # fails upstream. Bump ctng or override companion versions to add them.
-  "arm-picolibc-eabi"    = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
-  "arm-unknown-eabi"     = "sha256-j+m8RHC8MPGrNE9LDOiMHUH/GOIytL5RgG6Y5jt3ziE=";
-  "i686-w64-mingw32"     = "sha256-lDPp1o2MOvokOpv3+JRRMPtCt+cQRTvbzG1f/7H2wmI=";
-  "riscv32-hifive1-elf"  = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
-  "riscv32-picolibc-elf" = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
-  "riscv64-multilib-elf" = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
-  "sh-unknown-elf"       = "sha256-+IwA8e+Ex/LVGfHM8KqKFS8QN8Xvw0/PnJKdG8vL1b4=";
+  "aarch64-rpi3-linux-gnu" = "sha256-wgNZqKmxgf80BnjEoH9Sm1VLGViJxJEwglI85OPx+vU=";
+  "aarch64-rpi4-linux-gnu" = "sha256-25DwgePSxHln8vp2HjABcJlLwTEMubAhp+ZylAPX4C0=";
+  "arc-multilib-elf32" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arm-cortexa5-linux-uclibcgnueabihf" = "sha256-v83epdKsn6Z4U9HXV+YIRBzwHtCHsDpGR1MLxxy67CE=";
+  "arm-multilib-linux-uclibcgnueabi" = "sha256-N35/JYkRQXwzyhFfSp65/970YW4ZYakWZt2c1fhG9yw=";
+  "arm-nano-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arm-none-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arm-picolibc-default" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arm-picolibc-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arm-unknown-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arm-unknown-linux-musleabi" = "sha256-ksV8I2Y8bH6a+Uqd29yCtmq3bN8V7L3d4+pfdSh5Ccc=";
+  "arm-unknown-linux-uclibcgnueabi" = "sha256-v83epdKsn6Z4U9HXV+YIRBzwHtCHsDpGR1MLxxy67CE=";
+  "armeb-unknown-eabi" = "sha256-Y67OpbJup1A4jffufyEAX69EBgxOdbiBlpGteWsgwak=";
+  "armeb-unknown-linux-uclibcgnueabi" = "sha256-JwQIjH0lUTqbLnQivQFnbxpxLZciINGg50KHtUEP7ZA=";
+  "armv6-unknown-linux-gnueabihf" = "sha256-qmyZw9qMts1rXvLUfna+ILKzgdYeqeI5CviiKBv3nGA=";
+  "armv7-rpi2-linux-gnueabihf" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "armv8-rpi3-linux-gnueabihf" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "armv8-rpi4-linux-gnueabihf" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "avr" = "sha256-gqBvUwT1TZnFGFk6ckIJjjySGazDrKj8Ea0bwWKcM9s=";
+  "bpf-unknown-none" = "sha256-p22DSYvwyr60/6q7XiceXiD55wEvbd7RvVi5RDrHURs=";
+  "hppa-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
+  "i586-geode-linux-uclibc" = "sha256-JwQIjH0lUTqbLnQivQFnbxpxLZciINGg50KHtUEP7ZA=";
+  "i686-centos6-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
+  "i686-centos7-linux-gnu" = "sha256-ILu3dB7iBoNms6WuTjF72Upwl/+4JQjqD+b+MWbKNuA=";
+  "i686-nptl-linux-gnu" = "sha256-Y9EeKbugs+FJ2H8XS3lQqwU3L3VCGE5f5VZHIAu3pZE=";
+  "i686-w64-mingw32" = "sha256-peFRX3N2MF+fgsmO7MoMDAwFHXwZZSZHgOMCDo7OgRM=";
+  "lm32-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
+  "loongarch64-unknown-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "m68k-unknown-elf" = "sha256-FdvFvOd3+zMefXg4p98EZV4rxmvrVWaS8Snctd+R9cs=";
+  "m68k-unknown-linux-gnu" = "sha256-8KG3fm0qFqivL1l4OKMIfZp6kNt5qxQ/SVyGzDptQwA=";
+  "m68k-unknown-uclinux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
+  "mips-unknown-elf" = "sha256-neu2R7zmLFfgKCa0r2z1gp/q9jO/5Y+JDEiBGQexmr8=";
+  "mips-unknown-linux-uclibc" = "sha256-0pUCv9JZE0CYAHNCocgQcF9KMuDGCoK5JLuZmcBxbVA=";
+  "mips64-unknown-linux-gnu" = "sha256-de8QvxW8h7fdvyflnsAujnzcHD3Xo/vxjYObfFhoRJo=";
+  "mips64el-multilib-linux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
+  "mipsel-multilib-linux-gnu" = "sha256-fKIO7W3jSLrhKbUjoX0wL4nWWhx5sM295ZnBestzft8=";
+  "mipsel-sde-elf" = "sha256-neu2R7zmLFfgKCa0r2z1gp/q9jO/5Y+JDEiBGQexmr8=";
+  "mipsel-unknown-linux-gnu" = "sha256-fKIO7W3jSLrhKbUjoX0wL4nWWhx5sM295ZnBestzft8=";
+  "moxie-unknown-elf" = "sha256-oiCLoY9rGzGmBsReS3pYJrvS4ITt3J96HFMNS+noD68=";
+  "msp430-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
+  "nios2-altera-linux-gnu" = "sha256-H9mNJK7mSlCdA9fXJWwBQVZ/QDXDGbs0wrmNPskuVZs=";
+  "nios2-unknown-elf" = "sha256-PgnA637xnYQvPt/4upFLnT/lMKMG9MPIzc/8bb1Yhd8=";
+  "or1k-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
+  "or1k-unknown-linux-musl" = "sha256-ES9WweGkQM9B0zyIyef4cyhIwfeQmkCpIYhAGaCsg3Y=";
+  "powerpc-unknown-linux-uclibc" = "sha256-JwQIjH0lUTqbLnQivQFnbxpxLZciINGg50KHtUEP7ZA=";
+  "powerpc64-unknown-linux-musl" = "sha256-KDyfugmuR17V8pQArkYT0en8Z0ALo9J7WU8gUmDhK5Y=";
+  "pru" = "sha256-GY7ovjdbZGfx3I7GuhnJZJzexep4oNzWclsgSChK/wU=";
+  "riscv32-hifive1-elf" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "riscv32-picolibc-elf" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "riscv32-unknown-elf" = "sha256-p22DSYvwyr60/6q7XiceXiD55wEvbd7RvVi5RDrHURs=";
+  "riscv64-multilib-elf" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "riscv64-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
+  "rx-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
+  "s390-unknown-linux-gnu" = "sha256-SgV6fDmQjip/oJgfKOzAaJXLbz3yUzDStQEhty8T2Ss=";
+  "s390x-ibm-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
+  "s390x-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
+  "sh-unknown-elf" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "sh4-multilib-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "sh4-multilib-linux-uclibc" = "sha256-7PtvaTwtnVspmHiPsuXPiNdIkeAZOWkoDcXN8v8pjjE=";
+  "sparc-leon-linux-uclibc" = "sha256-+7QjznEl/jq5FJbYn7PpUAX0JStytO8cS8C4ddsEyx4=";
+  "sparc-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
+  "sparc64-multilib-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
+  "x86_64-centos7-linux-gnu" = "sha256-ILu3dB7iBoNms6WuTjF72Upwl/+4JQjqD+b+MWbKNuA=";
+  "x86_64-multilib-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "x86_64-multilib-linux-musl" = "sha256-8XCZln49IR6PUHtNDiuICfTtTtw7xecVzayiYU8g1sk=";
+  "x86_64-multilib-linux-uclibc" = "sha256-9I5vXCAgyH6FO4HZC9vuduFzfu/IXw5/2Qivl3fWlKA=";
+  "x86_64-ubuntu14-04-linux-gnu" = "sha256-EBGaTwodrWugddGYPOuOxfJdrKjqI0doqNsNthyFNAY=";
+  "x86_64-ubuntu16-04-linux-gnu" = "sha256-KR0BOen5XxCOsdeILcs5jLzdSBireL4dVRev8Zj6wOQ=";
+  "x86_64-unknown-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "x86_64-unknown-linux-uclibc" = "sha256-9I5vXCAgyH6FO4HZC9vuduFzfu/IXw5/2Qivl3fWlKA=";
+  "x86_64-w64-mingw32" = "sha256-peFRX3N2MF+fgsmO7MoMDAwFHXwZZSZHgOMCDo7OgRM=";
+  "xtensa-fsf-linux-uclibc" = "sha256-7PtvaTwtnVspmHiPsuXPiNdIkeAZOWkoDcXN8v8pjjE=";
 }
