@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/TheRook/subbrute.git
-
-mkdir -p bin
-cd bin
-ln -s ../subbrute/subbrute.py subbrute
-cd ..

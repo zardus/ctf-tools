@@ -1,9 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/robertdavidgraham/pemcrack.git
-cd pemcrack
-make
-cd ..
-
-mkdir -p bin
-cp pemcrack/bin/pemcrack bin/

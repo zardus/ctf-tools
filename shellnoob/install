@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth 1 https://github.com/reyammer/shellnoob
-
-mkdir -p bin
-cd bin
-ln -s ../shellnoob/shellnoob.py .
-cd ..

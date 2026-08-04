@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-apt-get install -y python3-pip python3-dev git libssl-dev libffi-dev build-essential

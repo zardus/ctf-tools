@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-sudo apt install -y libsdl2-image-2.0-0

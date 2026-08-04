@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get -y install automake1.11 automake autotools-dev libevent-dev libmagic-dev
-apt-get install -y libjpeg*-turbo*-dev

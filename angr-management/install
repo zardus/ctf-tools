@@ -1,8 +1,0 @@
-#!/bin/bash -ex
-
-# Pin setuptools < 82 to ensure pkg_resources is available for building
-# dependencies like pyqodeng (setuptools 82.0.0 removed pkg_resources).
-export PIP_CONSTRAINT=$(mktemp)
-echo 'setuptools<82' > "$PIP_CONSTRAINT"
-pipx install angr-management
-rm -f "$PIP_CONSTRAINT"

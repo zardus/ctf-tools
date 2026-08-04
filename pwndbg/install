@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-
-#git clone --depth 1 https://github.com/pwndbg/pwndbg
-wget https://github.com/pwndbg/pwndbg/releases/download/2025.02.19/pwndbg_2025.02.19_x86_64-portable.tar.xz
-tar xvf pwndbg_*-portable.tar.xz --strip-components 2 

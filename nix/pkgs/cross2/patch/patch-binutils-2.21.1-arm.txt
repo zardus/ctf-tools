@@ -1,0 +1,11 @@
+--- gas/config/tc-arm.c.orig	2011-06-27 16:39:11.000000000 +0900
++++ gas/config/tc-arm.c	2012-07-05 21:01:56.000000000 +0900
+@@ -1892,7 +1892,7 @@
+   enum arm_reg_type rtype = REG_TYPE_NDQ;
+   const char *const incr_error = _("register stride must be 1 or 2");
+   const char *const type_error = _("mismatched element/structure types in list");
+-  struct neon_typed_alias firsttype;
++  struct neon_typed_alias firsttype = { 0, 0, {0, 0} };
+ 
+   if (skip_past_char (&ptr, '{') == SUCCESS)
+     leading_brace = 1;

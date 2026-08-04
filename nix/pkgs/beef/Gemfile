@@ -1,0 +1,64 @@
+#
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+
+gem 'net-smtp', require: false
+gem 'json'
+
+gem 'eventmachine', '~> 1.2', '>= 1.2.7'
+gem 'thin', '~> 2.0'
+gem 'sinatra', '~> 4.1'
+gem 'rack', '~> 3.2'
+gem 'rack-protection', '~> 4.2.1'
+gem 'em-websocket', '~> 0.5.3' # WebSocket support
+gem 'uglifier', '~> 4.2'
+gem 'mime-types', '~> 3.7'
+gem 'execjs', '~> 2.10'
+gem 'ansi', '~> 1.6'
+gem 'term-ansicolor', :require => 'term/ansicolor'
+gem 'rubyzip', '~> 3.4'
+gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
+gem 'rake', '~> 13.4'
+gem 'activerecord', '~> 8.1'
+gem 'otr-activerecord', '~> 2.6.0'
+gem 'sqlite3', '~> 2.9'
+gem 'rubocop', '~> 1.88.2', require: false
+
+# Geolocation support
+group :geoip do
+  gem 'maxmind-db', '~> 1.4'
+end
+
+gem 'parseconfig', '~> 1.1', '>= 1.1.2'
+gem 'erubis', '~> 2.7'
+
+# Metasploit Integration extension
+group :ext_msf do
+  gem 'msfrpc-client', '~> 1.1', '>= 1.1.2'
+  gem 'xmlrpc', '~> 0.3.4'
+end
+
+# Notifications extension
+group :ext_notifications do
+  # Pushover
+  gem 'rushover', '~> 0.3.0'
+  # Slack
+  gem 'slack-notifier', '~> 2.4'
+end
+
+# DNS extension
+group :ext_dns do
+  gem 'async-dns', '~> 1.4'
+  gem 'async', '~> 1.32'
+end
+
+# QRcode extension
+group :ext_qrcode do
+  gem 'qr4r', '~> 0.6.1'
+end
+
+# For running unit tests
+
+source 'https://rubygems.org'

@@ -1,0 +1,14 @@
+--- gcc/config.gcc.orig	2005-07-20 06:08:48.000000000 +0900
++++ gcc/config.gcc	2011-08-31 21:35:06.000000000 +0900
+@@ -645,6 +645,11 @@
+ 	prefix=/gnu
+ 	local_prefix=/gnu
+ 	;;
++alpha*-*-elf*)
++	tm_file="${tm_file} alpha/elf.h"
++	target_cpu_default="MASK_GAS"
++	tmake_file="${tmake_file} alpha/t-crtfm alpha/t-alpha alpha/t-ieee"
++	;;
+ arc-*-elf*)
+ 	tm_file="dbxelf.h elfos.h svr4.h ${tm_file}"
+ 	extra_parts="crtinit.o crtfini.o"

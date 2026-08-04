@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-git clone --depth=1 https://github.com/Gallopsled/pwntools.git
-pipx install -e ./pwntools

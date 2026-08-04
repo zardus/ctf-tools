@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-pipx install "git+https://github.com/cert-ee/peepdf"

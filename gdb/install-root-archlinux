@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-pacman -Syu --needed --noconfirm texinfo guile2.0

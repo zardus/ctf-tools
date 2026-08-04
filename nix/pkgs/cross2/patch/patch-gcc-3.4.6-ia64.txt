@@ -1,0 +1,12 @@
+--- gcc/unwind.h.orig	2004-01-24 08:36:03.000000000 +0900
++++ gcc/unwind.h	2011-08-31 21:36:34.000000000 +0900
+@@ -198,7 +198,9 @@
+    compatible with the standard ABI for IA-64, we inline these.  */
+ 
+ #ifdef __ia64__
++#if 0
+ #include <stdlib.h>
++#endif
+ 
+ static inline _Unwind_Ptr
+ _Unwind_GetDataRelBase (struct _Unwind_Context *_C)

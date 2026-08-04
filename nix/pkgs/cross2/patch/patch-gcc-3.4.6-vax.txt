@@ -1,0 +1,13 @@
+--- gcc/ginclude/stddef.h.orig	2004-08-12 09:34:33.000000000 +0900
++++ gcc/ginclude/stddef.h	2011-08-31 21:37:10.000000000 +0900
+@@ -54,8 +54,10 @@
+ /* On 4.3bsd-net2, make sure ansi.h is included, so we have
+    one less case to deal with in the following.  */
+ #if defined (__BSD_NET2__) || defined (____386BSD____) || (defined (__FreeBSD__) && (__FreeBSD__ < 5)) || defined(__NetBSD__)
++#if 0
+ #include <machine/ansi.h>
+ #endif
++#endif
+ /* On FreeBSD 5, machine/ansi.h does not exist anymore... */
+ #if defined (__FreeBSD__) && (__FreeBSD__ >= 5)
+ #include <sys/_types.h>

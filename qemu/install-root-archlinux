@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-pacman -Syu --noconfirm --needed python2 pixman dtc

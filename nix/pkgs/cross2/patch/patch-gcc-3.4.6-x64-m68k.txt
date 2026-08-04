@@ -1,0 +1,29 @@
+--- gcc/config/m68k/m68k.md.orig	2005-07-27 05:32:25.000000000 +0900
++++ gcc/config/m68k/m68k.md	2012-12-16 09:40:05.000000000 +0900
+@@ -3679,7 +3679,7 @@
+       target = operand_subword_force (operands[0], 0, SFmode);
+       result = expand_binop (SImode, xor_optab,
+ 			     operand_subword_force (operands[1], 0, SFmode),
+-			     GEN_INT (0x80000000), target, 0, OPTAB_WIDEN);
++			     GEN_INT (-2147483647 - 1), target, 0, OPTAB_WIDEN);
+       if (result == 0)
+ 	abort ();
+ 
+@@ -3723,7 +3723,7 @@
+       target = operand_subword (operands[0], 0, 1, DFmode);
+       result = expand_binop (SImode, xor_optab,
+ 			     operand_subword_force (operands[1], 0, DFmode),
+-			     GEN_INT (0x80000000), target, 0, OPTAB_WIDEN);
++			     GEN_INT (-2147483647 - 1), target, 0, OPTAB_WIDEN);
+       if (result == 0)
+ 	abort ();
+ 
+@@ -7170,7 +7170,7 @@
+       target = operand_subword (operands[0], 0, 1, XFmode);
+       result = expand_binop (SImode, xor_optab,
+ 			     operand_subword_force (operands[1], 0, XFmode),
+-			     GEN_INT (0x80000000), target, 0, OPTAB_WIDEN);
++			     GEN_INT (-2147483647 - 1), target, 0, OPTAB_WIDEN);
+       if (result == 0)
+ 	abort ();
+ 

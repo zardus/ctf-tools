@@ -1,0 +1,133 @@
+--- a/cribdrag.py	2026-08-04 06:02:38.047064116 +0000
++++ b/cribdrag.py	2026-08-04 06:03:15.365618298 +0000
+@@ -14,7 +14,7 @@
+ import re
+ import argparse
+ 
+-def sxor(ctext,crib):    
++def sxor(ctext,crib):
+     # convert strings to a list of character pair tuples
+     # go through each tuple, converting them to ASCII code (ord)
+     # perform exclusive or on the ASCII code
+@@ -24,7 +24,7 @@
+     single_result = ''
+     crib_len = len(crib)
+     positions = len(ctext)-crib_len+1
+-    for index in xrange(positions):
++    for index in range(positions):
+         single_result = ''
+         for a,b in zip(ctext[index:index+crib_len],crib):
+             single_result += chr(ord(a) ^ ord(b))
+@@ -34,11 +34,11 @@
+ def print_linewrapped(text):
+     line_width = 40
+     text_len = len(text)
+-    for chunk in xrange(0,text_len,line_width):
++    for chunk in range(0,text_len,line_width):
+         if chunk > text_len-line_width:
+-            print str(chunk) + chr(9) + text[chunk:]
++            print(str(chunk) + chr(9) + text[chunk:])
+         else:
+-            print str(chunk) + chr(9) + text[chunk:chunk+line_width]
++            print(str(chunk) + chr(9) + text[chunk:chunk+line_width])
+ 
+ 
+ 
+@@ -47,7 +47,7 @@
+ parser.add_argument('-c', '--charset', help='A regex-style character set to be used to identify best candidates for successful decryption (ex: for alphanumeric characters and spaces, use "a-zA-Z0-9 ")', default='a-zA-Z0-9.,?! :;\'"')
+ args = parser.parse_args()
+ 
+-ctext = args.ciphertext.decode('hex')
++ctext = bytes.fromhex(args.ciphertext).decode('latin-1')
+ ctext_len = len(ctext)
+ display_ctext = "_" * ctext_len
+ display_key = "_" * ctext_len
+@@ -57,25 +57,25 @@
+ response = ''
+ 
+ while response != 'end':
+-	print "Your message is currently:"
++	print("Your message is currently:")
+ 	print_linewrapped(display_ctext)
+-	print "Your key is currently:"
++	print("Your key is currently:")
+ 	print_linewrapped(display_key)
+ 
+-	crib = raw_input("Please enter your crib: ")
++	crib = input("Please enter your crib: ")
+ 	crib_len = len(crib)
+ 
+ 	results = sxor(ctext, crib)
+ 	results_len = len(results)
+ 
+ 	#Generate results
+-	for result_index in xrange(results_len): 
+-            if (re.search(charset,results[result_index])):
+-		    print '*** ' + str(result_index) + ': "' + results[result_index] + '"'
+-            else:
+-		    print str(result_index) + ': "' + results[result_index] + '"'
++	for result_index in range(results_len):
++		if (re.search(charset,results[result_index])):
++			print('*** ' + str(result_index) + ': "' + results[result_index] + '"')
++		else:
++			print(str(result_index) + ': "' + results[result_index] + '"')
+ 
+-	response = raw_input("Enter the correct position, 'none' for no match, or 'end' to quit: ")
++	response = input("Enter the correct position, 'none' for no match, or 'end' to quit: ")
+ 
+ 	#Replace part of the message or key
+ 	try:
+@@ -83,7 +83,7 @@
+ 		if (response < results_len):
+ 			message_or_key = ''
+ 			while (message_or_key != 'message' and message_or_key != 'key'):
+-				message_or_key = raw_input("Is this crib part of the message or key? Please enter 'message' or 'key': ")
++				message_or_key = input("Is this crib part of the message or key? Please enter 'message' or 'key': ")
+ 				if(message_or_key == 'message'):
+ 					display_ctext = display_ctext[:response] + crib + display_ctext[response+crib_len:]
+ 					display_key = display_key[:response] + results[response] + display_key[response+crib_len:]
+@@ -91,14 +91,14 @@
+ 					display_key = display_key[:response] + crib + display_key[response+crib_len:]
+ 					display_ctext = display_ctext[:response] + results[response] + display_ctext[response+crib_len:]
+ 				else:
+-					print 'Invalid response. Try again.'
++					print('Invalid response. Try again.')
+ 
+ 	except ValueError:
+ 		if (response == 'end'):
+-			print "Your message is: " + display_ctext
+-			print "Your key is: " + display_key
++			print("Your message is: " + display_ctext)
++			print("Your key is: " + display_key)
+ 		elif (response == 'none'):
+-			print "No changes made."
++			print("No changes made.")
+ 		else:
+-			print "Invalid entry."
++			print("Invalid entry.")
+ 
+--- a/xorstrings.py	2026-08-04 06:02:38.050064080 +0000
++++ b/xorstrings.py	2026-08-04 06:03:24.833505191 +0000
+@@ -12,7 +12,7 @@
+ import sys
+ import argparse
+ 
+-def sxor(s1,s2):    
++def sxor(s1,s2):
+     # convert strings to a list of character pair tuples
+     # go through each tuple, converting them to ASCII code (ord)
+     # perform exclusive or on the ASCII code
+@@ -25,10 +25,10 @@
+ parser.add_argument('data2', help='Data encoded in an ASCII hex format (ie. ABC would be 414243)')
+ args = parser.parse_args()
+ 
+-s1 = args.data1.decode('hex')
+-s2 = args.data2.decode('hex')
++s1 = bytes.fromhex(args.data1).decode('latin-1')
++s2 = bytes.fromhex(args.data2).decode('latin-1')
+ 
+ s3 = sxor(s1, s2)
+ 
+-print s3.encode('hex')
++print(s3.encode('latin-1').hex())
+ 

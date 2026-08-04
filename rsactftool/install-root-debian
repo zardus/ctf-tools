@@ -1,3 +1,0 @@
-#!/bin/bash -ex
-
-sudo apt-get install -y libgmp3-dev libmpc-dev

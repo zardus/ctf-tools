@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-apt-get -y install libevent-dev pkg-config libssl-dev libnet1-dev libpcap-dev
