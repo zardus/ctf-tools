@@ -75,9 +75,13 @@ jobs:
           FROM nixos/nix:latest
           # Install this ctf-tool into the image's Nix profile, pulling prebuilt
           # binaries from the ctftools Cachix cache (see the flake's nixConfig).
-          RUN nix --extra-experimental-features 'nix-command flakes' \\
-                  profile install --accept-flake-config \\
-                  "github:${{ github.repository }}/${{ github.sha }}#${NAME}"
+          # Retry to ride out transient DNS/network hiccups in the build runner.
+          RUN for i in 1 2 3 4 5; do \\
+                nix --extra-experimental-features 'nix-command flakes' \\
+                    profile install --accept-flake-config \\
+                    "github:${{ github.repository }}/${{ github.sha }}#${NAME}" && exit 0; \\
+                echo "install attempt \$i failed; retrying in 10s"; sleep 10; \\
+              done; exit 1
           ENV PATH=/root/.nix-profile/bin:\$PATH
           EOF
           echo "NAME=$NAME" >> "$GITHUB_ENV"
