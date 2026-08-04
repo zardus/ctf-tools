@@ -76,9 +76,11 @@ jobs:
           # Install this ctf-tool into the image's Nix profile, pulling prebuilt
           # binaries from the ctftools Cachix cache (see the flake's nixConfig).
           # Retry to ride out transient DNS/network hiccups in the build runner.
+          # --priority 4 lets a tool's binaries win over the base image's
+          # (e.g. codext ships base32/base64 that collide with coreutils).
           RUN for i in 1 2 3 4 5; do \\
                 nix --extra-experimental-features 'nix-command flakes' \\
-                    profile install --accept-flake-config \\
+                    profile install --priority 4 --accept-flake-config \\
                     "github:${{ github.repository }}/${{ github.sha }}#${NAME}" && exit 0; \\
                 echo "install attempt \$i failed; retrying in 10s"; sleep 10; \\
               done; exit 1
