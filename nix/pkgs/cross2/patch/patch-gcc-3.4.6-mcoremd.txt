@@ -1,0 +1,16 @@
+--- gcc/config/mcore/mcore.md.orig	2003-11-29 08:38:00.000000000 +0900
++++ gcc/config/mcore/mcore.md	2011-08-31 21:35:06.000000000 +0900
+@@ -1314,9 +1314,10 @@
+   if (GET_CODE (operands[0]) == MEM)
+     operands[1] = force_reg (DImode, operands[1]);
+   else if (GET_CODE (operands[1]) == CONST_INT
+-           && ! CONST_OK_FOR_I (INTVAL (operands[1]))
+-	   && ! CONST_OK_FOR_M (INTVAL (operands[1]))
+-	   && ! CONST_OK_FOR_N (INTVAL (operands[1])))
++           && (INTVAL (operands[1]) != (HOST_WIDE_INT) (int) INTVAL (operands[1])
++               || (! CONST_OK_FOR_I (INTVAL (operands[1]))
++	           && ! CONST_OK_FOR_M (INTVAL (operands[1]))
++	           && ! CONST_OK_FOR_N (INTVAL (operands[1])))))
+     {
+       int i;
+       for (i = 0; i < UNITS_PER_WORD * 2; i += UNITS_PER_WORD)

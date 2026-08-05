@@ -1,0 +1,11 @@
+--- gcc/config/i960/i960.h.orig	2003-11-29 08:38:00.000000000 +0900
++++ gcc/config/i960/i960.h	2011-08-31 21:35:06.000000000 +0900
+@@ -691,7 +691,7 @@
+ 	'K' means 0..-31.  */
+ 
+ #define CONST_OK_FOR_LETTER_P(VALUE, C)  				\
+-  ((C) == 'I' ? (((unsigned) (VALUE)) <= 31)				\
++  ((C) == 'I' ? (((VALUE) >= 0) && ((VALUE) <= 31))				\
+    : (C) == 'J' ? ((VALUE) == 0)					\
+    : (C) == 'K' ? ((VALUE) >= -31 && (VALUE) <= 0)			\
+    : (C) == 'M' ? ((VALUE) >= -32 && (VALUE) <= 0)			\

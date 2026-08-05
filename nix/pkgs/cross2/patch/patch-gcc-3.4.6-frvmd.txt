@@ -1,0 +1,21 @@
+--- gcc/config/frv/frv.md.orig	2004-08-31 00:00:00.000000000 +0900
++++ gcc/config/frv/frv.md	2011-08-31 21:35:06.000000000 +0900
+@@ -1580,11 +1580,16 @@
+   "
+ {
+   rtx op0 = operands[0];
+-  rtx op1 = operands[1];
++  HOST_WIDE_INT val = INTVAL (operands[1]);
+ 
+   operands[2] = gen_highpart (SImode, op0);
+   operands[3] = gen_lowpart (SImode, op0);
+-  operands[4] = GEN_INT ((INTVAL (op1) < 0) ? -1 : 0);
++  /* On a 64-bit HOST_WIDE_INT a DImode constant that does not fit in 32 bits
++     arrives here as a single CONST_INT; split it into its two 32-bit words
++     rather than assuming the whole value is the low word (with the high word
++     being just the sign).  */
++  operands[4] = GEN_INT (trunc_int_for_mode ((val >> 16) >> 16, SImode));
++  operands[1] = GEN_INT (trunc_int_for_mode (val, SImode));
+ }")
+ 
+ (define_split

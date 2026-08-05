@@ -1,0 +1,83 @@
+--- gcc/config/mcore/mcore.c.orig	2003-11-29 08:38:00.000000000 +0900
++++ gcc/config/mcore/mcore.c	2011-08-31 21:35:06.000000000 +0900
+@@ -311,16 +311,16 @@
+   switch (code)
+     {
+     case 'N':
+-      if (INTVAL(x) == -1)
++      if ((INTVAL (x) & 0xffffffff) == 0xffffffff)
+ 	fprintf (asm_out_file, "32");
+       else
+-	fprintf (asm_out_file, "%d", exact_log2 (INTVAL (x) + 1));
++	fprintf (asm_out_file, "%d", exact_log2 ((INTVAL (x) + 1) & 0xffffffff));
+       break;
+     case 'P':
+-      fprintf (asm_out_file, "%d", exact_log2 (INTVAL (x)));
++      fprintf (asm_out_file, "%d", exact_log2 (INTVAL (x) & 0xffffffff));
+       break;
+     case 'Q':
+-      fprintf (asm_out_file, "%d", exact_log2 (~INTVAL (x)));
++      fprintf (asm_out_file, "%d", exact_log2 (~INTVAL (x) & 0xffffffff));
+       break;
+     case 'O':
+       fprintf (asm_out_file, HOST_WIDE_INT_PRINT_DEC, INTVAL (x));
+@@ -1324,42 +1324,23 @@
+ 	}
+       else if (GET_CODE (src) == CONST_INT)
+ 	{
+-	  if (TARGET_LITTLE_END)
+-	    {
+-	      if (CONST_OK_FOR_I (INTVAL (src)))
+-		output_asm_insn ("movi	%0,%1", operands);
+-	      else if (CONST_OK_FOR_M (INTVAL (src)))
+-		output_asm_insn ("bgeni	%0,%P1", operands);
+-	      else if (INTVAL (src) == -1)
+-		output_asm_insn ("bmaski	%0,32", operands);
+-	      else if (CONST_OK_FOR_N (INTVAL (src)))
+-		output_asm_insn ("bmaski	%0,%N1", operands);
+-	      else
+-		abort ();
+-
+-	      if (INTVAL (src) < 0)
+-		return "bmaski	%R0,32";
+-	      else
+-		return "movi	%R0,0";
+-	    }
+-	  else
+-	    {
+-	      if (CONST_OK_FOR_I (INTVAL (src)))
+-		output_asm_insn ("movi	%R0,%1", operands);
+-	      else if (CONST_OK_FOR_M (INTVAL (src)))
+-		output_asm_insn ("bgeni	%R0,%P1", operands);
+-	      else if (INTVAL (src) == -1)
+-		output_asm_insn ("bmaski	%R0,32", operands);
+-	      else if (CONST_OK_FOR_N (INTVAL (src)))
+-		output_asm_insn ("bmaski	%R0,%N1", operands);
+-	      else
+-		abort ();
+-	      
+-	      if (INTVAL (src) < 0)
+-		return "bmaski	%0,32";
+-	      else
+-		return "movi	%0,0";
+-	    }
++	  /* Split the (possibly full 64-bit on a 64-bit host) constant into
++	     two SImode words and emit each with the SImode mover, which knows
++	     how to load any 32-bit value (movi/bgeni/bmaski/lrw).  The old code
++	     assumed HOST_WIDE_INT was 32 bits (low word == INTVAL, high word ==
++	     sign) and mis-emitted genuine 64-bit constants on a 64-bit host.  */
++	  HOST_WIDE_INT lo = trunc_int_for_mode (INTVAL (src), SImode);
++	  HOST_WIDE_INT hi = trunc_int_for_mode ((INTVAL (src) >> 16) >> 16, SImode);
++	  rtx wop[2];
++
++	  wop[0] = gen_rtx_REG (SImode, REGNO (dst) + (TARGET_LITTLE_END ? 0 : 1));
++	  wop[1] = GEN_INT (lo);
++	  output_asm_insn (mcore_output_move (NULL_RTX, wop, SImode), wop);
++
++	  wop[0] = gen_rtx_REG (SImode, REGNO (dst) + (TARGET_LITTLE_END ? 1 : 0));
++	  wop[1] = GEN_INT (hi);
++	  output_asm_insn (mcore_output_move (NULL_RTX, wop, SImode), wop);
++	  return "";
+ 	}
+       else
+ 	abort ();

@@ -1,0 +1,11 @@
+--- gcc/config/fr30/fr30.c.orig	2003-07-06 09:33:00.000000000 +0900
++++ gcc/config/fr30/fr30.c	2011-08-31 21:35:06.000000000 +0900
+@@ -322,7 +322,7 @@
+     ; /* Nothing to do.  */
+   else if (current_frame_info.frame_size <= 512)
+     {
+-      insn = emit_insn (gen_add_to_stack (GEN_INT (- current_frame_info.frame_size)));
++      insn = emit_insn (gen_add_to_stack (GEN_INT (- (int) current_frame_info.frame_size)));
+       RTX_FRAME_RELATED_P (insn) = 1;
+     }
+   else

@@ -96,6 +96,10 @@ jobs:
     # Heavy gcc+libc-from-source builds (cross2 + all crosstool-ng samples). Don't
     # re-run the whole fleet on every PR sync — build on push, nightly, and manual.
     if: github.event_name != 'pull_request'
+    # Best-effort: many of these are 30-year-old ports or heavy distro toolchains
+    # that don't build on a modern host. A failed leg records the fact and caches
+    # what did build, without failing the overall run.
+    continue-on-error: true
     strategy:
       fail-fast: false
       max-parallel: 12

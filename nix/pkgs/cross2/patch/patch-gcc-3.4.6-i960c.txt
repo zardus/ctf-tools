@@ -1,0 +1,20 @@
+--- gcc/config/i960/i960.c.orig	2003-11-29 08:38:00.000000000 +0900
++++ gcc/config/i960/i960.c	2011-08-31 21:35:06.000000000 +0900
+@@ -912,7 +912,16 @@
+       xoperands[1] = upperhalf;
+       output_asm_insn (i960_output_ldconst (xoperands[0], xoperands[1]),
+ 		       xoperands);
+-      /* The lower word is emitted as normally.  */
++      /* Output the lower half with a recursive call.  We must emit it here
++	 rather than fall through: on a 64-bit HOST_WIDE_INT the DImode value
++	 is a single CONST_INT, and the fall-through path would print the whole
++	 64-bit value (operands[1]) into the low word's operand instead of the
++	 split-off lower half.  */
++      xoperands[0] = gen_rtx_REG (SImode, REGNO (dst));
++      xoperands[1] = lowerhalf;
++      output_asm_insn (i960_output_ldconst (xoperands[0], xoperands[1]),
++		       xoperands);
++      return "";
+     }
+   else
+     {

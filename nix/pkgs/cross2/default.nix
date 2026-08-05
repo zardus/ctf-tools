@@ -58,7 +58,13 @@ let
     target = t;
     gccLang = if lib.elem t gccCpp then "c,c++" else "c";
     gccNewlib = !(lib.elem t gccNoNewlib);
-    gccOpt = if t == "i960-elf" then "--enable-obsolete" else "";
+    # i960 is an obsoleted gcc target; v850's v850e multilib hits a mid-end
+    # 64-bit-HOST_WIDE_INT stack-adjust bug (a malformed unsigned frame offset
+    # that only the v850e+no-app-regs variant triggers), so build v850 with a
+    # single (base-ABI) multilib -- the base toolchain + newlib build cleanly.
+    gccOpt = if t == "i960-elf" then "--enable-obsolete"
+             else if t == "v850-elf" then "--disable-multilib"
+             else "";
   };
 
   # attr name == target name (valid Nix attr / CLI token already)

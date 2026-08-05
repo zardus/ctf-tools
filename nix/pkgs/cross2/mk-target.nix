@@ -61,6 +61,10 @@ gcc13Stdenv.mkDerivation {
   buildPhase = ''
     runHook preBuild
     export MAKEFLAGS="-j''${NIX_BUILD_CORES:-1}"
+    # These old libtools probe for /usr/bin/file to classify libraries; it isn't
+    # in the sandbox, which breaks e.g. mmix-elf's configure-gcc. pass_all skips
+    # that check entirely (standard cross-build workaround).
+    export lt_cv_deplibs_check_method=pass_all
     # Pre-create the install tree: gcc-3.4.6's cross install copies man pages and
     # (per-multilib) target libs into dirs it never mkdir's, and aborts if absent.
     mkdir -p "$out/bin" "$out/man/man1" "$out/man/man7" "$out/share/man/man1" \
@@ -72,9 +76,17 @@ gcc13Stdenv.mkDerivation {
     ( cd binutils-2.21.1
       for p in alpha sed-am sed-in arm; do patch -p0 < "$patchDir/patch-binutils-2.21.1-$p.txt"; done )
     ( cd gcc-3.4.6
-      for p in alpha gcc4 ia64 newlib vax x64-h8300 x64-m68k; do patch -p0 < "$patchDir/patch-gcc-3.4.6-$p.txt"; done )
+      for p in alpha gcc4 ia64 newlib vax x64-h8300 x64-m68k mmix arc fr30 v850 mcore mcoremd i960 i960c frv frvmd; do patch -p0 < "$patchDir/patch-gcc-3.4.6-$p.txt"; done )
     ( cd gdb-7.3.1
       for p in centos mn10300; do patch -p0 < "$patchDir/patch-gdb-7.3.1-$p.txt"; done )
+
+    # These 2006/2011 autotools/libtool scripts hardcode /usr/bin/file, which
+    # doesn't exist in the sandbox (it did on the legacy Ubuntu host). Point them
+    # at `file` on PATH so libtool's object-type probe works (else e.g. mmix-elf's
+    # configure-gcc fails).
+    find binutils-2.21.1 gcc-3.4.6 gdb-7.3.1 newlib-1.20.0 -type f \
+      \( -name configure -o -name ltmain.sh -o -name libtool -o -name ltconfig \) \
+      -exec sed -i 's,/usr/bin/file,file,g' {} + 2>/dev/null || true
 
     ############################ binutils (required) ############################
     echo "================ BINUTILS $target ================"
@@ -95,7 +107,17 @@ gcc13Stdenv.mkDerivation {
     ( cd build/gcc
       "$PWD/../../gcc-3.4.6/configure" --target="$target" --prefix="$out" $common \
         --disable-threads --disable-shared --enable-languages="$gccLang" $newlibopt $gccOpt
-      make $MAKEFLAGS ) || { echo "GCC COMPILE FAILED for $target" >&2; exit 1; }
+      # STMP_FIXINC= skips gcc-3.4.6's fixincludes, which chokes on modern host
+      # headers (e.g. x86_64-linux's stmp-fixinc). Cross+newlib toolchains use the
+      # target's own (newlib) headers, so fixing host headers is unnecessary.
+      # Build xgcc + newlib's libc BEFORE the rest of the combined tree: some
+      # targets' libgloss board-support links a hosted ELF against -lc during the
+      # library build (e.g. xstormy16's eva_stub.elf). Under parallel make the
+      # combined tree otherwise races all-target-libgloss ahead of all-target-newlib
+      # and fails with "ld: cannot find -lc". Staging newlib first is the correct
+      # dependency order and is a no-op for targets that don't hit the race.
+      if [ "$gccNewlib" = "1" ]; then make $MAKEFLAGS all-target-newlib STMP_FIXINC=; fi
+      make $MAKEFLAGS STMP_FIXINC= ) || { echo "GCC COMPILE FAILED for $target" >&2; exit 1; }
     # gcc's cross install writes per-multilib target libs (e.g. arm-elf/lib/thumb)
     # into dirs it doesn't create; pre-create them from the compiler's own list.
     for ml in $(build/gcc/gcc/xgcc -Bbuild/gcc/gcc/ -print-multi-lib 2>/dev/null | sed 's/;.*//'); do

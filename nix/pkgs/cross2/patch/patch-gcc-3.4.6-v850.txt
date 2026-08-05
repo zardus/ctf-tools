@@ -1,0 +1,37 @@
+--- gcc/config/v850/v850.c.orig	2004-11-24 08:38:00.000000000 +0900
++++ gcc/config/v850/v850.c	2011-08-31 21:35:06.000000000 +0900
+@@ -614,6 +614,11 @@
+ 	  fputs (reg_names[subreg_regno (x)], file);
+ 	  break;
+ 	case CONST_INT:
++	  /* Print integer immediates sign-extended to 32 bits: on a 64-bit
++	     HOST_WIDE_INT a value such as -3 can reach here as 4294967293,
++	     which the assembler rejects ("immediate operand is too large").  */
++	  fprintf (file, "%d", (int) INTVAL (x));
++	  break;
+ 	case SYMBOL_REF:
+ 	case CONST:
+ 	case LABEL_REF:
+@@ -903,8 +908,11 @@
+ 	const_double_split (src, &high_low[1], &high_low[0]);
+       else
+ 	{
+-	  high_low[0] = INTVAL (src);
+-	  high_low[1] = (INTVAL (src) >= 0) ? 0 : -1;
++	  high_low[0] = trunc_int_for_mode (INTVAL (src), SImode);
++	  if (HOST_BITS_PER_WIDE_INT > 32)
++	    high_low[1] = trunc_int_for_mode (INTVAL (src) >> 32, SImode);
++	  else
++	    high_low[1] = (INTVAL (src) >= 0) ? 0 : -1;
+ 	}
+ 
+       for (i = 0; i < 2; i++)
+@@ -1792,7 +1800,7 @@
+ 	  if (init_stack_alloc)
+ 	    emit_insn (gen_addsi3 (stack_pointer_rtx,
+ 				   stack_pointer_rtx,
+-				   GEN_INT (-init_stack_alloc)));
++				   GEN_INT (- (int) init_stack_alloc)));
+ 	  
+ 	  /* Save the return pointer first.  */
+ 	  if (num_save > 0 && REGNO (save_regs[num_save-1]) == LINK_POINTER_REGNUM)
