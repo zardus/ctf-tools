@@ -62,6 +62,33 @@ stdenv.mkDerivation rec {
     python3
   ];
 
+  # ct-ng seeds a libc/kernel .config by copying a template that ships with
+  # crosstool-NG itself (e.g. packages/uClibc-ng/config). On a normal install
+  # that template is mode 644, but here it lives in the *read-only* Nix store
+  # (mode 444), and `cp` carries that mode over. CT_KconfigSetOption /
+  # CT_KconfigDisableOption fall back to `echo ... >> "${file}"` for options the
+  # template doesn't mention, which then dies with ".config: Permission denied"
+  # -- this is what broke every uClibc sample. Make the copies writable.
+  postPatch = ''
+    substituteInPlace scripts/build/libc/uClibc-ng.sh \
+      --replace-fail 'CT_DoExecLog ALL cp "''${src}" "''${dst}"' \
+                     'CT_DoExecLog ALL cp "''${src}" "''${dst}"
+        CT_DoExecLog ALL chmod u+w "''${dst}"'
+
+    # CT_GetFile walks a list of mirrors, but a *digest* mismatch makes it
+    # `return 1` outright instead of moving on to the next one -- so a single
+    # mirror handing back a truncated file (or a rate-limit page) fails the whole
+    # download. ncurses-6.5 hit this repeatedly on invisible-mirror.net when CI
+    # builds a dozen samples at once, each run yielding a different bogus digest.
+    # Treat a bad digest as "this mirror is no good" and try the next URL.
+    substituteInPlace scripts/functions \
+      --replace-fail 'Digest verification failed; removing the download' \
+                     'Digest verification failed; trying the next mirror'
+    sed -i '/Digest verification failed; trying the next mirror/,+2{s/^\( *\)return 1$/\1continue/}' \
+      scripts/functions
+    grep -A2 'trying the next mirror' scripts/functions | grep -q 'continue'
+  '';
+
   # crosstool-ng ships a ./bootstrap that regenerates the autotools files.
   # Patch the source scripts' shebangs first: ./bootstrap (and the scripts it
   # calls) use `#!/usr/bin/env`, which does not exist in a strict build sandbox.

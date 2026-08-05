@@ -47,6 +47,18 @@ let
           C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH \
           GREP_OPTIONS
 
+    # The Nix stdenv also exports the whole *host* binutils set (AR=ar, AS=as,
+    # LD=ld, NM=nm, OBJCOPY=objcopy, ...). ct-ng does not know about these, so
+    # they leak straight through into every sub-build and silently override the
+    # cross tools it just built. glibc's Makerules, for instance, strips
+    # libc_pic.os with $(OBJCOPY): with the host x86_64 objcopy that happens to
+    # work for x86 targets and fails for every other architecture. mingw-w64's
+    # CRT hits the same thing via $(AS) ("cannot represent relocation type
+    # BFD_RELOC_RVA" from the ELF assembler). Clear them all -- each ct-ng step
+    # sets the right (cross-)tool for itself.
+    unset AR AS LD NM OBJCOPY OBJDUMP RANLIB READELF SIZE STRINGS STRIP \
+          LDFLAGS CPP HOSTCC
+
     export HOME="$TMPDIR/home"
     mkdir -p "$HOME"
     # crosstool-NG downloads tarballs with wget, and the nixpkgs wget does NOT
@@ -60,6 +72,17 @@ let
     # ct-ng itself only checks `id -u`; we cannot change that here, but the
     # nixbld build users are non-root so this is fine in practice.
     ct-ng "$sample"
+  '';
+
+  # ct-ng funnels every sub-build's output into build.log and prints only a
+  # short banner on stderr, so a failure otherwise gives you
+  # "Build failed in step 'Building C library'" and nothing else -- the actual
+  # compiler/download error dies with the sandbox. Dump the tail of the log so
+  # CI failures are diagnosable.
+  buildLogTail = ''
+    echo "=================== ct-ng build.log (tail) ==================="
+    tail -n 300 "$TMPDIR/build.log" 2>/dev/null || echo "(no build.log)"
+    echo "================= end of ct-ng build.log ====================="
   '';
 in
 
@@ -86,6 +109,8 @@ let
     # store, so point curl/wget at the Nix CA bundle.
     SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
+    failureHook = buildLogTail;
+
     buildCommand = ''
       sample='${sample}'
       ${configureSample}
@@ -96,7 +121,20 @@ let
       sed -i "s#^CT_LOCAL_TARBALLS_DIR=.*#CT_LOCAL_TARBALLS_DIR=\"$out\"#" .config
       grep -q '^CT_SAVE_TARBALLS=y' .config || echo 'CT_SAVE_TARBALLS=y' >> .config
 
-      ct-ng build
+      # Retry: the upstream mirrors occasionally hand back a truncated file (CI
+      # runs a dozen of these concurrently), and ct-ng treats a digest mismatch
+      # as fatal -- it deletes the bad tarball and aborts the whole download.
+      # Tarballs already in $out are kept, so a retry only re-fetches what
+      # failed.
+      for attempt in 1 2 3; do
+        if ct-ng build; then break; fi
+        if [ "$attempt" = 3 ]; then
+          echo "source download failed after 3 attempts" >&2
+          exit 1
+        fi
+        echo "=== download attempt $attempt failed; retrying ===" >&2
+        sleep 15
+      done
     '';
   };
 
@@ -116,6 +154,8 @@ let
     hardeningDisable = [ "all" ];
 
     passthru = { inherit sample sanitized sources; };
+
+    failureHook = buildLogTail;
 
     buildCommand = ''
       sample='${sample}'

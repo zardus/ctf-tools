@@ -46,13 +46,28 @@ All build and, where they produce a CLI, were run to confirm they work.
   which broke every glibc source download). The `crosstool` output is the
   `ct-ng` driver; each crosstool-NG sample toolchain is its own output
   `crosstool-ng-<sample>`, built offline via a pinned fixed-output "sources"
-  derivation feeding a sandboxed `ct-ng build`. ~70 samples are pinned and
+  derivation feeding a sandboxed `ct-ng build`. ~77 samples are pinned and
   surfaced — bare-metal (newlib/picolibc/none) **and** Linux (glibc/uclibc/musl)
-  targets. Add the remaining heavy/distro-specific samples with
-  `pin-samples.sh` (run serially — GNU mirrors throttle parallel fetches). The
-  per-sample toolchains are intentionally kept out of CI (a gcc+glibc-from-source
-  build is too heavy for free runners); build them on demand / via a dedicated
-  cache builder.
+  targets — and each builds in the `toolchains` CI matrix. Add the remaining
+  heavy/distro-specific samples with `pin-samples.sh` (run serially — GNU
+  mirrors throttle parallel fetches), and pin from a host that can reach
+  `ftp.gnu.org`: on a box that can't, the fetch silently falls back to other
+  mirrors and produces a different (wrong) tarball set.
+
+  Three things about the Nix sandbox that ct-ng does not expect, all handled in
+  `ctng.nix` / `mk-toolchain.nix` — see the comments there before touching them:
+
+  1. The stdenv exports the whole *host* binutils set (`AR`, `AS`, `LD`, `NM`,
+     `OBJCOPY`, ...). ct-ng only guards `CC`/`CXX`/`CFLAGS`, so the rest leak
+     into every sub-build and override the cross tools. This is what broke all
+     the non-x86 glibc samples (glibc strips `libc_pic.os` with `$(OBJCOPY)`),
+     mingw-w64's CRT (`BFD_RELOC_RVA` from the ELF assembler), the old-kernel
+     `headers_install` samples, and `riscv64-multilib-elf`.
+  2. ct-ng seeds a libc `.config` by copying a template that here lives in the
+     read-only store, so the copy is unwritable and its `echo >> .config`
+     fallback dies — this broke every uClibc sample.
+  3. `CT_GetFile` treats a digest mismatch as fatal instead of moving to the
+     next mirror, so one flaky mirror fails the whole download.
 - **preeny** — builds both 64-bit **and** 32-bit i686 LD_PRELOAD modules (CTF
   binaries are frequently 32-bit), matching upstream's multi-arch build.
 - **beef** — full Ruby app via `bundlerEnv` (gemset pinned).

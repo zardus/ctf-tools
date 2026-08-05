@@ -3,8 +3,8 @@
 # names; values are the SRI sha256 of the recursive tarball directory.
 # Pin more with ./pin-samples.sh (run serially to avoid throttling GNU mirrors).
 {
-  "aarch64-rpi3-linux-gnu" = "sha256-wgNZqKmxgf80BnjEoH9Sm1VLGViJxJEwglI85OPx+vU=";
-  "aarch64-rpi4-linux-gnu" = "sha256-25DwgePSxHln8vp2HjABcJlLwTEMubAhp+ZylAPX4C0=";
+  "aarch64-rpi3-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
+  "aarch64-rpi4-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
   "aarch64-unknown-linux-musl" = "sha256-CK4R8iH4wTEbH7OD5KCl03hAPMrCmzuq8mmcteMX30s=";
   "aarch64-unknown-linux-uclibc" = "sha256-/8Pf7Btf2rsIARZK3PxUxIS+OwDqSsUMtckhL4pp9Ik=";
   "arc-arc700-linux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
@@ -38,10 +38,10 @@
   "lm32-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
   "loongarch64-unknown-linux-gnu" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
   "m68k-unknown-elf" = "sha256-FdvFvOd3+zMefXg4p98EZV4rxmvrVWaS8Snctd+R9cs=";
-  "m68k-unknown-linux-gnu" = "sha256-8KG3fm0qFqivL1l4OKMIfZp6kNt5qxQ/SVyGzDptQwA=";
+  "m68k-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
   "m68k-unknown-uclinux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
   "mips-unknown-elf" = "sha256-neu2R7zmLFfgKCa0r2z1gp/q9jO/5Y+JDEiBGQexmr8=";
-  "mips-unknown-linux-uclibc" = "sha256-0pUCv9JZE0CYAHNCocgQcF9KMuDGCoK5JLuZmcBxbVA=";
+  "mips-unknown-linux-uclibc" = "sha256-9I5vXCAgyH6FO4HZC9vuduFzfu/IXw5/2Qivl3fWlKA=";
   "mips64-unknown-linux-gnu" = "sha256-de8QvxW8h7fdvyflnsAujnzcHD3Xo/vxjYObfFhoRJo=";
   "mips64el-multilib-linux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
   "mipsel-multilib-linux-gnu" = "sha256-fKIO7W3jSLrhKbUjoX0wL4nWWhx5sM295ZnBestzft8=";
