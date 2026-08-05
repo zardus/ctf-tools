@@ -45,17 +45,28 @@
         (lib.filterAttrs (_: t: t == "directory") (builtins.readDir pkgDir));
 
       # Tools CI builds and pushes to Cachix. We only cache our *own* derivations
-      # (the ~31 nixpkgs passthroughs are already served by cache.nixos.org), and
-      # drop the few that are too heavy for GitHub's free runners (a full
-      # gcc-from-source toolchain). The per-sample crosstool-ng-<...> toolchains
-      # are likewise excluded from CI — build them out-of-band. This mirrors the
-      # old repo's <!--slow-test-->/<!--no-test--> markers.
-      ciExclude = [
-        "cross2"        # gcc-3.4.6 + newlib from source
-      ];
+      # (the ~31 nixpkgs passthroughs are already served by cache.nixos.org).
+      # cross2's `cross2` bundle is a symlink aggregate; the real work is its
+      # per-target cross2-<target> derivations, which build in the toolchains
+      # matrix (not the light per-tool build). Keep the bundle out of ciTargets.
+      ciExclude = [ "cross2" ];
+
+      # The heavy toolchain builds get their own CI matrix (each is a
+      # gcc+libc-from-source build): every cross2 target plus every pinned
+      # crosstool-ng sample. Lists are derived from the same data the derivations
+      # use, so they stay in sync. avr's crosstool build is broken -> excluded.
+      cross2Targets = import ./nix/pkgs/cross2/targets.nix;
+      ctHashes = import ./nix/pkgs/crosstool/hashes.nix;
+      ctBrokenBuild = [ "avr" ];
     in {
       # Plain list of attr names for the CI build/docker matrices.
       ciTargets = lib.subtractLists ciExclude customNames;
+
+      # Heavy toolchain outputs for the (separate) toolchains CI matrix.
+      ciToolchainTargets =
+        (map (t: "cross2-${t}") cross2Targets)
+        ++ map (n: "crosstool-ng-${n}")
+             (lib.subtractLists ctBrokenBuild (builtins.attrNames ctHashes));
 
       packages = forAll ({ pkgs, pkgsPy2, ... }:
         let
@@ -75,7 +86,11 @@
           crosstoolSamples = lib.mapAttrs'
             (n: v: lib.nameValuePair "crosstool-ng-${n}" v)
             (custom.crosstool.pinnedToolchains or { });
-          all = passthrough // custom // crosstoolSamples;
+          # each cross2 target as its own cross2-<target> output
+          cross2Samples = lib.mapAttrs'
+            (n: v: lib.nameValuePair "cross2-${n}" v)
+            (custom.cross2.targets or { });
+          all = passthrough // custom // crosstoolSamples // cross2Samples;
         in all // {
           # `nix profile install .` — the reliably-building nixpkgs-backed set,
           # collisions tolerated (many tools ship their own gdb/python/etc).

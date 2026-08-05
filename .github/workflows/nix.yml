@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tools: ${{ steps.list.outputs.tools }}
+      toolchains: ${{ steps.list.outputs.toolchains }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
@@ -26,8 +27,12 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
       - id: list
-        name: Read .#ciTargets
-        run: echo "tools=$(nix eval --json .#ciTargets)" >> "$GITHUB_OUTPUT"
+        name: Read .#ciTargets and .#ciToolchainTargets
+        run: |
+          {
+            echo "tools=$(nix eval --json .#ciTargets)"
+            echo "toolchains=$(nix eval --json .#ciToolchainTargets)"
+          } >> "$GITHUB_OUTPUT"
 
   manage-tools:
     name: manage-tools (ubuntu)
@@ -83,6 +88,38 @@ jobs:
           name: ctftools
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build ${{ matrix.tool }}
+        run: nix build -L ".#${{ matrix.tool }}"
+
+  toolchains:
+    name: toolchain ${{ matrix.tool }}
+    needs: tools
+    # Heavy gcc+libc-from-source builds (cross2 + all crosstool-ng samples). Don't
+    # re-run the whole fleet on every PR sync — build on push, nightly, and manual.
+    if: github.event_name != 'pull_request'
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        tool: ${{ fromJSON(needs.tools.outputs.toolchains) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android \
+                      /opt/hostedtoolcache/CodeQL /usr/local/.ghcup /opt/az \
+                      /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" || true
+          df -h /
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: ctftools
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build ${{ matrix.tool }} (gcc + libc from source; slow)
         run: nix build -L ".#${{ matrix.tool }}"
 
   docker:
