@@ -110,6 +110,9 @@ nix profile install github:zardus/ctf-tools#gdb
 # run a tool without installing it
 nix run github:zardus/ctf-tools#ropper
 
+# run a shell with a tool in it
+nix shell github:zardus/ctf-tools#ropper
+
 # list every available tool
 nix flake show github:zardus/ctf-tools
 ```
