@@ -1,9 +1,0 @@
-#!/bin/bash -ex
-
-set +e
-source ${VIRTUALENVWRAPPER_SCRIPT}
-workon ctftools
-set -e
-
-[ $(ropper --file /bin/false | wc -l) -gt 400 ] || exit 1
-exit 0

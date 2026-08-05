@@ -1,7 +1,0 @@
-#!/bin/bash -ex
-
-wget https://github.com/0vercl0k/rp/releases/download/v2.1.4/rp-lin-gcc.zip
-unzip rp-lin-gcc.zip
-mkdir bin
-mv rp-lin bin/rp++
-chmod 755 bin/rp++

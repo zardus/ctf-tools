@@ -1,7 +1,0 @@
-#!/bin/bash -ex
-
-sudo apt-get install -y \
-  binutils file \
-  wget \
-  rpm2cpio cpio \
-  zstd jq

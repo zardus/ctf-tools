@@ -1,0 +1,11 @@
+--- gcc/collect2.c.orig	2005-01-11 00:25:23.000000000 +0900
++++ gcc/collect2.c	2011-08-31 21:35:55.000000000 +0900
+@@ -1534,7 +1534,7 @@
+   if (redir)
+     {
+       /* Open response file.  */
+-      redir_handle = open (redir, O_WRONLY | O_TRUNC | O_CREAT);
++      redir_handle = open (redir, O_WRONLY | O_TRUNC | O_CREAT, 0755);
+ 
+       /* Duplicate the stdout and stderr file handles
+ 	 so they can be restored later.  */

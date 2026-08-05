@@ -1,0 +1,11 @@
+--- gcc/config.gcc.orig	2005-07-20 06:08:48.000000000 +0900
++++ gcc/config.gcc	2011-08-31 21:35:06.000000000 +0900
+@@ -1665,7 +1665,7 @@
+ 	tmake_file=mips/t-r3900
+ 	use_fixproto=yes
+ 	;;
+-mmix-knuth-mmixware)
++mmix-*-*)
+ 	need_64bit_hwint=yes
+ 	;;
+ mn10300-*-*)

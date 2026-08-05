@@ -1,0 +1,11 @@
+--- binutils/Makefile.in.orig	2011-06-27 16:39:08.000000000 +0900
++++ binutils/Makefile.in	2011-10-10 16:17:49.707480000 +0900
+@@ -1295,7 +1295,7 @@
+ 	$(CC_FOR_BUILD) -o $@ $(AM_CPPFLAGS) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) $(srcdir)/bin2c.c
+ 
+ embedspu: embedspu.sh Makefile
+-	sed "/^program_transform_name=/cprogram_transform_name=$(program_transform_name)" < $< > $@
++	sed "s@^program_transform_name=@program_transform_name=$(program_transform_name)@" < $< > $@
+ 	chmod a+x $@
+ 
+ # We need these for parallel make.

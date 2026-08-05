@@ -1,0 +1,11 @@
+--- gcc/config/arc/arc.h.orig	2004-02-28 08:38:00.000000000 +0900
++++ gcc/config/arc/arc.h	2011-08-31 21:35:06.000000000 +0900
+@@ -493,7 +493,7 @@
+ /* local to this file */
+ #define LARGE_INT(X) \
+ ((X) >= (-(HOST_WIDE_INT) 0x7fffffff - 1) \
+- && (unsigned HOST_WIDE_INT)(X) <= (unsigned HOST_WIDE_INT) 0xffffffff)
++ && (X) <= (HOST_WIDE_INT) 0xffffffff)
+ 
+ #define CONST_OK_FOR_LETTER_P(VALUE, C) \
+ ((C) == 'I' ? SMALL_INT (VALUE)		\

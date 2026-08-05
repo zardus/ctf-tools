@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-
-[ -e xspy ] || git clone https://gitlab.com/kalilinux/packages/xspy
-mkdir -p bin
-gcc -o bin/xspy xspy/Xspy.c -lX11

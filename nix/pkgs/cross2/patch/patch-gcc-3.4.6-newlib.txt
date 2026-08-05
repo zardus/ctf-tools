@@ -1,0 +1,22 @@
+--- libiberty/strsignal.c.orig	2003-04-16 05:36:33.000000000 +0900
++++ libiberty/strsignal.c	2012-07-02 23:12:29.000000000 +0900
+@@ -409,7 +409,7 @@
+ 
+ #ifndef HAVE_STRSIGNAL
+ 
+-const char *
++char *
+ strsignal (signo)
+   int signo;
+ {
+@@ -558,8 +558,8 @@
+ 
+ void
+ psignal (signo, message)
+-  unsigned signo;
+-  char *message;
++  int signo;
++  const char *message;
+ {
+   if (signal_names == NULL)
+     {

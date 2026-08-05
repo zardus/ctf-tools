@@ -1,7 +1,8 @@
-*/*
-bin/*
-!*/install
-!*/uninstall
-!*/install-root-*
-!*/upgrade
-!*/test
+# Nix build artifacts
+result
+result-*
+
+# editor / OS cruft
+*.swp
+*~
+.DS_Store

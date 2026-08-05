@@ -1,0 +1,173 @@
+name: Nix build & cache
+
+# Builds our own tool derivations, pushes them to the `ctftools` Cachix cache,
+# and (on non-PR events) builds a per-tool Docker image that installs the tool
+# with Nix. nixpkgs passthroughs are already served by cache.nixos.org, so CI
+# only builds what's in `.#ciTargets`.
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  tools:
+    name: Enumerate CI targets
+    runs-on: ubuntu-latest
+    outputs:
+      tools: ${{ steps.list.outputs.tools }}
+      toolchains: ${{ steps.list.outputs.toolchains }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - id: list
+        name: Read .#ciTargets and .#ciToolchainTargets
+        run: |
+          {
+            echo "tools=$(nix eval --json .#ciTargets)"
+            echo "toolchains=$(nix eval --json .#ciToolchainTargets)"
+          } >> "$GITHUB_OUTPUT"
+
+  manage-tools:
+    name: manage-tools (ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - name: setup (bootstraps flakes + cache config)
+        run: ./bin/manage-tools setup
+      - name: list
+        run: |
+          ./bin/manage-tools list | tee /tmp/tools.txt
+          grep -qx pwntools /tmp/tools.txt
+          test "$(wc -l < /tmp/tools.txt)" -gt 50
+      - name: search
+        run: ./bin/manage-tools search stego | grep -qi steg
+      - name: install / list -i / uninstall round-trip
+        run: |
+          before=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l || echo 0)
+          ./bin/manage-tools install hash-identifier
+          after=$(ls "$HOME/.nix-profile/bin" | wc -l)
+          test "$after" -gt "$before"                       # something got installed
+          ./bin/manage-tools list -i                        # must not error
+          ./bin/manage-tools uninstall hash-identifier
+          final=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l || echo 0)
+          test "$final" -lt "$after"                         # ... and removed
+
+  build:
+    name: build ${{ matrix.tool }}
+    needs: tools
+    strategy:
+      fail-fast: false
+      matrix:
+        tool: ${{ fromJSON(needs.tools.outputs.tools) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android \
+                      /opt/hostedtoolcache/CodeQL /usr/local/.ghcup || true
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: ctftools
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build ${{ matrix.tool }}
+        run: nix build -L ".#${{ matrix.tool }}"
+
+  toolchains:
+    name: toolchain ${{ matrix.tool }}
+    needs: tools
+    # Heavy gcc+libc-from-source builds (cross2 + all crosstool-ng samples). Don't
+    # re-run the whole fleet on every PR sync — build on push, nightly, and manual.
+    if: github.event_name != 'pull_request'
+    # Best-effort: many of these are 30-year-old ports or heavy distro toolchains
+    # that don't build on a modern host. A failed leg records the fact and caches
+    # what did build, without failing the overall run.
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        tool: ${{ fromJSON(needs.tools.outputs.toolchains) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android \
+                      /opt/hostedtoolcache/CodeQL /usr/local/.ghcup /opt/az \
+                      /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" || true
+          df -h /
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v15
+        with:
+          name: ctftools
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build ${{ matrix.tool }} (gcc + libc from source; slow)
+        run: nix build -L ".#${{ matrix.tool }}"
+
+  docker:
+    name: docker ${{ matrix.tool }}
+    needs: [tools, build]
+    # Push images only when we have Docker Hub creds (not on fork PRs). Run even
+    # if some build legs failed — each image installs its own tool from Cachix,
+    # so one tool's failure shouldn't block the rest.
+    if: ${{ always() && github.event_name != 'pull_request' && needs.tools.result == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tool: ${{ fromJSON(needs.tools.outputs.tools) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Dockerfile (Nix installs the tool)
+        run: |
+          NAME=$(echo "${{ matrix.tool }}" | tr -cd '0-9A-Za-z._-')
+          cat > Dockerfile <<EOF
+          FROM nixos/nix:latest
+          # Install this ctf-tool into the image's Nix profile, pulling prebuilt
+          # binaries from the ctftools Cachix cache (see the flake's nixConfig).
+          # Retry to ride out transient DNS/network hiccups in the build runner.
+          # --priority 4 lets a tool's binaries win over the base image's
+          # (e.g. codext ships base32/base64 that collide with coreutils).
+          RUN for i in 1 2 3 4 5; do \\
+                nix --extra-experimental-features 'nix-command flakes' \\
+                    profile install --priority 4 --accept-flake-config \\
+                    "github:${{ github.repository }}/${{ github.sha }}#${NAME}" && exit 0; \\
+                echo "install attempt \$i failed; retrying in 10s"; sleep 10; \\
+              done; exit 1
+          ENV PATH=/root/.nix-profile/bin:\$PATH
+          EOF
+          echo "NAME=$NAME" >> "$GITHUB_ENV"
+          cat Dockerfile
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build & push ctftools/${{ env.NAME }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ctftools/${{ env.NAME }}:latest

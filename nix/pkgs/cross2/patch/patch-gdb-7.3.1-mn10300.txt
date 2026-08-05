@@ -1,0 +1,14 @@
+--- sim/mn10300/Makefile.in.orig	2011-01-02 00:34:03.000000000 +0900
++++ sim/mn10300/Makefile.in	2012-10-22 20:14:23.000000000 +0900
+@@ -124,4 +124,10 @@
+ 	$(SHELL) $(srcdir)/../../move-if-change tmp-irun.c irun.c
+ 	touch tmp-igen
+ 
+-interp.o: interp.c $(INCLUDE)
++interp.o: interp.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)
++op_utils.o: op_utils.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)
++dv-mn103cpu.o: dv-mn103cpu.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)
++dv-mn103int.o: dv-mn103int.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)
++dv-mn103iop.o: dv-mn103iop.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)
++dv-mn103ser.o: dv-mn103ser.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)
++dv-mn103tim.o: dv-mn103tim.c sim-main.h $(INCLUDE) $(SIM_EXTRA_DEPS)

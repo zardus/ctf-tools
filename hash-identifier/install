@@ -1,9 +1,0 @@
-#!/bin/bash -ex
-
-wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/hash-identifier/Hash_ID_v1.1.py
-chmod 755 Hash_ID_v1.1.py
-fromdos Hash_ID_v1.1.py || dos2unix Hash_ID_v1.1.py
-
-mkdir -p bin
-cd bin
-ln -s ../Hash_ID_v1.1.py ./hash_id.py

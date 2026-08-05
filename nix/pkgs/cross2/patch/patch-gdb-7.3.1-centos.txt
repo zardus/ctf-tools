@@ -1,0 +1,10 @@
+--- sim/erc32/configure.orig	2010-01-10 06:11:39.000000000 +0900
++++ sim/erc32/configure	2011-12-23 10:22:54.000000000 +0900
+@@ -4648,6 +4648,7 @@
+ 
+ fi
+ 
++LIBS="$LIBS -lcurses"
+ 
+ ac_sources="$sim_link_files"
+ ac_dests="$sim_link_links"

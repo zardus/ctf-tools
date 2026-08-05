@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-[ -e x-tools ] && chmod -R u+w x-tools
-rm -rf crosstools-ng

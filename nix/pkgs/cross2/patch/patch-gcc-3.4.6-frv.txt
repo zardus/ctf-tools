@@ -1,0 +1,11 @@
+--- gcc/config/frv/frv-protos.h.orig	2004-01-01 00:00:00.000000000 +0900
++++ gcc/config/frv/frv-protos.h	2011-08-31 21:35:06.000000000 +0900
+@@ -129,7 +129,7 @@
+ extern rtx frv_split_abs		(rtx *);
+ extern void frv_split_double_load	(rtx, rtx);
+ extern void frv_split_double_store	(rtx, rtx);
+-#ifdef BLOCK_HEAD
++#ifdef BB_HEAD
+ extern void frv_ifcvt_init_extra_fields	(ce_if_block_t *);
+ extern void frv_ifcvt_modify_tests	(ce_if_block_t *, rtx *, rtx *);
+ extern void frv_ifcvt_modify_multiple_tests

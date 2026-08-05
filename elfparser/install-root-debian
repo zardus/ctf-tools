@@ -1,6 +1,0 @@
-#!/bin/bash -ex
-set -eu -o pipefail
-
-sudo apt-get install -y cmake libboost-all-dev build-essential \
-                qtcreator qtdeclarative5-dev libzstd-dev libbz2-dev liblzma-dev \
-		qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools

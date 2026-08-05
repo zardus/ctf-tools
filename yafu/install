@@ -1,9 +1,0 @@
-#!/bin/bash -ex
-
-mkdir yafu
-mkdir bin
-cd yafu
-wget "https://downloads.sourceforge.net/project/yafu/1.34/yafu-1.34.zip" -O yafu.zip
-unzip yafu.zip
-chmod 755 yafu
-mv yafu ../bin

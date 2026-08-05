@@ -1,7 +1,0 @@
-#!/bin/bash -ex
-
-wget https://didierstevens.com/files/software/pdf-parser_V0_7_11.zip
-unzip pdf-parser_V0_7_11.zip
-mkdir -p bin
-mv pdf-parser.py bin/pdf-parser
-chmod 755 bin/pdf-parser
