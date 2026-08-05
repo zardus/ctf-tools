@@ -5,8 +5,13 @@
 {
   "aarch64-rpi3-linux-gnu" = "sha256-wgNZqKmxgf80BnjEoH9Sm1VLGViJxJEwglI85OPx+vU=";
   "aarch64-rpi4-linux-gnu" = "sha256-25DwgePSxHln8vp2HjABcJlLwTEMubAhp+ZylAPX4C0=";
+  "aarch64-unknown-linux-musl" = "sha256-CK4R8iH4wTEbH7OD5KCl03hAPMrCmzuq8mmcteMX30s=";
+  "aarch64-unknown-linux-uclibc" = "sha256-/8Pf7Btf2rsIARZK3PxUxIS+OwDqSsUMtckhL4pp9Ik=";
+  "arc-arc700-linux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
   "arc-multilib-elf32" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
+  "arc-multilib-linux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
   "arm-cortexa5-linux-uclibcgnueabihf" = "sha256-v83epdKsn6Z4U9HXV+YIRBzwHtCHsDpGR1MLxxy67CE=";
+  "arm-cortexa9_neon-linux-gnueabihf" = "sha256-yuHW84Pb8TKYCM7DFkNafesC9c7sRN9jwzTJQLU8LZI=";
   "arm-multilib-linux-uclibcgnueabi" = "sha256-N35/JYkRQXwzyhFfSp65/970YW4ZYakWZt2c1fhG9yw=";
   "arm-nano-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
   "arm-none-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
@@ -15,6 +20,7 @@
   "arm-unknown-eabi" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
   "arm-unknown-linux-musleabi" = "sha256-ksV8I2Y8bH6a+Uqd29yCtmq3bN8V7L3d4+pfdSh5Ccc=";
   "arm-unknown-linux-uclibcgnueabi" = "sha256-v83epdKsn6Z4U9HXV+YIRBzwHtCHsDpGR1MLxxy67CE=";
+  "arm-unknown-linux-uclibcgnueabihf" = "sha256-v83epdKsn6Z4U9HXV+YIRBzwHtCHsDpGR1MLxxy67CE=";
   "armeb-unknown-eabi" = "sha256-Y67OpbJup1A4jffufyEAX69EBgxOdbiBlpGteWsgwak=";
   "armeb-unknown-linux-uclibcgnueabi" = "sha256-JwQIjH0lUTqbLnQivQFnbxpxLZciINGg50KHtUEP7ZA=";
   "armv6-unknown-linux-gnueabihf" = "sha256-qmyZw9qMts1rXvLUfna+ILKzgdYeqeI5CviiKBv3nGA=";
