@@ -24,11 +24,16 @@
 # verbatim from build/{gcc,gdb}/targets.sh.
 
 let
-  base = "http://kozos.jp/books/asm";
+  # Byte-stable mirror of the kozos.jp cross2 tarballs. kozos re-gzips its .tar.gz
+  # on every request, so a fixed-output hash on those URLs is non-deterministic
+  # (CI fetches a differently-compressed but identical-content file and the FOD
+  # fails). These GitHub-release copies are byte-stable. (binutils is .tar.bz2 and
+  # was already stable; mirrored too for consistency.)
+  base = "https://github.com/zardus/ctf-tools/releases/download/cross2-sources-20130826";
   binutilsSrc = fetchurl { url = "${base}/binutils-2.21.1.tar.bz2"; sha256 = "sha256-zez6afAqp7BfvN9njjMTcVHzYTE7Lz5Iq6kl9k6r9lQ="; };
   gccSrc      = fetchurl { url = "${base}/gcc-3.4.6.tar.gz";        sha256 = "sha256-QbJVEKz6Dvu5QRr6NU/tX5RlmtefNh3/7DBo0tPtzUQ="; };
-  newlibSrc   = fetchurl { url = "${base}/newlib-1.20.0.tar.gz";    sha256 = "sha256-Hx3rxbZiRJq3Fe6yjMJj08Sm1eiO8EuD7eJu2aabMdQ="; };
-  gdbSrc      = fetchurl { url = "${base}/gdb-7.3.1.tar.gz";        sha256 = "sha256-POu9bda9PByoxWSo7JxK/BqYvdVdvXnqFQ9HFt5RE0I="; };
+  newlibSrc   = fetchurl { url = "${base}/newlib-1.20.0.tar.gz";    sha256 = "sha256-xkSyhHJEJ4xXvsLd2mnY+rWnx2fzua9pqnqj2oI/9pI="; };
+  gdbSrc      = fetchurl { url = "${base}/gdb-7.3.1.tar.gz";        sha256 = "sha256-19kJtLiuCTK6bBYC8vHzK+9g8McccvHdgzq2yxXg01c="; };
 
   allTargets = import ./targets.nix;
 
