@@ -6,6 +6,13 @@ The packages are checked every once in a while, so things should hopefully have 
 
 The following tools are included. The first table lists tools packaged in this repo (under `nix/pkgs/`); the second lists tools re-exported from nixpkgs.
 
+## NIX??????
+
+Long-time ctf-tools users might be surprised by this development, but it is a good development.
+Nix provides isolated packaging and can be deployed into a dev/hack environment, locally into a user's home directory, or globally system/container-wide.
+It also happily installs alongside your normal OS and package manager (e.g., ubuntu and apt) with zero interference.
+Trust me, I was as skeptical as you are for years, but it is the way.
+
 ### Packaged in this repo
 
 | Category | Tool | Description |
