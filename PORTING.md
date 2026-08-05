@@ -68,6 +68,23 @@ All build and, where they produce a CLI, were run to confirm they work.
      fallback dies — this broke every uClibc sample.
   3. `CT_GetFile` treats a digest mismatch as fatal instead of moving to the
      next mirror, so one flaky mirror fails the whole download.
+  4. There is no `/usr/bin/env` in the sandbox, so `#!/usr/bin/env` shebangs in
+     extracted sources fail (gcc's riscv `multilib-generator`); shebangs are
+     rewritten as each package is extracted.
+  5. There is no `/bin/pwd`, which kernels up to 4.x hardcode in their top-level
+     Makefile — this broke `headers_install` for every sample pinning an old
+     kernel (centos7, ubuntu14.04/16.04, sparc-leon).
+  6. `localedef` is built for the *build* machine and so compiles against the
+     host's kernel headers; with headers newer than glibc expects, `sys/mount.h`
+     and `linux/mount.h` both define `OPEN_TREE_CLONE` and glibc's default
+     `-Werror` makes it fatal. That build now passes `--disable-werror`, as the
+     target libc build already did.
+
+  Note when debugging these locally: a Nix installation whose sandbox is
+  degraded (no user namespaces, e.g. inside some containers) exposes the host's
+  `/bin` and `/usr/bin` to builds, so all of the "missing path" failures above
+  silently pass locally and only show up in CI. Check `ls /bin` inside a
+  throwaway derivation before trusting a local reproduction.
 - **preeny** — builds both 64-bit **and** 32-bit i686 LD_PRELOAD modules (CTF
   binaries are frequently 32-bit), matching upstream's multi-arch build.
 - **beef** — full Ruby app via `bundlerEnv` (gemset pinned).

@@ -62,20 +62,23 @@ stdenv.mkDerivation rec {
     python3
   ];
 
-  # ct-ng seeds a libc/kernel .config by copying a template that ships with
-  # crosstool-NG itself (e.g. packages/uClibc-ng/config). On a normal install
-  # that template is mode 644, but here it lives in the *read-only* Nix store
-  # (mode 444), and `cp` carries that mode over. CT_KconfigSetOption /
-  # CT_KconfigDisableOption fall back to `echo ... >> "${file}"` for options the
-  # template doesn't mention, which then dies with ".config: Permission denied"
-  # -- this is what broke every uClibc sample. Make the copies writable.
+  # crosstool-NG assumes a normal FHS host. The Nix build sandbox provides only
+  # /bin/sh and a read-only store, so several of its assumptions break. Each
+  # patch below fixes one of them; all were diagnosed from real CI failures.
   postPatch = ''
+    # (1) ct-ng seeds a libc .config by copying a template that ships with
+    # crosstool-NG itself (packages/uClibc-ng/config). On a normal install that
+    # template is mode 644, but here it lives in the read-only store (mode 444)
+    # and `cp` carries that mode over. CT_KconfigSetOption /
+    # CT_KconfigDisableOption fall back to `echo ... >> "''${file}"` for options
+    # the template doesn't mention, which then dies with
+    # ".config: Permission denied" -- this broke every uClibc sample.
     substituteInPlace scripts/build/libc/uClibc-ng.sh \
       --replace-fail 'CT_DoExecLog ALL cp "''${src}" "''${dst}"' \
                      'CT_DoExecLog ALL cp "''${src}" "''${dst}"
         CT_DoExecLog ALL chmod u+w "''${dst}"'
 
-    # CT_GetFile walks a list of mirrors, but a *digest* mismatch makes it
+    # (2) CT_GetFile walks a list of mirrors, but a *digest* mismatch makes it
     # `return 1` outright instead of moving on to the next one -- so a single
     # mirror handing back a truncated file (or a rate-limit page) fails the whole
     # download. ncurses-6.5 hit this repeatedly on invisible-mirror.net when CI
@@ -87,6 +90,52 @@ stdenv.mkDerivation rec {
     sed -i '/Digest verification failed; trying the next mirror/,+2{s/^\( *\)return 1$/\1continue/}' \
       scripts/functions
     grep -A2 'trying the next mirror' scripts/functions | grep -q 'continue'
+
+    # (3) There is no /usr/bin/env in the sandbox, so any extracted source that
+    # ships a `#!/usr/bin/env prog` script fails with "bad interpreter". gcc's
+    # riscv multilib-generator is one (it sinks riscv64-multilib-elf during
+    # config.gcc with a bogus "invalid option for --with-multilib-generator").
+    # Rewrite those shebangs to the real interpreter as each package is
+    # extracted -- the same thing nixpkgs' patchShebangs does, but reachable
+    # from inside ct-ng's own build scripts.
+    cat >> scripts/functions <<'CTNG_NIX_EOF'
+
+# Rewrite `#!/usr/bin/env prog` shebangs in the just-extracted package to the
+# absolute interpreter on PATH. Run from the package's source directory.
+CT_NixFixupShebangs() {
+    local _f _i _t
+    find . -type f -perm -u+x -print0 | while IFS= read -r -d "" _f; do
+        _i=$(sed -n '1s|^#!/usr/bin/env  *\([^ ]*\).*|\1|p' "$_f" 2>/dev/null)
+        [ -n "$_i" ] || continue
+        _t=$(command -v "$_i" 2>/dev/null) || continue
+        [ -n "$_t" ] || continue
+        sed -i "1s|^#!/usr/bin/env  *[^ ]*|#!$_t|" "$_f"
+    done
+}
+CTNG_NIX_EOF
+    sed -i 's|^\( *\)if \[ -n "''${patchfunc}" \]; then|\1CT_NixFixupShebangs\n&|' scripts/functions
+    grep -q '^ *CT_NixFixupShebangs$' scripts/functions
+
+    # (4) Kernels up to 4.x hardcode /bin/pwd in their top-level Makefile, which
+    # the sandbox does not provide ("/bin/sh: /bin/pwd: not found" ->
+    # "failed to create output directory"). This is what broke headers_install
+    # for the centos7 / ubuntu14.04 / ubuntu16.04 / sparc-leon samples, all of
+    # which pin an old kernel. Harmless no-op on modern kernels.
+    substituteInPlace scripts/build/kernel/linux.sh \
+      --replace-fail '    kernel_path="''${CT_SRC_DIR}/linux"' \
+                     '    kernel_path="''${CT_SRC_DIR}/linux"
+    CT_DoExecLog ALL chmod u+w "''${kernel_path}/Makefile"
+    CT_DoExecLog ALL sed -i "s,/bin/pwd,pwd,g" "''${kernel_path}/Makefile"'
+
+    # (5) `localedef` is built for the *build* machine, so it compiles against
+    # the host'"'"'s kernel headers rather than the target'"'"'s. With headers newer than
+    # glibc expects, sys/mount.h and linux/mount.h both define OPEN_TREE_CLONE
+    # and glibc'"'"'s default -Werror turns the redefinition into an error. The
+    # target libc build already passes --disable-werror; do the same here.
+    substituteInPlace scripts/build/libc/glibc.sh \
+      --replace-fail '        --disable-sanity-checks            \' \
+                     '        --disable-sanity-checks            \
+        --disable-werror                   \'
   '';
 
   # crosstool-ng ships a ./bootstrap that regenerates the autotools files.

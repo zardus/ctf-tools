@@ -107,17 +107,30 @@ gcc13Stdenv.mkDerivation {
     ( cd build/gcc
       "$PWD/../../gcc-3.4.6/configure" --target="$target" --prefix="$out" $common \
         --disable-threads --disable-shared --enable-languages="$gccLang" $newlibopt $gccOpt
-      # STMP_FIXINC= skips gcc-3.4.6's fixincludes, which chokes on modern host
-      # headers (e.g. x86_64-linux's stmp-fixinc). Cross+newlib toolchains use the
-      # target's own (newlib) headers, so fixing host headers is unnecessary.
+      # Generate gcc/Makefile (without building yet) so we can see what gcc
+      # decided about system headers.
+      make $MAKEFLAGS configure-gcc
+      # When the target triple equals the build triple -- cross2's x86_64-linux on
+      # an x86_64 host -- gcc-3.4.6 considers itself native and points fixincludes
+      # at the host's /usr/include, which does not exist in the Nix sandbox:
+      # "The directory that should contain system headers does not exist".
+      # This is a --with-newlib toolchain that uses the target's own headers, so
+      # fixing host headers achieves nothing; drop the step for the native case
+      # only, leaving genuine cross targets' fixincludes alone.
+      # NB: `make STMP_FIXINC=` does NOT work here -- gcc's top-level Makefile
+      # sets MAKEOVERRIDES= ("Don't pass command-line variables to submakes"), so
+      # the override never reaches gcc/Makefile. It has to be edited in place.
+      if grep -qE '^SYSTEM_HEADER_DIR *= *\$\(NATIVE_SYSTEM_HEADER_DIR\)' gcc/Makefile; then
+        sed -i 's/^STMP_FIXINC *=.*/STMP_FIXINC =/' gcc/Makefile
+      fi
       # Build xgcc + newlib's libc BEFORE the rest of the combined tree: some
       # targets' libgloss board-support links a hosted ELF against -lc during the
       # library build (e.g. xstormy16's eva_stub.elf). Under parallel make the
       # combined tree otherwise races all-target-libgloss ahead of all-target-newlib
       # and fails with "ld: cannot find -lc". Staging newlib first is the correct
       # dependency order and is a no-op for targets that don't hit the race.
-      if [ "$gccNewlib" = "1" ]; then make $MAKEFLAGS all-target-newlib STMP_FIXINC=; fi
-      make $MAKEFLAGS STMP_FIXINC= ) || { echo "GCC COMPILE FAILED for $target" >&2; exit 1; }
+      if [ "$gccNewlib" = "1" ]; then make $MAKEFLAGS all-target-newlib; fi
+      make $MAKEFLAGS ) || { echo "GCC COMPILE FAILED for $target" >&2; exit 1; }
     # gcc's cross install writes per-multilib target libs (e.g. arm-elf/lib/thumb)
     # into dirs it doesn't create; pre-create them from the compiler's own list.
     for ml in $(build/gcc/gcc/xgcc -Bbuild/gcc/gcc/ -print-multi-lib 2>/dev/null | sed 's/;.*//'); do

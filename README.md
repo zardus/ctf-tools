@@ -131,6 +131,61 @@ manage-tools search preload
 
 Tools install into your Nix profile, and uninstalling removes them cleanly.
 
+### Cross-compiler toolchains (`cross2`, `crosstool`)
+
+Two of the tools are toolchain *builders* rather than single programs, so they
+expose one output per target instead of one output overall. Install only the
+target you need — each is an independent package.
+
+**`crosstool`** is the [crosstool-NG](https://crosstool-ng.github.io/) `ct-ng`
+driver. Installing `crosstool` gives you `ct-ng` itself, ready to build your own
+toolchain from a config:
+
+```bash
+nix profile install github:zardus/ctf-tools#crosstool
+ct-ng list-samples
+```
+
+Every crosstool-NG sample is *also* prebuilt as its own output, named
+`crosstool-ng-<sample>`, so you can install a ready-made toolchain instead of
+spending an hour building one:
+
+```bash
+# a bare-metal ARM toolchain: arm-none-eabi-gcc, -gdb, -objdump, ...
+nix profile install github:zardus/ctf-tools#crosstool-ng-arm-none-eabi
+
+# a full Linux/glibc cross toolchain, with sysroot
+nix profile install github:zardus/ctf-tools#crosstool-ng-aarch64-unknown-linux-musl
+
+# see all of them (77 samples: bare-metal newlib/picolibc plus
+# Linux glibc/uClibc/musl, and the mingw-w64 Windows targets)
+nix flake show github:zardus/ctf-tools | grep crosstool-ng-
+```
+
+The sample name is the crosstool-NG sample id with any character outside
+`[a-zA-Z0-9_-]` replaced by `-` (so `x86_64-ubuntu16.04-linux-gnu` becomes
+`crosstool-ng-x86_64-ubuntu16-04-linux-gnu`).
+
+**`cross2`** is the companion toolchain set for the
+[kozos.jp assembly book](https://kozos.jp/books/asm/) — binutils 2.21.1 +
+gcc 3.4.6 + newlib 1.20.0 (+ gdb 7.3.1 where it still builds), for 34
+mostly-retro bare-metal targets. Installing `cross2` gives you the book's six
+"major architecture" toolchains (arm, h8300, i386, mips, powerpc, sh); the other
+targets are individual `cross2-<target>` outputs:
+
+```bash
+# the major-architecture bundle
+nix profile install github:zardus/ctf-tools#cross2
+
+# or just one target, e.g. mmix or vax
+nix profile install github:zardus/ctf-tools#cross2-mmix-elf
+nix profile install github:zardus/ctf-tools#cross2-vax-netbsdelf
+```
+
+These are large, from-source gcc builds, so install them with the [binary
+cache](#binary-cache) configured — otherwise Nix will build the whole toolchain
+locally (tens of minutes to hours each).
+
 ## Help!
 
 Something not working?

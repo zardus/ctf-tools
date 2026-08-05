@@ -42,7 +42,7 @@
   "m68k-unknown-uclinux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
   "mips-unknown-elf" = "sha256-neu2R7zmLFfgKCa0r2z1gp/q9jO/5Y+JDEiBGQexmr8=";
   "mips-unknown-linux-uclibc" = "sha256-9I5vXCAgyH6FO4HZC9vuduFzfu/IXw5/2Qivl3fWlKA=";
-  "mips64-unknown-linux-gnu" = "sha256-de8QvxW8h7fdvyflnsAujnzcHD3Xo/vxjYObfFhoRJo=";
+  "mips64-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
   "mips64el-multilib-linux-uclibc" = "sha256-wTffAe6esl7HAarjcvl0KKwxTpKPUJ0r1S1hb/lEF7g=";
   "mipsel-multilib-linux-gnu" = "sha256-fKIO7W3jSLrhKbUjoX0wL4nWWhx5sM295ZnBestzft8=";
   "mipsel-sde-elf" = "sha256-neu2R7zmLFfgKCa0r2z1gp/q9jO/5Y+JDEiBGQexmr8=";
@@ -62,7 +62,7 @@
   "riscv64-multilib-elf" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
   "riscv64-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
   "rx-unknown-elf" = "sha256-QCzJA/Z+QJVNNj/lQO8Srv7S/4l5u37QVLFMt1aKSDk=";
-  "s390-unknown-linux-gnu" = "sha256-SgV6fDmQjip/oJgfKOzAaJXLbz3yUzDStQEhty8T2Ss=";
+  "s390-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
   "s390x-ibm-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
   "s390x-unknown-linux-gnu" = "sha256-+9N8pK0PyerzvfTJHouV/GFuwC1yMbDF0+1azLoGKWk=";
   "sh-unknown-elf" = "sha256-5QOxZqhJYD5atSeP5Bkp7g34u8VJufh0mAXxH0rsXn4=";
