@@ -24,7 +24,9 @@
 # an independent, individually-cacheable output (cross2-<target>) that fits a
 # single CI runner. binutils + gcc(+newlib) are REQUIRED (that's the toolchain);
 # gdb is OPPORTUNISTIC — we attempt it for every target and simply skip it if
-# this ~30-year-old port doesn't build a cross-gdb on a modern host.
+# this ~30-year-old port doesn't build a cross-gdb on a modern host; when it
+# can't, we fall back to gdb's standalone CPU simulator (upstream's
+# targets_simonly path), which is how e.g. mcore-elf-run gets built.
 #
 # gcc language set / newlib usage per target come from build/gcc/targets.sh
 # (resolved by ../default.nix and passed in here).
@@ -136,7 +138,17 @@ gcc13Stdenv.mkDerivation {
     for ml in $(build/gcc/gcc/xgcc -Bbuild/gcc/gcc/ -print-multi-lib 2>/dev/null | sed 's/;.*//'); do
       mkdir -p "$out/${target}/lib/$ml"
     done
-    ( cd build/gcc && make install ) || { echo "GCC INSTALL FAILED for $target" >&2; exit 1; }
+    # libgloss's multilib install races with itself: for e.g. mcore-elf two
+    # rules (install / install-mon) copy the same crt0.o into
+    # <target>/lib/<multilib>, and coreutils' install unlinks the destination
+    # and reopens it O_EXCL, so under -j the loser dies with "cannot create
+    # regular file ...: File exists". Nothing is corrupted, so retry serially
+    # rather than fail the toolchain -- the parallel path is left alone for the
+    # targets that don't hit this.
+    ( cd build/gcc && make install ) \
+      || { echo "GCC INSTALL: parallel install raced for $target, retrying with -j1" >&2
+           ( cd build/gcc && make -j1 install ); } \
+      || { echo "GCC INSTALL FAILED for $target" >&2; exit 1; }
 
     ############################ gdb (opportunistic) ###########################
     # Attempt a cross-gdb for every target; skip (don't fail the toolchain) if
@@ -151,6 +163,52 @@ gcc13Stdenv.mkDerivation {
       echo "GDB skipped for $target (does not build; compiler still installed)"
     fi
 
+    ###################### gdb simulator only (opportunistic) ##################
+    # Upstream build/gdb/all.sh has a second path (targets_simonly) for targets
+    # whose gdb core has no port -- mcore-elf is the one upstream lists, and its
+    # gdb configure really does say "configuration mcore-unknown-elf is
+    # unsupported" -- but which do ship a CPU simulator under gdb-7.3.1/sim. For
+    # those it builds bfd/opcodes/libiberty/sim standalone and installs just
+    # <target>-run. Do the same generically for any target whose full-gdb
+    # attempt above didn't leave a <target>-run behind.
+    if [ ! -x "$out/bin/${target}-run" ]; then
+      echo "================ SIM $target (opportunistic) ================"
+      # sim/<arch>'s Makefile hardcodes ../../{bfd,opcodes,libiberty}/lib*.a and
+      # -I../../{bfd,opcodes}, so these four build dirs must be siblings under a
+      # common root -- they can't go in build/{bfd,sim,...} next to build/gcc.
+      mkdir -p build/sim-only/sim
+      # Configure sim first: it's cheap and needs nothing else built, and
+      # whether it created an arch subdir tells us if this target has a
+      # simulator at all -- targets without one then skip bfd/opcodes entirely.
+      ( cd build/sim-only/sim
+        "$PWD/../../../gdb-7.3.1/sim/configure" --target="$target" --prefix="$out" $common ) || true
+      simarch=""
+      for d in build/sim-only/sim/*/; do
+        [ -d "$d" ] || continue
+        case "$(basename "$d")" in
+          common|testsuite) ;;
+          *) simarch="$(basename "$d")" ;;
+        esac
+      done
+      # Only sim is installed: gdb-7.3.1's bfd/opcodes/libiberty would overwrite
+      # files binutils 2.21.1 already put in $out (lib64/libiberty.a, bfd.info)
+      # with near-identical copies from a different source tree, for no gain --
+      # their .a files are only consumed in-tree by sim.
+      if [ -n "$simarch" ] && ( set -e
+           cd build/sim-only
+           for sub in libiberty bfd opcodes; do
+             mkdir -p "$sub"
+             ( cd "$sub"
+               "$PWD/../../../gdb-7.3.1/$sub/configure" --target="$target" --prefix="$out" $common
+               make $MAKEFLAGS )
+           done
+           cd sim && make $MAKEFLAGS && make install ); then
+        echo "SIM OK $target ($simarch)"
+      else
+        echo "SIM skipped for $target (no simulator for this target, or it does not build)"
+      fi
+    fi
+
     test -x "$out/bin/${target}-gcc"   # the toolchain must have produced a compiler
     runHook postBuild
   '';
@@ -158,7 +216,7 @@ gcc13Stdenv.mkDerivation {
   meta = with lib; {
     description = "kozos.jp cross2 ${target} toolchain (binutils 2.21.1 + gcc 3.4.6"
       + lib.optionalString gccNewlib " + newlib 1.20.0"
-      + "; gdb 7.3.1 when it builds)";
+      + "; gdb 7.3.1, or just its CPU simulator, when they build)";
     homepage = "https://kozos.jp/books/asm/";
     license = with licenses; [ gpl2Plus gpl3Plus ];
     mainProgram = "${target}-gcc";

@@ -1,0 +1,31 @@
+#!/bin/sh
+# BeEF writes into its own application directory: it refuses to start until
+# beef.credentials.passwd is changed in config.yaml, it opens the sqlite DB
+# from the cwd-relative path in that config (`file: "beef.db"`), and at
+# startup it regenerates
+# extensions/admin_ui/media/javascript-min/web_ui_all.js. With cwd inside the
+# store all three fail (EACCES) and beef exits 1, so seed a per-user copy of
+# the whole app tree on first run and run from there.
+# The `chmod -R u+w` is load-bearing: store files are mode 0555 / 0444 and
+# cp keeps those, so without it config.yaml and the admin-UI tree stay
+# unwritable. (`cp --no-preserve=mode` is *not* the way to do it — it would
+# also drop the executable bit from ./beef and the bundled tools.)
+set -e
+
+state="${BEEF_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/beef}"
+
+# Guard on the entry point rather than the directory, so an interrupted first
+# run re-seeds instead of leaving a half-copied tree.
+# Absolute coreutils paths: this launcher runs before any of the user's
+# environment is known to be sane (desktop launchers can start it with an
+# empty PATH), and the seeding step must not silently fail.
+if [ ! -e "$state/beef" ]; then
+    @coreutils@/bin/mkdir -p "$state"
+    @coreutils@/bin/cp -R @out@/share/beef/. "$state"/
+    @coreutils@/bin/chmod -R u+w "$state"
+    echo "beef: seeded writable copy in $state" >&2
+    echo "beef: change beef.credentials.passwd in $state/config.yaml before use" >&2
+fi
+
+cd "$state"
+exec @ruby@/bin/ruby "$state/beef" "$@"

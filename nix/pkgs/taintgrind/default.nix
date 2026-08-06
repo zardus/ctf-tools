@@ -58,12 +58,28 @@ stdenv.mkDerivation {
   # tool binaries it produces.
   hardeningDisable = [ "all" ];
 
+  # `make install` lays down a complete Valgrind tree, which collides with the
+  # `valgrind` package on ~150 paths (bin/valgrind, lib/valgrind/*.a,
+  # libexec/valgrind/*, include/valgrind/*) and makes the two impossible to
+  # co-install in one profile. Tuck the whole tree under libexec/taintgrind and
+  # expose only the two entry points the stock ctf-tools installer put on PATH.
   postInstall = ''
-    # The stock ctf-tools installer exposes two entry points. Provide a
-    # working `taintgrind` launcher (Valgrind tools are invoked through the
-    # valgrind driver) and the log2dot helper.
-    makeWrapper $out/bin/valgrind $out/bin/taintgrind \
-      --add-flags "--tool=taintgrind"
+    mkdir -p $out/libexec/taintgrind
+    mv $out/bin $out/libexec/taintgrind/bin
+    # VALGRIND_LIB must point here: libexec/valgrind holds the per-platform
+    # tool binaries (taintgrind-amd64-linux), the vgpreload_*.so shims and
+    # default.supp. lib/valgrind only has static archives for building tools,
+    # and pointing VALGRIND_LIB at it fails with "failed to start tool".
+    mv $out/libexec/valgrind $out/libexec/taintgrind/vglib
+    # Everything left in these prefixes belongs to Valgrind proper.
+    rm -rf $out/include $out/lib $out/share/doc $out/share/man
+
+    # Valgrind tools are invoked through the valgrind driver. The relocation
+    # invalidates the driver's compiled-in library path, hence the explicit
+    # VALGRIND_LIB.
+    makeWrapper $out/libexec/taintgrind/bin/valgrind $out/bin/taintgrind \
+      --add-flags "--tool=taintgrind" \
+      --set VALGRIND_LIB $out/libexec/taintgrind/vglib
 
     install -Dm755 taintgrind/tools/log2dot.py $out/share/taintgrind/log2dot.py
     makeWrapper ${python3}/bin/python3 $out/bin/taintgrind-log2dot \

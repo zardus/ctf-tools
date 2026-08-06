@@ -28,7 +28,16 @@ stdenvNoCC.mkDerivation {
     makeWrapper ${python3.interpreter} $out/bin/villoc \
       --add-flags $out/libexec/villoc/villoc.py
 
+    # Preserve the original binary name used by the ctf-tools installer (and
+    # the only name upstream's README documents).
+    ln -s villoc $out/bin/villoc.py
+
     runHook postInstall
+  '';
+
+  doInstallCheck = true;
+  installCheckPhase = ''
+    $out/bin/villoc.py --help > /dev/null
   '';
 
   meta = {

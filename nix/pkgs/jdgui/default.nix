@@ -26,7 +26,12 @@ stdenvNoCC.mkDerivation rec {
 
     makeWrapper ${jre}/bin/java $out/bin/jd-gui \
       --add-flags "-jar $out/share/jd-gui/jd-gui.jar"
-    ln -s $out/bin/jd-gui $out/bin/jdgui
+    ln -s jd-gui $out/bin/jdgui
+    # Preserve the original binary name used by the ctf-tools installer, which
+    # relied on a jarwrapper/binfmt_misc handler to run the .jar directly. Here
+    # it is just another name for the wrapper script, so it needs no binfmt
+    # registration — but note it is a shell script, not an archive.
+    ln -s jd-gui $out/bin/jd-gui.jar
 
     runHook postInstall
   '';

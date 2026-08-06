@@ -58,6 +58,17 @@ python3Packages.buildPythonApplication rec {
     hash = "sha256-Yq0VvO6qZtTXPRmPvP+tr83B0gwIAwl49EL/Ucc919k=";
   };
 
+  # Upstream's package-data only lists `data/*`, so setuptools copies the .py
+  # files of the RsaCtfTool.sage package but silently drops its ten .sage
+  # scripts. The attacks that shell out to `sage <rootpath>/sage/foo.sage`
+  # (boneh_durfee, ecm, lattice, qs, ...) swallow the resulting error and just
+  # report "cracking failed", so declare the .sage files as package data too.
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail 'RsaCtfTool = ["data/*"]' 'RsaCtfTool = ["data/*"]
+"RsaCtfTool.sage" = ["*.sage"]'
+  '';
+
   nativeBuildInputs = [
     python3Packages.setuptools
     python3Packages.wheel

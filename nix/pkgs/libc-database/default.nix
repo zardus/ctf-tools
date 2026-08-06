@@ -33,12 +33,15 @@
 # database at build time. That step pulls gigabytes from external mirrors at
 # build time, which is impure and impossible in a fixed-output-free Nix build.
 # Instead we package only the scripts. At runtime the user runs
-# `libc-database-get`, `libc-database-find`, etc. Because the Nix store is
+# `libc-database-get all` once, then `libc-database-find`, etc.; the launcher
+# prints a hint when the database is still empty. Because the Nix store is
 # read-only but these scripts write their database next to themselves, each
-# wrapper materialises a writable working directory (default: ./libc-database
-# under $PWD, overridable via $LIBC_DATABASE_PATH) containing symlinks to the
-# immutable scripts plus writable db/ and libs/ directories, then runs the
-# real script there.
+# wrapper materialises a writable working directory (default:
+# ${XDG_DATA_HOME:-$HOME/.local/share}/libc-database, overridable via
+# $LIBC_DATABASE_PATH) containing symlinks to the immutable scripts plus
+# writable db/ and libs/ directories, then runs the real script there. That
+# default is per-user rather than per-$PWD so one populated database is
+# reachable from anywhere, as it was with the installer's single checkout.
 stdenvNoCC.mkDerivation {
   pname = "libc-database";
   version = "unstable-2024-291b0eb";
@@ -106,6 +109,21 @@ stdenvNoCC.mkDerivation {
       echo "expected libc-database-dump to fail on a bogus id" >&2
       exit 1
     fi
+
+    # With no explicit $LIBC_DATABASE_PATH the working directory must be
+    # per-user, not per-$PWD, so one populated database serves every cwd.
+    unset LIBC_DATABASE_PATH
+    unset XDG_DATA_HOME
+    export HOME="$TMPDIR/libc-db-home"
+    mkdir -p "$HOME" "$TMPDIR/cwd-a" "$TMPDIR/cwd-b"
+    for d in "$TMPDIR/cwd-a" "$TMPDIR/cwd-b"; do
+      ( cd "$d" && $out/bin/libc-database-find printf 0x123 >/dev/null 2>&1 || true )
+      if [ -e "$d/libc-database" ]; then
+        echo "libc-database littered $d with a per-directory database" >&2
+        exit 1
+      fi
+    done
+    test -e "$HOME/.local/share/libc-database/db"
   '';
 
   meta = {

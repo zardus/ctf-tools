@@ -4,6 +4,7 @@
 , bundlerEnv
 , ruby
 , makeWrapper
+, coreutils
 , sqlite
 , espeak
 }:
@@ -17,9 +18,9 @@
 # We reproduce that here: the checked-in Gemfile/Gemfile.lock have the
 # :test group already removed (the lock was regenerated with bundler),
 # and gemset.nix was produced from that lock with bundix. bundlerEnv
-# builds the exact gem closure; a makeWrapper launcher runs the repo's
-# ./beef under the wrapped ruby (which sets BUNDLE_GEMFILE etc.), from
-# the app directory as the interpreter requires.
+# builds the exact gem closure; our launcher runs the repo's ./beef under
+# the wrapped ruby (which sets BUNDLE_GEMFILE etc.) from a writable
+# per-user copy of the app directory, which BeEF requires at runtime.
 
 let
   rev = "7f4d40432f84b82098433008d5dc6d9be64053df";
@@ -58,9 +59,14 @@ stdenv.mkDerivation {
     cp ${./Gemfile.lock} $out/share/beef/Gemfile.lock
 
     mkdir -p $out/bin
-    makeWrapper ${gems.wrappedRuby}/bin/ruby $out/bin/beef \
-      --add-flags "$out/share/beef/beef" \
-      --chdir "$out/share/beef" \
+    # beef needs a writable application directory (see beef.in); the launcher
+    # seeds one per user and chdirs there before exec'ing the app.
+    substitute ${./beef.in} $out/bin/beef \
+      --subst-var out \
+      --subst-var-by ruby "${gems.wrappedRuby}" \
+      --subst-var-by coreutils "${coreutils}"
+    chmod 755 $out/bin/beef
+    wrapProgram $out/bin/beef \
       --set BUNDLE_GEMFILE "${gems.confFiles}/Gemfile" \
       --prefix PATH : "${lib.makeBinPath [ espeak ]}"
 

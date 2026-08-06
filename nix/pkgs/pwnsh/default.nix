@@ -4,6 +4,7 @@
 , makeWrapper
 , bash
 , gcc
+, glibc
 , binutils
 , coreutils
 , gnused
@@ -75,6 +76,17 @@ stdenv.mkDerivation {
     mkdir -p $out/share/pwnsh
     cp -a scripts syscalls $out/share/pwnsh/
 
+    # write-c picks which libc headers to #include by probing /usr/include,
+    # which does not exist here, so it emitted an empty header block and
+    # run-c / lookup-constant failed to compile. Probe glibc's dev output
+    # instead. The upstream multiarch fallback line is dropped rather than
+    # repointed: nixpkgs' gcc reports x86_64-unknown-linux-gnu (not the
+    # Debian x86_64-linux-gnu), and there is no such subdirectory anywhere,
+    # so any surviving form of that line only emits unresolvable includes.
+    substituteInPlace $out/share/pwnsh/scripts/write-c \
+      --replace-fail '[ -f "/usr/include/$(gcc -dumpmachine)/$1" ] && echo "#include \"$(gcc -dumpmachine)/$1\""' 'true' \
+      --replace-fail '[ -f "/usr/include/$1" ]' '[ -f "${lib.getDev glibc}/include/$1" ]'
+
     # Toolchain shims: the scripts call x86_64-linux-gnu-gcc/objcopy/objdump
     # by name; point those at the native toolchain for the default arch.
     mkdir -p $out/share/pwnsh/shims
@@ -97,6 +109,18 @@ stdenv.mkDerivation {
     done
 
     runHook postInstall
+  '';
+
+  # Compile-and-run smoke test: both of these go through write-c, so they
+  # fail loudly if the header probe above ever stops finding libc headers.
+  doInstallCheck = true;
+  installCheckPhase = ''
+    runHook preInstallCheck
+
+    [ "$($out/bin/run-c 'printf("hello %d\n", 42);')" = "hello 42" ]
+    [ "$($out/bin/lookup-constant PROT_EXEC)" = "0x4" ]
+
+    runHook postInstallCheck
   '';
 
   meta = with lib; {

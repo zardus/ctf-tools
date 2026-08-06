@@ -77,10 +77,39 @@ python3Packages.buildPythonApplication rec {
 
   dontCheckRuntimeDeps = true;
 
+  # `decomp2dbg --install` appends `source <pkg>/d2d_client.py` to ~/.gdbinit.
+  # That line can never work here (see postInstall), so make the installer
+  # emit the sys.path-repairing shim instead -- otherwise it cheerfully
+  # writes a permanently erroring line into the user's gdbinit.
+  postPatch = ''
+    substituteInPlace decomp2dbg/installer.py \
+      --replace-fail 'self.pkg_path / "d2d_client.py"' \
+                     "Path(\"$out/share/decomp2dbg/d2d.py\")"
+  '';
+
+  # gdb embeds its own Python, which has no idea about this package's
+  # site-packages, so sourcing d2d_client.py directly fails with
+  # ModuleNotFoundError and the `decompiler` command is never registered.
+  # (A wrapper cannot help: gdb `source`s the file into its interpreter, it
+  # never spawns a process we could set PYTHONPATH on.) Ship a shim that
+  # prepends the closure to sys.path and then executes the real client in
+  # the *same* globals -- d2d_client.py sniffs globals() for `gef`/`pwndbg`
+  # to pick its frontend, so it must not be run in a fresh namespace.
+  postInstall = ''
+    mkdir -p $out/share/decomp2dbg
+    cat > $out/share/decomp2dbg/d2d.py <<EOF
+    import sys
+    sys.path[0:0] = "${python3Packages.makePythonPath dependencies}".split(":")
+    sys.path.insert(0, "$out/${python3Packages.python.sitePackages}")
+    _d2d = "$out/${python3Packages.python.sitePackages}/decomp2dbg/d2d_client.py"
+    exec(compile(open(_d2d).read(), _d2d, "exec"))
+    EOF
+  '';
+
   pythonImportsCheck = [ "decomp2dbg" ];
 
   meta = {
-    description = "A decompiler-to-debugger bridge for syncing decompiler symbols into gdb (skips the interactive plugin installer)";
+    description = "A decompiler-to-debugger bridge for syncing decompiler symbols into gdb (load the gdb half with `source <pkg>/share/decomp2dbg/d2d.py`, or let `decomp2dbg --install` add it to ~/.gdbinit)";
     homepage = "https://github.com/mahaloz/decomp2dbg";
     license = lib.licenses.bsd2;
     mainProgram = "decomp2dbg";

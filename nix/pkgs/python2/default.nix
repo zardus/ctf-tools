@@ -49,6 +49,15 @@ symlinkJoin {
     if [ ! -e "$out/bin/pip2" ] && [ -e "$out/bin/pip2.7" ]; then
       ln -s "$out/bin/pip2.7" "$out/bin/pip2"
     fi
+
+    # pyenv (unlike CPython's own `make install`, and unlike nixpkgs) copies
+    # Tools/gdb/libpython.py next to the interpreter as pythonX.Y-gdb.py; it
+    # provides gdb's py-bt / py-list / py-locals when debugging the py2
+    # interpreter. Restore that name. gdb will not auto-load it here — the
+    # objfile resolves to the real interpreter under the env's store path, not
+    # to this symlink farm — so it has to be `source`d by hand.
+    install -Dm755 "${pkgsPy2.python27.src}/Tools/gdb/libpython.py" \
+      "$out/bin/python2.7-gdb.py"
   '';
 
   meta = with lib; {

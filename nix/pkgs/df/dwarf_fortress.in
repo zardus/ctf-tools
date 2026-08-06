@@ -1,0 +1,32 @@
+#!/bin/sh
+# Dwarf Fortress writes into its own game directory: it creates save/ and
+# mods/ and rewrites data/init/*.txt, all relative to the working directory.
+# Running it with cwd inside the store therefore fails with
+# "mkdir(save) failed: Permission denied" and no fortress can be saved.
+# So seed a per-user copy of the game tree (48 MB) on first run and play
+# from there. The `chmod -R u+w` is load-bearing: store files are mode 0555
+# / 0444, and cp keeps those, so without it data/init would still be
+# unwritable. (`cp --no-preserve=mode` is *not* the way to do it — it would
+# also drop the executable bit from dwarfort and the .so files.)
+#
+# The bundled .so files keep resolving out of the store (autoPatchelfHook
+# baked an absolute RPATH into dwarfort), so the copy only has to be
+# writable, not self-contained.
+set -e
+
+state="${DF_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/dwarf-fortress}"
+
+# Guard on the binary rather than the directory, so an interrupted first
+# run re-seeds instead of leaving a half-copied game.
+# Absolute coreutils paths: this launcher runs before any of the user's
+# environment is known to be sane (desktop launchers can start it with an
+# empty PATH), and the seeding step must not silently fail.
+if [ ! -e "$state/dwarfort" ]; then
+    @coreutils@/bin/mkdir -p "$state"
+    @coreutils@/bin/cp -R @out@/libexec/df/. "$state"/
+    @coreutils@/bin/chmod -R u+w "$state"
+fi
+
+@coreutils@/bin/mkdir -p "$state/save" "$state/mods" "$state/prefs"
+cd "$state"
+exec ./dwarfort "$@"

@@ -1,0 +1,51 @@
+--- a/extract-firmware.sh
++++ b/extract-firmware.sh
+@@ -131,13 +131,19 @@
+ FOOTER_OFFSET=0
+ 
+ # Get Hex + ASCII output of image file, filter for header between preceding repeating lines which show up as * in terminal. Dump into footer.txt
+-hexdump -C "$IMG" | tail -11 | sed -n '/^*/,$p' > footer.txt
++# FMK is installed read-only in the Nix store and these scripts run with that
++# directory as their cwd, so ./footer.txt is not writable. Use a temp file:
++# without it FOOTER_SIZE silently stays 0 and the footer bytes get folded into
++# rootfs.img.
++FMK_FOOTER_TXT=$(mktemp -t fmk-footer.XXXXXX)
++trap 'rm -f "$FMK_FOOTER_TXT"' EXIT
++hexdump -C "$IMG" | tail -11 | sed -n '/^*/,$p' > "$FMK_FOOTER_TXT"
+ # Get first line after *, most likely start of header, get hex address and convert to decimal
+-FOOTER_FIRST=$((16#$(head -2 footer.txt | tail -1 | awk '{print $1}')))
++FOOTER_FIRST=$((16#$(head -2 "$FMK_FOOTER_TXT" | tail -1 | awk '{print $1}')))
+ echo "$FOOTER_FIRST"
+ 
+ # Get last address, most likely end of header, get hex address and convert to decimal
+-FOOTER_LAST=$((16#$(tail -1 footer.txt)))
++FOOTER_LAST=$((16#$(tail -1 "$FMK_FOOTER_TXT")))
+ echo "$FOOTER_LAST"
+ 
+ FOOTER_SIZE=$(($FOOTER_LAST - $FOOTER_FIRST))
+--- a/footer.sh
++++ b/footer.sh
+@@ -16,14 +16,20 @@
+ FOOTER_SIZE=0
+ 
+ # Get Hex + ASCII output of image file, filter for header between preceding repeating lines which show up as * in terminal. Dump into footer.txt
+-hexdump -C "$IMG" | tail -11 | sed -n '/^*/,$p' > footer.txt
++# FMK is installed read-only in the Nix store and these scripts run with that
++# directory as their cwd, so ./footer.txt is not writable. Use a temp file:
++# without it FOOTER_SIZE silently stays 0 and the footer bytes get folded into
++# rootfs.img.
++FMK_FOOTER_TXT=$(mktemp -t fmk-footer.XXXXXX)
++trap 'rm -f "$FMK_FOOTER_TXT"' EXIT
++hexdump -C "$IMG" | tail -11 | sed -n '/^*/,$p' > "$FMK_FOOTER_TXT"
+ 
+ # Get first line after *, most likely start of header, get hex address and convert to decimal
+-FOOTER_FIRST=$((16#$(head -2 footer.txt | tail -1 | awk '{print $1}')))
++FOOTER_FIRST=$((16#$(head -2 "$FMK_FOOTER_TXT" | tail -1 | awk '{print $1}')))
+ echo "$FOOTER_FIRST"
+ 
+ # Get last address, most likely end of header, get hex address and convert to decimal
+-FOOTER_LAST=$((16#$(tail -1 footer.txt)))
++FOOTER_LAST=$((16#$(tail -1 "$FMK_FOOTER_TXT")))
+ echo "$FOOTER_LAST"
+ 
+ FOOTER_SIZE=$(($FOOTER_LAST - $FOOTER_FIRST))

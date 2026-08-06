@@ -62,6 +62,13 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ gnumake file makeWrapper ];
   buildInputs = [ zlib xz ];
 
+  # extract-firmware.sh / footer.sh dump a scratch hexdump into ./footer.txt
+  # while their cwd is the (read-only) install directory. Under the ctf-tools
+  # installer that directory was a writable checkout; in the store the write
+  # fails, FOOTER_SIZE stays 0, no footer.img is emitted and the footer bytes
+  # end up inside rootfs.img. Redirect the scratch file to $TMPDIR.
+  patches = [ ./footer-scratch-file.patch ];
+
   # Several of the bundled, decade-old C sources use `printf(var)` and similar,
   # which trips the default format-security hardening. Relax just that.
   hardeningDisable = [ "format" ];
@@ -79,6 +86,19 @@ stdenv.mkDerivation {
 
     # Mirror the ctf-tools installer: never attempt to sudo.
     sed -i 's/SUDO="sudo"/SUDO=""/' ./*.sh
+
+    # footer.sh is the only top-level script that sources shared-ng.inc without
+    # first cd'ing into its own directory, so the include silently fails and
+    # $FOOTER_IMAGE stays empty -- the `dd ... of=""` at the end then writes
+    # nothing. Resolve the include (and create the output directory) so a
+    # standalone `footer.sh <image>` actually produces fmk/image_parts/footer.img.
+    substituteInPlace footer.sh \
+      --replace-fail '. ./shared-ng.inc' \
+                     '. "$(dirname "$(readlink -f "$0")")/shared-ng.inc"'
+    substituteInPlace footer.sh \
+      --replace-fail 'dd if="''${IMG}" bs=1 skip=''${FOOTER_FIRST}' \
+                     'mkdir -p "''${IMAGE_PARTS}"
+	dd if="''${IMG}" bs=1 skip=''${FOOTER_FIRST}'
   '';
 
   buildPhase = ''
