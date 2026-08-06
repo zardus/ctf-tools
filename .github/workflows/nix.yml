@@ -1,9 +1,15 @@
 name: Nix build & cache
 
-# Builds our own tool derivations, pushes them to the `ctftools` Cachix cache,
-# and (on non-PR events) builds a per-tool Docker image that installs the tool
-# with Nix. nixpkgs passthroughs are already served by cache.nixos.org, so CI
-# only builds what's in `.#ciTargets`.
+# Builds our own tool derivations (`.#ciTargets`), pushes them to the `ctftools`
+# Cachix cache, and (on non-PR events) builds a per-tool Docker image that
+# installs the tool with Nix.
+#
+# The nixpkgs passthroughs (nix/passthrough.nix) are not rebuilt here —
+# cache.nixos.org already serves them — but they are not unchecked either: the
+# `tools` job forces every one of their drvPaths, which is what turns a nixpkgs
+# rename arriving via a flake.lock bump into a red build instead of a silently
+# broken documented tool. `.#default`, the env `nix profile install .` resolves
+# to, gets its own (real) build for the same reason.
 
 on:
   push:
@@ -33,6 +39,56 @@ jobs:
             echo "tools=$(nix eval --json .#ciTargets)"
             echo "toolchains=$(nix eval --json .#ciToolchainTargets)"
           } >> "$GITHUB_OUTPUT"
+      - name: nixpkgs passthroughs still resolve
+        # Seconds of evaluation, no build: cache.nixos.org already builds these,
+        # but nothing else here even *mentions* them, so a nixpkgs rename or
+        # removal would otherwise break `.#gdb`/`.#ropper`/... unnoticed. The
+        # failure is an eval error naming the attribute and its line in
+        # nix/passthrough.nix.
+        run: nix eval --raw .#ciPassthroughCheck.x86_64-linux
+
+  listcheck:
+    name: README tool table matches the flake
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - name: README <!--tool--> rows == .#readmeTargets
+        # The pre-nix `listcheck` job, restored. `.#readmeTargets` (every
+        # hand-written derivation plus every passthrough) is a flake output
+        # rather than a regex over the package list, so adding an output that
+        # isn't a tool — cross2-*, crosstool-ng-*, default — can't quietly turn
+        # this check into a no-op or a false failure.
+        run: |
+          diff <(grep -- '<!--tool-->' README.md | tr '[]' ' ' | awk '{print $4}' | LC_ALL=C sort) \
+               <(nix eval --raw .#readmeTargets \
+                   --apply 'ns: builtins.concatStringsSep "\n" ns' | LC_ALL=C sort)
+
+  default-profile:
+    name: build .#default (nix profile install .)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android \
+                      /opt/hostedtoolcache/CodeQL /usr/local/.ghcup || true
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+      - name: Build .#default
+        # The aggregate env `nix profile install .` resolves to, and the one
+        # target whose failure mode (a buildEnv collision) only appears when the
+        # env itself is built. No cachix push on this job: the env is a per-user
+        # symlink tree not worth caching, and its inputs come from
+        # cache.nixos.org — including unfree binaries we must not redistribute.
+        run: nix build -L .#default
 
   manage-tools:
     name: manage-tools (ubuntu)
@@ -55,13 +111,17 @@ jobs:
         run: ./bin/manage-tools search stego | grep -qi steg
       - name: install / list -i / uninstall round-trip
         run: |
-          before=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l || echo 0)
+          # No `|| echo 0` fallback: wc -l already prints 0 for a missing
+          # directory, and under the runner's default `bash -eo pipefail` ls's
+          # nonzero status propagates through the pipe, so the fallback would
+          # fire too and make this the two-line string "0\n0".
+          before=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l)
           ./bin/manage-tools install hash-identifier
           after=$(ls "$HOME/.nix-profile/bin" | wc -l)
           test "$after" -gt "$before"                       # something got installed
           ./bin/manage-tools list -i                        # must not error
           ./bin/manage-tools uninstall hash-identifier
-          final=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l || echo 0)
+          final=$(ls "$HOME/.nix-profile/bin" 2>/dev/null | wc -l)
           test "$final" -lt "$after"                         # ... and removed
 
   build:
@@ -171,3 +231,13 @@ jobs:
           push: true
           tags: |
             ctftools/${{ env.NAME }}:latest
+      - name: Tag the dated build (this is what the README badges show)
+        # README's `img.shields.io/docker/v/ctftools/<tool>?label=built` badges
+        # resolve to the most recently *pushed* tag, so with only `:latest` they
+        # all read "built: latest" instead of a date. Pushed as a second step,
+        # after `latest`: listing both in `tags:` above stamps them in the same
+        # push with no defined tie-break, and the badge could pick either.
+        run: |
+          docker buildx imagetools create \
+            -t "ctftools/${{ env.NAME }}:$(date +%Y-%m-%d)" \
+            "ctftools/${{ env.NAME }}:latest"

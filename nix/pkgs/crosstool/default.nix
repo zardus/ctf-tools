@@ -46,10 +46,11 @@
 #   * The top-level package IS the `ct-ng` driver (so `crosstool` still gives you
 #     `ct-ng`, and a wrapped ct-ng that can build toolchains at runtime).
 #   * `passthru.toolchains` is an attrset mapping every crosstool-NG sample
-#     (there are ~158; enumerated programmatically from the source tree, same as
-#     `ct-ng list-samples`) to its own independent toolchain derivation, built
-#     fully offline inside the Nix sandbox (see ./mk-toolchain.nix). Each is its
-#     own derivation on purpose: flake.nix surfaces them as top-level outputs
+#     (there are ~146, the same set `ct-ng list-samples` prints; the list is
+#     generated from the source tree into ./samples.nix) to its own independent
+#     toolchain derivation, built fully offline inside the Nix sandbox (see
+#     ./mk-toolchain.nix). Each is its own derivation on purpose: flake.nix
+#     surfaces them as top-level outputs
 #     `crosstool-ng-<sanitized-sample-name>` and adds them to the CI/Cachix build
 #     matrix, so every sample builds independently and one broken sample does not
 #     sink the rest.
@@ -85,13 +86,13 @@ let
              || (c >= "0" && c <= "9") || c == "_" || c == "-";
     in lib.concatStrings (map (c: if keep c then c else "-") chars);
 
-  # Enumerate every sample straight from the crosstool-NG source tree. The
-  # directory name under samples/ *is* the sample id accepted by `ct-ng <id>`.
-  # This yields all ~158 samples with no hand-maintained list.
-  sampleNames =
-    lib.attrNames
-      (lib.filterAttrs (_: type: type == "directory")
-        (builtins.readDir "${ctng.src}/samples"));
+  # Every sample of the pinned crosstool-NG release. This is the samples/
+  # directory listing of ctng.src, checked in by ./pin-samples.sh rather than
+  # read with `builtins.readDir "${ctng.src}/samples"`: reading it from the
+  # fetched source is an import-from-derivation, and `nix flake show` /
+  # `nix search` refuse IFD unconditionally, so merely *enumerating* the flake's
+  # outputs would fail for everyone. See ./samples.nix.
+  sampleNames = import ./samples.nix;
 
   # sanitized attr name -> toolchain derivation, for the full sample set.
   toolchains = lib.listToAttrs (map

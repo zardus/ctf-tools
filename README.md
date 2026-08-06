@@ -4,7 +4,7 @@ This is a Nix flake packaging various security research tools.
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
 The packages are checked every once in a while, so things should hopefully have a decent chance of working!
 
-The following tools are included. The first table lists tools packaged in this repo (under `nix/pkgs/`); the second lists tools re-exported from nixpkgs.
+The following tools are included. The first table lists tools packaged in this repo (under `nix/pkgs/`); the second lists tools taken from nixpkgs.
 
 ## NIX??????
 
@@ -17,22 +17,26 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 
 | Category | Tool | Description |
 |----------|------|-------------|
+| binary | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool-->
+| binary | [angr-management](http://angr.io) | A GUI reverse engineering and decompilation tool. | <!--tool-->
 | binary | [beef](https://github.com/beefproject/beef) | ![Last Build](https://img.shields.io/docker/v/ctftools/beef?label=built) Browser exploitation framework. | <!--tool-->
-| binary | [crosstool](http://crosstool-ng.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/crosstool?label=built) Cross-compilers and cross-architecture tools. | <!--tool--><!--no-test-->
-| binary | [cross2](http://kozos.jp/books/asm/asm.html) | ![Last Build](https://img.shields.io/docker/v/ctftools/cross2?label=built) A set of cross-compilation tools from a Japanese book on C. | <!--tool--><!--no-test-->
+| binary | [crosstool](http://crosstool-ng.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/crosstool?label=built) Cross-compilers and cross-architecture tools. | <!--tool-->
+| binary | [cross2](http://kozos.jp/books/asm/asm.html) | A set of cross-compilation tools from a Japanese book on C. | <!--tool-->
 | binary | [decomp2dbg](https://github.com/mahaloz/decomp2dbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/decomp2dbg?label=built)  A plugin to introduce interactive symbols into your debugger from your decompiler. | <!--tool-->
 | binary | [elfparser](https://github.com/mentebinaria/elfparser-ng) | ![Last Build](https://img.shields.io/docker/v/ctftools/elfparser?label=built) Multiplatform CLI and GUI tool to show information about ELF files. | <!--tool-->
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | ![Last Build](https://img.shields.io/docker/v/ctftools/evilize?label=built) Tool to create MD5 colliding binaries | <!--tool-->
-| binary | [ida](https://hex-rays.com/ida-free) | Decompilation and reversing tool (requires you to download it to ~/Downloads on your own!). | <!--tool--><!--no-test-->
+| binary | [ida](https://hex-rays.com/ida-free) | Decompilation and reversing tool (proprietary: you download it yourself — drop the Hex-Rays tarball in `~/Downloads`, or set `IDA_HOME` to an unpacked install). | <!--tool-->
+| binary | [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) | MCP server that drives IDA Pro (headless via idalib, or attached to a running IDA; set up with `ida --activate-idalib`). | <!--tool-->
 | binary | [manticore](https://github.com/trailofbits/manticore) | ![Last Build](https://img.shields.io/docker/v/ctftools/manticore?label=built) Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
-| binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for many architectures!). | <!--tool-->
+| binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for 64- and 32-bit x86). | <!--tool-->
 | binary | [pwndbg](https://github.com/pwndbg/pwndbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwndbg?label=built) Enhanced environment for gdb. Especially for pwning. | <!--tool-->
 | binary | [pwnsh](https://github.com/zardus/pwnsh) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwnsh?label=built) Useful shell scripts for assembly, exploitation, etc. | <!--tool-->
-| binary | [qira](http://qira.me) | ![Last Build](https://img.shields.io/docker/v/ctftools/qira?label=built) Parallel, timeless debugger. | <!--tool--><!--slow-test-->
+| binary | [qiling](https://github.com/qilingframework/qiling) | A dynamic binary instrumentation framework. Entry point is `qltool`. | <!--tool-->
+| binary | [qira](http://qira.me) | ![Last Build](https://img.shields.io/docker/v/ctftools/qira?label=built) Parallel, timeless debugger. | <!--tool-->
 | binary | [shellnoob](https://github.com/reyammer/shellnoob) | ![Last Build](https://img.shields.io/docker/v/ctftools/shellnoob?label=built) Shellcode writing helper. | <!--tool-->
-| binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | ![Last Build](https://img.shields.io/docker/v/ctftools/taintgrind?label=built) A valgrind taint analysis tool. | <!--tool--><!--failing-->
+| binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | ![Last Build](https://img.shields.io/docker/v/ctftools/taintgrind?label=built) A valgrind taint analysis tool. Builds and runs, but upstream's IR translator aborts on many binaries (`tnt_translate: expr2vbits_Unop`). | <!--tool-->
 | binary | [villoc](https://github.com/wapiflapi/villoc) | ![Last Build](https://img.shields.io/docker/v/ctftools/villoc?label=built) Visualization of heap operations. | <!--tool-->
-| binary | [xrop](https://github.com/acama/xrop) | ![Last Build](https://img.shields.io/docker/v/ctftools/xrop?label=built) Gadget finder. | <!--tool--><!--failing-->
+| binary | [xrop](https://github.com/acama/xrop) | ![Last Build](https://img.shields.io/docker/v/ctftools/xrop?label=built) Gadget finder. | <!--tool-->
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | ![Last Build](https://img.shields.io/docker/v/ctftools/firmware-mod-kit?label=built) Tools for firmware packing/unpacking. | <!--tool-->
 | forensics | [peepdf](https://github.com/cert-ee/peepdf) | ![Last Build](https://img.shields.io/docker/v/ctftools/peepdf?label=built) Powerful Python tool to analyze PDF documents. | <!--tool-->
 | forensics | [scrdec18](https://gist.github.com/bcse/1834878) | ![Last Build](https://img.shields.io/docker/v/ctftools/scrdec18?label=built) A decoder for encoded Windows Scripts. | <!--tool-->
@@ -43,13 +47,15 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | crypto | [foresight](https://github.com/ALSchwalm/foresight) | ![Last Build](https://img.shields.io/docker/v/ctftools/foresight?label=built) A tool for predicting the output of random number generators. To run, launch "foresee". | <!--tool-->
 | crypto | [featherduster](https://github.com/nccgroup/featherduster) | ![Last Build](https://img.shields.io/docker/v/ctftools/featherduster?label=built)  An automated, modular cryptanalysis tool. WARNING: needs python2 (which can be installed with ctf-tools). | <!--tool-->
 | crypto | [galois](http://web.eecs.utk.edu/~plank/plank/papers/CS-07-593) | ![Last Build](https://img.shields.io/docker/v/ctftools/galois?label=built) A fast galois field arithmetic library/toolkit. | <!--tool-->
-| crypto | [libc-database](https://github.com/niklasb/libc-database) | ![Last Build](https://img.shields.io/docker/v/ctftools/libc-database?label=built) Build a database of libc offsets to simplify exploitation. | <!--tool--><!--slow-test-->
+| crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool-->
+| crypto | [libc-database](https://github.com/niklasb/libc-database) | ![Last Build](https://img.shields.io/docker/v/ctftools/libc-database?label=built) Build a database of libc offsets to simplify exploitation. Ships the scripts only: run `libc-database-get all` once to populate the database. | <!--tool-->
 | crypto | [nonce-disrespect](https://github.com/nonce-disrespect/nonce-disrespect) | ![Last Build](https://img.shields.io/docker/v/ctftools/nonce-disrespect?label=built) Nonce-Disrespecting Adversaries: Practical Forgery Attacks on GCM in TLS. | <!--tool-->
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | ![Last Build](https://img.shields.io/docker/v/ctftools/pemcrack?label=built) SSL PEM file cracker. | <!--tool-->
 | crypto | [reveng](http://reveng.sourceforge.net/) | ![Last Build](https://img.shields.io/docker/v/ctftools/reveng?label=built) CRC finder. | <!--tool-->
 | crypto | [rsactftool](https://github.com/RsaCtfTool/RsaCtfTool) | ![Last Build](https://img.shields.io/docker/v/ctftools/rsactftool?label=built) RSA attack tool. | <!--tool-->
 | crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | ![Last Build](https://img.shields.io/docker/v/ctftools/ssh_decoder?label=built) A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. | <!--tool-->
 | crypto | [yafu](http://sourceforge.net/projects/yafu/) | ![Last Build](https://img.shields.io/docker/v/ctftools/yafu?label=built) Automated integer factorization. | <!--tool-->
+| web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool-->
 | web | [subbrute](https://github.com/TheRook/subbrute) | ![Last Build](https://img.shields.io/docker/v/ctftools/subbrute?label=built) A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool-->
 | web | [webgrep](https://github.com/dhondta/webgrep) | ![Last Build](https://img.shields.io/docker/v/ctftools/webgrep?label=built) `grep` for Web pages, with JS deobfuscation, CSS unminifying and OCR on images. | <!--tool-->
 | stego | [steganabara](http://www.caesum.com/handbook/stego.htm) | ![Last Build](https://img.shields.io/docker/v/ctftools/steganabara?label=built) Another image stenography solver. | <!--tool-->
@@ -67,18 +73,15 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| binary | [angr](http://angr.io) | Next-generation binary analysis engine from Shellphish. | <!--tool-->
-| binary | [angr-management](http://angr.io) | A GUI reverse engineering and decompilation tool. | <!--tool-->
 | binary | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | A set of utilities for working with ELF files. | <!--tool-->
-| binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool--><!--slow-test-->
+| binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool-->
 | binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool-->
 | binary | [ghidra](https://ghidra-sre.org/) | Open-source reverse engineering and decompilation tool. | <!--tool-->
 | binary | [honggfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool-->
 | binary | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> 
 | binary | [pwninit](https://github.com/io12/pwninit) | Script to automate starting pwning challenges. | <!--tool-->
 | binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool-->
-| binary | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool--><!--slow-test-->
-| binary | [qiling](https://github.com/qilingframework/qiling) | A dynamic binary instrumentation framework. | <!--tool-->
+| binary | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool-->
 | binary | [rappel](https://github.com/yrp604/rappel) | A linux-based assembly REPL. | <!--tool-->
 | binary | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool-->
 | binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool-->
@@ -86,13 +89,11 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [valgrind](http://valgrind.org) | A Dynamic Binary Instrumentation framework with some built-in tools. | <!--tool-->
 | forensics | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool-->
 | forensics | [volatility3](https://github.com/volatilityfoundation/volatility3) | Analyzer for system memory dumps (latest version). | <!--tool-->
-| crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool-->
 | crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. | <!--tool-->
 | crypto | [msieve](http://sourceforge.net/projects/msieve/) | Msieve is a C library implementing a suite of algorithms to factor large integers. | <!--tool-->
 | crypto | [pkcrack](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) | PkZip encryption cracker. | <!--tool-->
 | crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. | <!--tool-->
 | crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool-->
-| web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool--><!--failing-->
 | web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool-->
 | web | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool-->
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool-->
@@ -138,17 +139,18 @@ expose one output per target instead of one output overall. Install only the
 target you need — each is an independent package.
 
 **`crosstool`** is the [crosstool-NG](https://crosstool-ng.github.io/) `ct-ng`
-driver. Installing `crosstool` gives you `ct-ng` itself, ready to build your own
-toolchain from a config:
+driver, and *only* the driver — unlike the old shell tool, it puts no cross
+compilers on your PATH. Installing `crosstool` gives you `ct-ng` itself, ready
+to build your own toolchain from a config:
 
 ```bash
 nix profile install github:zardus/ctf-tools#crosstool
 ct-ng list-samples
 ```
 
-Every crosstool-NG sample is *also* prebuilt as its own output, named
-`crosstool-ng-<sample>`, so you can install a ready-made toolchain instead of
-spending an hour building one:
+The compilers themselves are separate outputs: 77 of crosstool-NG's 146 samples
+are prebuilt as `crosstool-ng-<sample>`, so you can install a ready-made
+toolchain (say, `arm-none-eabi-gcc`) instead of spending an hour building one:
 
 ```bash
 # a bare-metal ARM toolchain: arm-none-eabi-gcc, -gdb, -objdump, ...
@@ -157,8 +159,8 @@ nix profile install github:zardus/ctf-tools#crosstool-ng-arm-none-eabi
 # a full Linux/glibc cross toolchain, with sysroot
 nix profile install github:zardus/ctf-tools#crosstool-ng-aarch64-unknown-linux-musl
 
-# see all of them (77 samples: bare-metal newlib/picolibc plus
-# Linux glibc/uClibc/musl, and the mingw-w64 Windows targets)
+# see all of them (bare-metal newlib/picolibc plus Linux
+# glibc/uClibc/musl, and the mingw-w64 Windows targets)
 nix flake show github:zardus/ctf-tools | grep crosstool-ng-
 ```
 
@@ -166,9 +168,16 @@ The sample name is the crosstool-NG sample id with any character outside
 `[a-zA-Z0-9_-]` replaced by `-` (so `x86_64-ubuntu16.04-linux-gnu` becomes
 `crosstool-ng-x86_64-ubuntu16-04-linux-gnu`).
 
+The other 69 samples that `ct-ng list-samples` prints have no
+`crosstool-ng-*` output — build them yourself with `ct-ng <sample> && ct-ng
+build`, or pin one as a flake output by running
+`nix/pkgs/crosstool/pin-samples.sh` and folding the hash it prints into
+`nix/pkgs/crosstool/hashes.nix` (anything in there is surfaced automatically).
+
 **`cross2`** is the companion toolchain set for the
 [kozos.jp assembly book](https://kozos.jp/books/asm/) — binutils 2.21.1 +
-gcc 3.4.6 + newlib 1.20.0 (+ gdb 7.3.1 where it still builds), for 34
+gcc 3.4.6 + newlib 1.20.0 (+ gdb 7.3.1 where it still builds, or just its CPU
+simulator, `<target>-run`, where it does not), for 34
 mostly-retro bare-metal targets. Installing `cross2` gives you the book's six
 "major architecture" toolchains (arm, h8300, i386, mips, powerpc, sh); the other
 targets are individual `cross2-<target>` outputs:

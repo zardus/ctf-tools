@@ -11,6 +11,7 @@
 , callPackage
 , bubblewrap
 , coreutils
+, gnugrep
 , gnutar
 , gzip
 , xz
@@ -160,12 +161,23 @@ let
           [ -x "$b" ] && { echo "$b"; return 0; }
         done
       done
-      # 4. ida/ida64 already on PATH (but not this very wrapper)
-      for name in ida64 ida; do
-        p=$(command -v "$name" 2>/dev/null || true)
-        if [ -n "$p" ] && [ "$(readlink -f "$p")" != "$(readlink -f "$0")" ]; then
+      # 4. ida/ida64 already on PATH — but never this package's own `ida`, which
+      #    is on $PATH whenever ctf-tools is installed and would make us exec
+      #    ourselves forever. Its store path cannot be named here (the
+      #    dispatcher already refers to this script, so the reference would be
+      #    circular), so it is recognized by a marker string instead. $PATH is
+      #    walked by hand rather than with `command -v` because our own `ida`
+      #    usually comes first and would otherwise hide a real one behind it.
+      local path_dirs dir
+      IFS=: read -ra path_dirs <<< "$PATH"
+      for dir in "''${path_dirs[@]}"; do
+        for name in ida64 ida; do
+          [ -x "$dir/$name" ] || continue
+          p=$(readlink -f "$dir/$name")
+          [ "$p" = "$(readlink -f "$0")" ] && continue
+          ${gnugrep}/bin/grep -qs ctf-tools-ida-entry-point "$p" && continue
           echo "$p"; return 0
-        fi
+        done
       done
       # 5./6. ~/Downloads tarball, unpacked into the cache
       find_unpacked || unpack_downloads
@@ -231,6 +243,15 @@ let
       exit $?
     fi
 
+    # ida-native hands us its library path here instead of exporting it itself:
+    # it puts the *host's* lib dirs first, and a store binary run under that
+    # (the tar/grep/python above) picks up mismatched host libraries. So it is
+    # applied to the vendor binary only, on the way out.
+    if [ -n "''${CTF_TOOLS_IDA_LIBS:-}" ]; then
+      export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$CTF_TOOLS_IDA_LIBS"
+      unset CTF_TOOLS_IDA_LIBS
+    fi
+
     exec "$IDA_BIN" "$@"
   '';
 
@@ -252,7 +273,7 @@ let
              /lib/$(uname -m)-linux-gnu /lib64 /lib; do
       [ -d "$d" ] && host_libs="''${host_libs:+$host_libs:}$d"
     done
-    export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}''${host_libs:+$host_libs:}${libPath}"
+    export CTF_TOOLS_IDA_LIBS="''${host_libs:+$host_libs:}${libPath}"
 
     # No FHS loader means NixOS (or similar): the vendor binary's PT_INTERP does
     # not exist and only the sandbox can run it, so say that instead of letting
@@ -267,6 +288,8 @@ let
   '';
 
   dispatcher = writeShellScriptBin "ida" ''
+    # ctf-tools-ida-entry-point -- marker read by find_ida's $PATH probe; see
+    # the launcher above. Do not remove.
     case "''${CTF_TOOLS_IDA_MODE:-auto}" in
       fhs)    exec ${fhs}/bin/ida-fhs "$@" ;;
       native) exec ${native}/bin/ida-native "$@" ;;

@@ -11,9 +11,11 @@
   };
 
   # Binary cache (the Nix-native replacement for pushing Docker images): CI
-  # builds every tool and pushes the results to Cachix, so users download
-  # prebuilt store paths instead of compiling. Trusted users pick this up
-  # automatically; others run `cachix use ctftools` or pass
+  # builds this repo's own tool derivations (`.#ciTargets`) and the toolchain
+  # fleet (`.#ciToolchainTargets`) and pushes the results to Cachix, so users
+  # download prebuilt store paths instead of compiling. The nixpkgs passthroughs
+  # are not rebuilt here — they come from cache.nixos.org. Trusted users pick
+  # this up automatically; others run `cachix use ctftools` or pass
   # --accept-flake-config once.
   nixConfig = {
     extra-substituters = [ "https://ctftools.cachix.org" ];
@@ -30,7 +32,10 @@
           pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = true;   # ida, ghidra, burpsuite, tor-browser, ...
-            config.allowBroken = true;   # some upstreams flap in nixpkgs (e.g. qiling)
+            # No allowBroken: it was here for nixpkgs' `qiling`, which we now
+            # build ourselves (nix/pkgs/qiling). Leaving it on would hide the
+            # next upstream breakage, which is precisely the signal CI's
+            # passthrough check exists to keep.
           };
           # Python-2 package set. python27 is EOL/insecure, so allow it explicitly.
           pkgsPy2 = import nixpkgs-py2 {
@@ -45,11 +50,34 @@
         (lib.filterAttrs (_: t: t == "directory") (builtins.readDir pkgDir));
 
       # Tools CI builds and pushes to Cachix. We only cache our *own* derivations
-      # (the ~31 nixpkgs passthroughs are already served by cache.nixos.org).
+      # (the nixpkgs passthroughs are already served by cache.nixos.org; CI just
+      # checks that they still evaluate, see ciPassthroughCheck).
+      #
       # cross2's `cross2` bundle is a symlink aggregate; the real work is its
       # per-target cross2-<target> derivations, which build in the toolchains
       # matrix (not the light per-tool build). Keep the bundle out of ciTargets.
-      ciExclude = [ "cross2" ];
+      #
+      # burpsuite is excluded for a different reason: it is a ~700 MB unfree
+      # PortSwigger download whose meta.license has redistributable = false, and
+      # everything the build job builds is pushed to the *public* ctftools cache.
+      ciExclude = [ "cross2" "burpsuite" ];
+
+      # Attribute names of the nixpkgs passthroughs. Only the names are needed
+      # here and they don't depend on the package set (every value in that file
+      # is a lazy thunk that attrNames never forces), so an empty `pkgs` is
+      # enough — which keeps this usable from the system-independent outputs.
+      passthroughNames =
+        builtins.attrNames (import ./nix/passthrough.nix { pkgs = { }; });
+
+      # What goes into the `default` aggregate profile (see `packages.default`):
+      # the passthroughs, plus the tools that were passthroughs until they grew a
+      # local derivation, minus the ones too big/unfree to install by default.
+      # The lists are filtered against what actually exists, so moving a tool
+      # between nix/passthrough.nix and nix/pkgs/ can't turn either into an
+      # eval error.
+      defaultNames = lib.subtractLists [ "angr" "angr-management" "burpsuite" ]
+        (lib.unique (passthroughNames
+                     ++ lib.intersectLists [ "hashpump-partialhash" "qiling" ] customNames));
 
       # The heavy toolchain builds get their own CI matrix (each is a
       # gcc+libc-from-source build): every cross2 target plus every pinned
@@ -67,6 +95,19 @@
         (map (t: "cross2-${t}") cross2Targets)
         ++ map (n: "crosstool-ng-${n}")
              (lib.subtractLists ctBrokenBuild (builtins.attrNames ctHashes));
+
+      # The tools the README's `<!--tool-->` table is supposed to list: one row
+      # per installable tool, i.e. every hand-written derivation plus every
+      # nixpkgs passthrough — but not the per-target `cross2-*`/`crosstool-ng-*`
+      # outputs or the `default` aggregate. CI diffs the table against this
+      # (see the listcheck job), so the two can't drift apart unnoticed.
+      readmeTargets = lib.sort (a: b: a < b) (lib.unique (customNames ++ passthroughNames));
+
+      # The tools taken straight from nixpkgs. Not a build matrix — CI checks
+      # them with ciPassthroughCheck below — but having the list as an output
+      # means "which tools are passthroughs?" is answerable without reading
+      # nix/passthrough.nix (PORTING.md quotes this set).
+      ciPassthroughTargets = passthroughNames;
 
       packages = forAll ({ pkgs, pkgsPy2, ... }:
         let
@@ -92,13 +133,31 @@
             (custom.cross2.targets or { });
           all = passthrough // custom // crosstoolSamples // cross2Samples;
         in all // {
-          # `nix profile install .` — the reliably-building nixpkgs-backed set,
-          # collisions tolerated (many tools ship their own gdb/python/etc).
+          # `nix profile install .` — the general-purpose profile: the
+          # nixpkgs-backed set, plus the two tools that used to be passthroughs
+          # (and so used to be in this profile) before they grew a local
+          # derivation. Names are resolved through `all`, so a tool we have
+          # since taken over resolves to our derivation, not to nixpkgs'.
+          # Collisions tolerated (many tools ship their own gdb/python/etc).
+          #
+          # Deliberately left out — install them individually with
+          # `nix profile install .#<tool>`: burpsuite (a ~700 MB unfree jar) and
+          # angr/angr-management (~1 h of uncached source builds); nobody wants
+          # either of those pulled in by a bare `nix profile install .`.
           default = pkgs.buildEnv {
             name = "ctf-tools";
-            paths = builtins.attrValues (removeAttrs passthrough [ "qiling" ]);
+            paths = builtins.attrValues (lib.getAttrs defaultNames all);
             ignoreCollisions = true;
           };
         });
+
+      # Evaluation-only CI guard for the passthroughs: forcing this string
+      # forces every passthrough's drvPath, so `pkgs.<foo>` disappearing from
+      # nixpkgs fails CI with an error naming the attribute instead of shipping
+      # a broken `.#<tool>` silently. Deliberately not a build — cache.nixos.org
+      # already covers building these.
+      ciPassthroughCheck = forAll ({ pkgs, ... }:
+        lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "${n} ${v.drvPath}")
+          (import ./nix/passthrough.nix { inherit pkgs; })));
     };
 }

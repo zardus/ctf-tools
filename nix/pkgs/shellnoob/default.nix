@@ -4,6 +4,7 @@
 , python3
 , makeWrapper
 , binutils
+, coreutils
 , gcc
 , gcc_multi
 , gdb
@@ -15,7 +16,9 @@
 # no third-party Python packages. It shells out to the assembler/objdump for
 # asm<->opcode, to gcc for anything producing an executable (--to-exe from
 # any input format, and --to-gdb via c_to_exe), and to gdb for --to-gdb, so
-# all three go on the wrapper's PATH.
+# all three go on the wrapper's PATH. coreutils joins them because
+# get_objdump_options() shells out to `uname` before any conversion runs;
+# without it the wrapper only works when the caller's PATH already has one.
 
 let
   # shellnoob's default target on x86_64 is 32-bit (`gcc -m32`), which needs a
@@ -55,7 +58,7 @@ stdenvNoCC.mkDerivation {
 
     makeWrapper ${python3}/bin/python3 $out/bin/shellnoob \
       --add-flags $out/libexec/shellnoob/shellnoob.py \
-      --prefix PATH : ${lib.makeBinPath [ binutils cc gdb ]}
+      --prefix PATH : ${lib.makeBinPath [ binutils cc gdb coreutils ]}
 
     # Preserve the original binary name used by the ctf-tools installer.
     ln -s shellnoob $out/bin/shellnoob.py

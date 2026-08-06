@@ -134,7 +134,10 @@ function do_setup()
 	mkdir -p "$(dirname "$conf")"; touch "$conf"
 
 	# 2. Enable flakes + the unified CLI if not already active.
-	if nix show-config 2>/dev/null | grep -qE '^experimental-features.*flakes'; then
+	# `nix config show` on anything current; `nix show-config` is the
+	# deprecated alias, kept as a fallback for older Nix.
+	if { nix config show 2>/dev/null || nix show-config 2>/dev/null; } \
+		| grep -qE '^experimental-features.*flakes'; then
 		TOOL=setup tool_log "flakes already enabled"
 	elif grep -qE '^experimental-features' "$conf"; then
 		TOOL=setup tool_log "add 'nix-command flakes' to experimental-features in $conf"

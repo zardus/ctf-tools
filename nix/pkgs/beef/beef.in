@@ -16,9 +16,9 @@ state="${BEEF_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/beef}"
 
 # Guard on the entry point rather than the directory, so an interrupted first
 # run re-seeds instead of leaving a half-copied tree.
-# Absolute coreutils paths: this launcher runs before any of the user's
-# environment is known to be sane (desktop launchers can start it with an
-# empty PATH), and the seeding step must not silently fail.
+#
+# coreutils is spelled out absolutely to match df's launcher: wrapProgram only
+# prepends espeak to PATH, so an otherwise-empty PATH would break seeding.
 if [ ! -e "$state/beef" ]; then
     @coreutils@/bin/mkdir -p "$state"
     @coreutils@/bin/cp -R @out@/share/beef/. "$state"/

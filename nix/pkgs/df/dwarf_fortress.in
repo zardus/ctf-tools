@@ -18,9 +18,10 @@ state="${DF_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/dwarf-fortress}"
 
 # Guard on the binary rather than the directory, so an interrupted first
 # run re-seeds instead of leaving a half-copied game.
-# Absolute coreutils paths: this launcher runs before any of the user's
-# environment is known to be sane (desktop launchers can start it with an
-# empty PATH), and the seeding step must not silently fail.
+#
+# coreutils is spelled out absolutely because nothing sets PATH for this
+# launcher — there is no makeWrapper in front of it, and a desktop entry can
+# start it with PATH unset.
 if [ ! -e "$state/dwarfort" ]; then
     @coreutils@/bin/mkdir -p "$state"
     @coreutils@/bin/cp -R @out@/libexec/df/. "$state"/
