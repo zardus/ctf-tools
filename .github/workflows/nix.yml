@@ -18,6 +18,16 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+# One run per ref. This workflow fans out to ~213 jobs (a build per tool, plus
+# the cross2 and crosstool-ng toolchain matrices), so without this a burst of
+# pushes leaves several full runs competing for the same runner pool and
+# everything sits queued for hours. Superseded runs are cancelled: their results
+# describe a tree that is no longer the tip, and anything they had already built
+# is in Cachix, so the replacement run substitutes it instead of rebuilding.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tools:
     name: Enumerate CI targets
