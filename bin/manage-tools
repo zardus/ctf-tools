@@ -147,7 +147,6 @@ function do_setup()
 	fi
 
 	# 3. Configure the ctftools binary cache so installs download prebuilt.
-	#    Prefer cachix (it also sorts out trusted-users on daemon installs).
 	if command -v cachix >/dev/null 2>&1; then
 		cachix use ctftools && TOOL=setup tool_log "configured ctftools cache via cachix"
 	elif grep -q 'ctftools.cachix.org' "$conf"; then
@@ -158,8 +157,41 @@ function do_setup()
 			echo "extra-trusted-public-keys = $CACHE_KEY"
 		} >> "$conf"
 		TOOL=setup tool_log "added ctftools cache to $conf"
-		TOOL=setup tool_log "(on a multi-user/daemon install this only applies if you're a trusted-user;"
-		TOOL=setup tool_log " otherwise install cachix and run 'cachix use ctftools', or pass --accept-flake-config)"
+	fi
+
+	# 3b. ... and check that Nix will actually honour it. `substituters` is a
+	#     restricted setting: on a multi-user (daemon) install the daemon
+	#     ignores it from anyone not in trusted-users, so the config written
+	#     above is silently inert and every install compiles from source. Ask
+	#     the daemon whether it trusts us -- that is a fact it reports, unlike
+	#     the "ignoring untrusted substituter" warning, which only shows up on
+	#     commands that actually reach for a substituter.
+	local trusted
+	trusted=$( { nix_cmd store info --json 2>/dev/null || nix_cmd store ping --json 2>/dev/null; } \
+		| tr -d ' ' | grep -o '"trusted":[a-z0-9]*' | cut -d: -f2 )
+	if [ "$trusted" = "false" ] || [ "$trusted" = "0" ]; then
+		TOOL=setup tool_log "WARNING: the Nix daemon is ignoring the ctftools cache -- you are not a"
+		TOOL=setup tool_log "         trusted user, so everything would build from source."
+		# Printed bare, without the log prefix, so it can be pasted as-is.
+		cat >&2 <<-END
+
+		  Fix with either of these, then restart the daemon:
+
+		  # (a) give the cache to everyone on this machine (grants no privilege)
+		  sudo tee -a /etc/nix/nix.conf <<'EOF'
+		  extra-substituters = $CACHE_URL
+		  extra-trusted-public-keys = $CACHE_KEY
+		  EOF
+
+		  # (b) or trust yourself, making your own nix.conf effective for everything
+		  echo 'extra-trusted-users = $USER' | sudo tee -a /etc/nix/nix.conf
+
+		  sudo systemctl restart nix-daemon
+		  # macOS: sudo launchctl kickstart -k system/org.nixos.nix-daemon
+
+		END
+	elif [ "$trusted" = "true" ] || [ "$trusted" = "1" ]; then
+		TOOL=setup tool_log "ctftools cache is active (prebuilt tools will be downloaded, not built)"
 	fi
 
 	# 4. PATH sanity.

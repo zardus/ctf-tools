@@ -37,19 +37,23 @@
 #   export IDA_HOME=$HOME/ida-pro-9.3
 #
 # There are two ways to actually launch it, because neither works everywhere:
-#   ida-fhs     runs IDA inside an FHS sandbox (buildFHSEnv/bubblewrap) that
-#               supplies the shared libraries it links against. Required on
-#               NixOS, where the vendor binary's ELF interpreter (/lib64/...)
-#               does not exist at all. Needs unprivileged user namespaces.
 #   ida-native  plain exec, no namespaces, with our libraries behind the host's
-#               on LD_LIBRARY_PATH. Works on ordinary FHS distros, which is the
-#               class of host where bubblewrap is blocked (Ubuntu 24.04+ sets
-#               kernel.apparmor_restrict_unprivileged_userns=1, and the store's
-#               bwrap is neither setuid nor covered by the distro AppArmor
-#               profile, so it dies with "setting up uid map: Permission
-#               denied" before the launcher can print anything of its own).
-# `ida` is a dispatcher that probes for a usable user namespace and picks one;
-# force either with CTF_TOOLS_IDA_MODE=fhs|native.
+#               on LD_LIBRARY_PATH. This is the default, and it is what the
+#               pre-nix ida/install effectively did. On an ordinary FHS distro
+#               the vendor binary just runs, and it sees the host's fonts, icon
+#               themes and GPU drivers rather than the sandbox's necessarily
+#               partial copies of them.
+#   ida-fhs     runs IDA inside an FHS sandbox (buildFHSEnv/bubblewrap) that
+#               supplies the shared libraries it links against. This is for
+#               hosts where the binary cannot exec at all: NixOS has no
+#               /lib64/ld-linux-*.so.*, the ELF interpreter every Hex-Rays
+#               build hardcodes. Needs unprivileged user namespaces, which
+#               Ubuntu 24.04+ denies to the store's bwrap
+#               (kernel.apparmor_restrict_unprivileged_userns=1) -- another
+#               reason not to route FHS distros through it.
+# `ida` is a dispatcher: it uses ida-native wherever the host provides that ELF
+# interpreter, and the sandbox only where it does not. Force either with
+# CTF_TOOLS_IDA_MODE=fhs|native.
 
 let
   idaProMcp = callPackage ../ida-pro-mcp { };
@@ -329,18 +333,27 @@ let
       native) exec ${native}/bin/ida-native "$@" ;;
     esac
 
-    # Probe with the same bwrap buildFHSEnv uses; on a host that blocks
-    # unprivileged user namespaces this fails the same way the FHS env would,
-    # except here we get to say why.
+    # Does the host provide the ELF interpreter the vendor binary asks for? On
+    # any ordinary distro it does, and then plain exec is the better path: it
+    # inherits the host's fonts, icon themes and GPU drivers, none of which the
+    # sandbox can reproduce completely. The sandbox is for hosts (NixOS) where
+    # this file does not exist and the binary therefore cannot start at all.
+    for ldso in /lib64/ld-linux-x86-64.so.2 /lib/ld-linux-aarch64.so.1; do
+      [ -e "$ldso" ] && exec ${native}/bin/ida-native "$@"
+    done
+
+    # No host loader. The FHS sandbox is the only thing that can run IDA here,
+    # so probe with the same bwrap buildFHSEnv uses -- if that is blocked too,
+    # say so plainly instead of failing inside bwrap with a bare uid-map error.
     if ${bubblewrap}/bin/bwrap --unshare-user --ro-bind / / ${coreutils}/bin/true >/dev/null 2>&1; then
       exec ${fhs}/bin/ida-fhs "$@"
     fi
 
-    echo "ida: bubblewrap cannot create a user namespace here; running IDA without the FHS sandbox." >&2
-    echo "     On Ubuntu 24.04+ this is kernel.apparmor_restrict_unprivileged_userns=1; to get the" >&2
-    echo "     sandbox back, 'sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0' or add" >&2
-    echo "     an AppArmor profile allowing userns for /nix/store/*/bin/bwrap. Silence this with" >&2
-    echo "     CTF_TOOLS_IDA_MODE=native." >&2
+    echo "ida: this host has no /lib64/ld-linux-x86-64.so.2, so IDA's own binary cannot exec," >&2
+    echo "     and bubblewrap cannot create a user namespace, so the FHS sandbox that would" >&2
+    echo "     supply one is unavailable too. Allow unprivileged user namespaces (on Ubuntu" >&2
+    echo "     24.04+: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0), or run" >&2
+    echo "     IDA through your own FHS environment. Trying the plain path anyway:" >&2
     exec ${native}/bin/ida-native "$@"
   '';
 in
@@ -354,10 +367,10 @@ symlinkJoin {
     longDescription = ''
       IDA Pro is nonfree, user-supplied software that cannot be bundled in Nix.
       This package provides an `ida` command that runs your existing IDA
-      install, either inside an FHS sandbox containing the shared libraries it
-      needs (`ida-fhs`, required on NixOS) or directly with those libraries on
-      LD_LIBRARY_PATH (`ida-native`, for hosts where unprivileged user
-      namespaces are blocked). `ida` picks between them automatically;
+      install: normally by plain exec with the libraries it needs on
+      LD_LIBRARY_PATH (`ida-native`), and on hosts with no
+      /lib64/ld-linux-*.so.* -- NixOS -- inside an FHS sandbox that supplies
+      that interpreter (`ida-fhs`). `ida` picks between them automatically;
       CTF_TOOLS_IDA_MODE=fhs|native overrides.
 
       Point it at your install with the IDA_HOME environment variable, e.g.
