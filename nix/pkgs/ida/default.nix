@@ -184,7 +184,20 @@ let
       mkdir -p "$dest.tmp" || return 1
       PATH="$unpack_path" tar xf "$tarball" -C "$dest.tmp" || { rm -rf "$dest.tmp"; return 1; }
       mv "$dest.tmp" "$dest" || return 1
-      find_unpacked || { unpacked_but_unusable; return 1; }
+      local bin
+      bin=$(find_unpacked) || { unpacked_but_unusable; return 1; }
+
+      # Pre-nix, ida/install activated idalib immediately after unpacking, so
+      # `idalib-mcp` worked without a second command. Same here, once, on the
+      # unpack path only. Best effort: IDA Free ships no idalib and pip may be
+      # offline, and neither is a reason to stop IDA from starting. stdout is
+      # routed to stderr because this whole path runs inside $(find_ida), whose
+      # stdout is the binary path.
+      if ! activate_idalib "$bin" >&2; then
+        echo "ida: idalib was not activated -- 'idalib-mcp' will not be able to load a" >&2
+        echo "     binary until you run 'ida --activate-idalib'. Starting IDA anyway." >&2
+      fi
+      echo "$bin"
     }
 
     find_ida() {
@@ -229,9 +242,13 @@ let
     # bindings into whatever environment runs it, so it needs a writable one —
     # a store python never is, hence the venv. Explicit and idempotent (stamped
     # with what it was activated against) rather than implicit on every start.
+    # activate_idalib [--force] [ida-binary]   (binary defaults to $IDA_BIN,
+    # which is not set yet when the first-run unpack path calls this)
     activate_idalib() {
-      local ida_dir script venv stamp want w n
-      ida_dir=$(dirname "$IDA_BIN")
+      local force="" bin ida_dir script venv stamp want w n
+      [ "''${1:-}" = "--force" ] && { force=1; shift; }
+      bin="''${1:-$IDA_BIN}"
+      ida_dir=$(dirname "$bin")
       script="$ida_dir/idalib/python/py-activate-idalib.py"
       if [ ! -f "$script" ]; then
         echo "ida: $script not found." >&2
@@ -241,7 +258,7 @@ let
       venv="$state/idalib-venv"
       stamp="$venv/.ctf-tools-activated"
       want="$ida_dir ${idalibPython} ${idaProMcp}"
-      if [ "''${1:-}" != "--force" ] && [ -x "$venv/bin/python" ] \
+      if [ -z "$force" ] && [ -x "$venv/bin/python" ] \
          && [ "$(cat "$stamp" 2>/dev/null)" = "$want" ]; then
         echo "ida: idalib already activated for $ida_dir" >&2
         echo "     ($venv, re-run with --force to redo)" >&2
@@ -264,7 +281,7 @@ let
       done
       echo "$want" > "$stamp"
       echo "ida: idalib activated for $ida_dir" >&2
-      echo "     headless MCP server: $venv/bin/idalib-mcp /path/to/binary" >&2
+      echo "     headless MCP server: idalib-mcp /path/to/binary (uses $venv)" >&2
       echo "     IDA-plugin MCP server: ${idaProMcp}/bin/ida-pro-mcp --install" >&2
     }
 

@@ -69,22 +69,30 @@ All build and, where they produce a CLI, were run to confirm they work.
   IDA install, located via `IDA_HOME=/path/to/ida`, else `~/.idapro`, `~/ida*`,
   an `ida` already on `$PATH`, or a `~/Downloads/{ida,IDA}*.tar.?z` tarball it
   unpacks into `~/.cache/ctf-tools/ida` on first run (the pre-nix drop-in
-  contract). `ida` dispatches between two launch modes: `ida-fhs`
-  (`buildFHSEnv`/bubblewrap, required on NixOS, needs unprivileged user
-  namespaces) and `ida-native` (plain exec with the same libraries behind the
-  host's on `LD_LIBRARY_PATH`). It probes for a usable user namespace and falls
-  back to native with a one-line hint on hosts that block them (Ubuntu 24.04+
-  defaults to `kernel.apparmor_restrict_unprivileged_userns=1`, which affects
-  *every* bwrap-based package here); force either mode with
-  `CTF_TOOLS_IDA_MODE=fhs|native`. `ida --activate-idalib [--force]` reproduces
-  the pre-nix `py-activate-idalib.py` step into a venv under
-  `~/.local/share/ctf-tools/ida` — explicit and idempotent, not implicit on
-  every start.
-- **ida-pro-mcp** — the MCP server the pre-nix `ida/install` cloned, now its own
-  output (`ida-pro-mcp --install` for the IDA plugin + MCP clients,
-  `idalib-mcp` for headless). The `idapro` binding it needs for headless mode
-  only exists inside a licensed IDA install and comes from
-  `ida --activate-idalib`.
+  contract). `ida` dispatches between two launch modes: `ida-native` (plain
+  exec with the libraries it needs behind the host's on `LD_LIBRARY_PATH`) and
+  `ida-fhs` (`buildFHSEnv`/bubblewrap). It picks native wherever the host
+  provides the ELF interpreter the vendor binary asks for
+  (`/lib64/ld-linux-x86-64.so.2`), which is everywhere except NixOS — the
+  sandbox exists for hosts where the binary cannot exec at all, and it can only
+  ever approximate the host's fonts, icon themes and GPU drivers. Note the
+  sandbox also needs unprivileged user namespaces, which Ubuntu 24.04+ denies
+  to the store's bwrap (`kernel.apparmor_restrict_unprivileged_userns=1`,
+  affecting *every* bwrap-based package here). Force either mode with
+  `CTF_TOOLS_IDA_MODE=fhs|native`.
+
+  `ida --activate-idalib [--force]` reproduces the pre-nix
+  `py-activate-idalib.py` step into a venv under
+  `~/.local/share/ctf-tools/ida`. It also runs by itself, once, right after the
+  first-run `~/Downloads` unpack — as the pre-nix installer did — and is
+  best-effort there: IDA Free ships no idalib, and that must not stop IDA from
+  starting.
+- **ida-pro-mcp** — the MCP server the pre-nix `ida/install` cloned. It is its
+  own output *and* is joined into `ida`, because pre-nix it came with IDA
+  (`ida-pro-mcp --install` for the IDA plugin + MCP clients, `idalib-mcp` for
+  headless). The `idapro` binding headless mode needs only exists inside a
+  licensed IDA install, so the `idalib-mcp` on `PATH` hands off to the
+  activation venv's copy when there is one, and otherwise says what to run.
 - **cross2** — the 2006-era `binutils-2.21.1` + `gcc-3.4.6` + `newlib-1.20.0`
   toolchain, built from pinned sources (upstream book patches vendored under
   `nix/pkgs/cross2/patch/`).
