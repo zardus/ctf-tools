@@ -65,24 +65,26 @@ let
     libglvnd
     libGL
     mesa
-    # Qt xcb platform plugin dependencies
-    xorg.libX11
-    xorg.libXext
-    xorg.libXrender
-    xorg.libXi
-    xorg.libXfixes
-    xorg.libXrandr
-    xorg.libXcursor
-    xorg.libXcomposite
-    xorg.libXdamage
-    xorg.libXtst
-    xorg.libxcb
-    xorg.xcbutil
-    xorg.xcbutilimage
-    xorg.xcbutilkeysyms
-    xorg.xcbutilrenderutil
-    xorg.xcbutilwm
-    xorg.xcbutilcursor
+    # Qt xcb platform plugin dependencies. Top-level names, not the `xorg.*`
+    # set: nixpkgs deprecated that set and warns once per attribute, which
+    # buried every `nix build .#ida` under 21 lines of rename notices.
+    libx11
+    libxext
+    libxrender
+    libxi
+    libxfixes
+    libxrandr
+    libxcursor
+    libxcomposite
+    libxdamage
+    libxtst
+    libxcb
+    libxcb-util
+    libxcb-image
+    libxcb-keysyms
+    libxcb-render-util
+    libxcb-wm
+    libxcb-cursor
     libxkbcommon
     xkeyboardconfig
     # core graphics/text stack
