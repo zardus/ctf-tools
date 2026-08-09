@@ -108,6 +108,10 @@ let
     # a Python for idalib/idapyswitch (IDA 9.x links libpython3.x)
     python3
     python3.pkgs.pip
+    # IDA's IDAPython bindings (_ida_idaapi.so) link libcrypt.so.1, the
+    # pre-4.4 libxcrypt soname that most distros no longer ship by default.
+    # Without it `import idaapi` dies and takes the idalib worker with it.
+    libxcrypt-legacy
   ];
 
   # Fonts, for the FHS sandbox only. buildFHSEnv bind-mounts the host's
