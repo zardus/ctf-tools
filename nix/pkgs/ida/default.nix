@@ -120,11 +120,35 @@ let
 
   libPath = lib.makeLibraryPath (targetLibs pkgs);
 
-  # Base interpreter for the idalib venv: python3 with ida-pro-mcp importable,
-  # so the resulting environment is what `uv run --project ida-pro-mcp` used to
-  # provide — one interpreter that can both drive IDA headlessly (idapro, added
-  # by the activation) and serve MCP.
-  idalibPython = python3.withPackages (_: [ (python3Packages.toPythonModule idaProMcp) ]);
+  # Base interpreters for the idalib venv: a python with ida-pro-mcp importable,
+  # which is what `uv run --project ida-pro-mcp` used to provide — one
+  # environment that can both drive IDA headlessly (idapro, added by the
+  # activation) and serve MCP.
+  #
+  # There is more than one because IDA's idalib binding is built for particular
+  # CPython versions and nixpkgs' default runs ahead of them: on 9.3 the wheel
+  # installs cleanly into a 3.14 venv and then `import idapro` fails. The
+  # activation tries these in order and keeps the first that can import it.
+  # Newest first, so a future IDA that does support 3.14 needs no change here.
+  # Each entry pairs the interpreter with its own ida-pro-mcp build, because the
+  # console scripts the activation copies resolve store site-packages for
+  # exactly one Python version.
+  idalibCandidates = map
+    (py:
+      let mcp = callPackage ../ida-pro-mcp { python3Packages = py.pkgs; };
+      in {
+        env = py.withPackages (_: [ (py.pkgs.toPythonModule mcp) ]);
+        inherit mcp;
+      })
+    [ python3 pkgs.python313 pkgs.python312 ];
+
+  # '"<env>|<mcp>" "<env>|<mcp>" ...' — one *quoted* shell word per candidate.
+  # The quotes are load-bearing: unquoted, the shell reads the `|` joining the
+  # two store paths as a pipe and the script dies at parse time.
+  candidateList = lib.concatMapStringsSep " " (c: ''"${c.env}|${c.mcp}"'') idalibCandidates;
+  # Stamp content: interpreters only, no separators to worry about.
+  candidateStamp = lib.concatMapStringsSep " " (c: "${c.env}") idalibCandidates;
+  candidatePythons = lib.concatMapStringsSep ", " (c: c.env.python.version) idalibCandidates;
 
   launcher = writeShellScript "ida-launch" ''
     set -u
@@ -245,7 +269,7 @@ let
     # activate_idalib [--force] [ida-binary]   (binary defaults to $IDA_BIN,
     # which is not set yet when the first-run unpack path calls this)
     activate_idalib() {
-      local force="" bin ida_dir script venv stamp want w n wheel
+      local force="" bin ida_dir script venv stamp want w n wheel cand pyenv mcp pyver last_err
       [ "''${1:-}" = "--force" ] && { force=1; shift; }
       bin="''${1:-$IDA_BIN}"
       ida_dir=$(dirname "$bin")
@@ -257,48 +281,67 @@ let
       fi
       venv="$state/idalib-venv"
       stamp="$venv/.ctf-tools-activated"
-      want="$ida_dir ${idalibPython} ${idaProMcp}"
+      want="$ida_dir ${candidateStamp}"
       if [ -z "$force" ] && [ -x "$venv/bin/python" ] \
          && [ "$(cat "$stamp" 2>/dev/null)" = "$want" ]; then
         echo "ida: idalib already activated for $ida_dir" >&2
         echo "     ($venv, re-run with --force to redo)" >&2
         return 0
       fi
-      rm -rf "$venv"
       mkdir -p "$state" || return 1
-      ${idalibPython}/bin/python -m venv --system-site-packages "$venv" || return 1
-      "$venv/bin/python" "$script" || return 1
+      wheel=$(ls -t "$ida_dir"/idalib/python/idapro-*.whl 2>/dev/null | head -n1)
 
-      # py-activate-idalib.py used to pip-install the idapro binding; as of IDA
-      # 9.3 it only writes ~/.idapro/ida-config.json, so running it leaves the
-      # venv without `idapro` and idalib-mcp still cannot open a database.
-      # Install the wheel IDA ships alongside the script when the binding is
-      # missing -- covering both behaviours, since the check is on the import,
-      # not on the IDA version.
-      if ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
-        wheel=$(ls -t "$ida_dir"/idalib/python/idapro-*.whl 2>/dev/null | head -n1)
-        if [ -n "''${wheel:-}" ]; then
-          echo "ida: installing $(basename "$wheel") into $venv" >&2
-          # --no-index first: the wheel is self-contained and this must work
-          # offline. Fall back to a normal install if it turns out to have
-          # dependencies to resolve.
+      # IDA's idalib binding is built against particular CPython versions, and
+      # nixpkgs' default python3 runs ahead of what IDA supports (3.14 vs 9.3's
+      # 3.13 ceiling) -- the wheel installs happily and then `import idapro`
+      # fails. So try each interpreter we can offer and keep the first that can
+      # actually import it. Each candidate carries its own ida-pro-mcp build,
+      # because the console scripts copied in below resolve the store's
+      # site-packages for exactly one Python version.
+      for cand in ${candidateList}; do
+        pyenv=''${cand%%|*}
+        mcp=''${cand##*|}
+        rm -rf "$venv"
+        "$pyenv/bin/python" -m venv --system-site-packages "$venv" || continue
+        "$venv/bin/python" "$script" >&2 || true
+
+        # py-activate-idalib.py used to pip-install the binding; as of IDA 9.3
+        # it only writes ~/.idapro/ida-config.json, so install the wheel IDA
+        # ships next to it. Conditioned on the import, not the IDA version, so
+        # both behaviours work.
+        if ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1 \
+           && [ -n "''${wheel:-}" ]; then
+          # --no-index first: the wheel is self-contained, so this has to work
+          # offline; fall back to a normal install if it has dependencies.
           "$venv/bin/python" -m pip install -q --disable-pip-version-check \
-            --no-index "$wheel" >&2 \
+            --no-index "$wheel" >/dev/null 2>&1 \
             || "$venv/bin/python" -m pip install -q --disable-pip-version-check \
-                 "$wheel" >&2 \
-            || echo "ida: pip install of $wheel failed" >&2
+                 "$wheel" >/dev/null 2>&1 || true
         fi
-      fi
+
+        if "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
+          pyver=$("$venv/bin/python" -c 'import sys; print("%d.%d" % sys.version_info[:2])')
+          echo "ida: idalib binding imports under python $pyver" >&2
+          break
+        fi
+        # Keep the real reason from the last attempt; without this the failure
+        # below can only say "it did not work", which is what made this bug
+        # take three rounds to pin down.
+        last_err=$("$venv/bin/python" -c 'import idapro' 2>&1 | tail -3)
+        mcp=""
+      done
 
       # Gate the stamp on the binding actually importing. Stamping first is how
       # this shipped broken: activation "succeeded", every later run reported
       # "already activated", and idalib-mcp failed anyway with nothing to
       # suggest re-running it. Leaving it unstamped means the next launch
       # retries.
-      if ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
-        echo "ida: activation incomplete -- 'import idapro' still fails in $venv." >&2
-        echo "     Expected IDA's own binding at $ida_dir/idalib/python/idapro-*.whl;" >&2
-        echo "     $(ls "$ida_dir"/idalib/python/*.whl 2>/dev/null | wc -l) wheel(s) found there." >&2
+      if [ -z "''${mcp:-}" ] || ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
+        echo "ida: activation incomplete -- no available python could import idapro." >&2
+        echo "     Wheel: ''${wheel:-<none found>}" >&2
+        echo "     Tried: ${candidatePythons}" >&2
+        echo "     Last error:" >&2
+        echo "''${last_err:-       (no import error captured)}" | sed 's/^/       /' >&2
         return 1
       fi
 
@@ -307,7 +350,7 @@ let
       # into the venv. Copy them onto the venv interpreter instead; the
       # site.addsitedir preamble nixpkgs generates still pulls ida_pro_mcp and
       # its dependencies out of the store, so only `idapro` comes from the venv.
-      for w in ${idaProMcp}/bin/.*-wrapped; do
+      for w in "$mcp"/bin/.*-wrapped; do
         [ -f "$w" ] || continue
         n=$(basename "$w"); n=''${n#.}; n=''${n%-wrapped}
         { echo "#!$venv/bin/python"; tail -n +2 "$w"; } > "$venv/bin/$n"
