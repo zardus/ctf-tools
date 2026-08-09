@@ -245,7 +245,7 @@ let
     # activate_idalib [--force] [ida-binary]   (binary defaults to $IDA_BIN,
     # which is not set yet when the first-run unpack path calls this)
     activate_idalib() {
-      local force="" bin ida_dir script venv stamp want w n
+      local force="" bin ida_dir script venv stamp want w n wheel
       [ "''${1:-}" = "--force" ] && { force=1; shift; }
       bin="''${1:-$IDA_BIN}"
       ida_dir=$(dirname "$bin")
@@ -268,6 +268,40 @@ let
       mkdir -p "$state" || return 1
       ${idalibPython}/bin/python -m venv --system-site-packages "$venv" || return 1
       "$venv/bin/python" "$script" || return 1
+
+      # py-activate-idalib.py used to pip-install the idapro binding; as of IDA
+      # 9.3 it only writes ~/.idapro/ida-config.json, so running it leaves the
+      # venv without `idapro` and idalib-mcp still cannot open a database.
+      # Install the wheel IDA ships alongside the script when the binding is
+      # missing -- covering both behaviours, since the check is on the import,
+      # not on the IDA version.
+      if ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
+        wheel=$(ls -t "$ida_dir"/idalib/python/idapro-*.whl 2>/dev/null | head -n1)
+        if [ -n "''${wheel:-}" ]; then
+          echo "ida: installing $(basename "$wheel") into $venv" >&2
+          # --no-index first: the wheel is self-contained and this must work
+          # offline. Fall back to a normal install if it turns out to have
+          # dependencies to resolve.
+          "$venv/bin/python" -m pip install -q --disable-pip-version-check \
+            --no-index "$wheel" >&2 \
+            || "$venv/bin/python" -m pip install -q --disable-pip-version-check \
+                 "$wheel" >&2 \
+            || echo "ida: pip install of $wheel failed" >&2
+        fi
+      fi
+
+      # Gate the stamp on the binding actually importing. Stamping first is how
+      # this shipped broken: activation "succeeded", every later run reported
+      # "already activated", and idalib-mcp failed anyway with nothing to
+      # suggest re-running it. Leaving it unstamped means the next launch
+      # retries.
+      if ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
+        echo "ida: activation incomplete -- 'import idapro' still fails in $venv." >&2
+        echo "     Expected IDA's own binding at $ida_dir/idalib/python/idapro-*.whl;" >&2
+        echo "     $(ls "$ida_dir"/idalib/python/*.whl 2>/dev/null | wc -l) wheel(s) found there." >&2
+        return 1
+      fi
+
       # ida-pro-mcp's console scripts in the store are pinned to the store
       # python, which cannot see the `idapro` bindings that were just installed
       # into the venv. Copy them onto the venv interpreter instead; the
