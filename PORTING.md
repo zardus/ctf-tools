@@ -28,14 +28,38 @@ All build and, where they produce a CLI, were run to confirm they work.
 
 ### Notable / non-obvious ones
 
-- **angr** / **angr-management** — no longer nixpkgs passthroughs. nixpkgs'
-  `python3Packages.angr` 9.2.193 does not build (its `angr.rustylib` extension
-  needs setuptools-rust, and it pins archinfo/cle/pyvex `==9.2.193` while the
-  same nixpkgs rev ships those at 9.2.154). `nix/pkgs/angr/python.nix` pins the
-  whole angr family down to 9.2.154 — the release nixpkgs' pyvex/archinfo/cle
-  and angr-management already sit on, and one that predates the Rust extension
-  entirely. `angr` restores the two pre-nix commands `angr-python` and
-  `angr-ipython`; `angr-management` reuses the same repaired interpreter.
+- **angr** / **angr-management** — no longer nixpkgs passthroughs, and no
+  longer built from nixpkgs' angr at all. nixpkgs cannot give us a working one:
+  at our rev its `python3Packages.angr` claims 9.2.193 while the
+  `pyvex`/`archinfo`/`cle` beside it are 9.2.154 and angr pins those
+  `==9.2.193`, so it does not build — and the whole family is a year behind
+  upstream besides. `nix/pkgs/angr/python.nix` therefore builds the current
+  release (**9.3.2**) of archinfo/pyvex/claripy/cle/angr from upstream's PyPI
+  sdists, plus the three dependencies nixpkgs lacks (`angr-data`,
+  `uefi-firmware`, and pypcode bumped to 4.0). Three things about angr's build
+  that a plain `buildPythonPackage` does not do, all handled there: setuptools-
+  rust compiles the `angr.rustylib` extension (vendored with
+  `rustPlatform.fetchCargoVendor`), `make` builds `native/unicornlib` against
+  the headers pyvex installs, and `grpc_tools.protoc` generates
+  `angr/protos/*_pb2.py` during the build. Both tools now ship angr's `unicorn`
+  extra, so the fast engine is actually available instead of logging "unicorn
+  support disabled" at startup — 9.3 asks for stock `unicorn==2.1.4`, which
+  nixpkgs has, rather than the `unicorn-angr` fork (itself broken at our rev).
+  `angr` restores the two pre-nix commands `angr-python` and `angr-ipython`
+  alongside upstream's `angr` CLI; `angr-management` (9.3.2, matching, since it
+  pins `angr==9.3.2`) reuses the very same interpreter.
+
+  Two dependencies are deliberately not what upstream asks for. `pyxdia`, cle's
+  PDB reader, is dropped: its Linux wheel is a bag of Windows blobs
+  (`msdia140.dll`, an `xdia.exe`, a loader for them) and its sdist builds by
+  downloading those, which a sandboxed build cannot do; cle imports it in a
+  try/except, so PE PDB symbol loading logs that it is unavailable and nothing
+  else changes. And nixpkgs' `libbs` (via binsync, an angr-management
+  dependency) still calls `pycparser.ply`, removed in pycparser 3.00 — the old
+  workaround for that, holding pycparser at 2.x, is no longer possible now that
+  angr requires `pycparser~=3.0`, so libbs' type-parser tests are skipped and
+  binsync's "parse this C type" path stays as broken as nixpkgs has it. Fixing
+  it properly means libbs ≥3.8, which drags in declib/pyghidra/wordfreq.
 - **qiling** — built from a pinned git tag (1.4.10) rather than the PyPI sdist,
   which has been stuck at 1.4.6 since 2023, and against `python312` rather than
   the default interpreter (its `python-fx` dependency does not survive python

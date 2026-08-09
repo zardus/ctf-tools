@@ -17,7 +17,15 @@ let
   # python312 with a buildable angr — see ./python.nix.
   python = callPackage ./python.nix { };
 
-  env = python.withPackages (ps: [ ps.angr ps.ipython ]);
+  # angr's two extras that are actually available here: `unicorn` (the native
+  # unicorn engine -- without it angr logs "unicorn support disabled" on every
+  # start and falls back to VEX-only execution) and `angrDB` (the sqlalchemy
+  # project database). The `llm`/`keystone`/`telemetry` extras are left out;
+  # nothing in the pre-nix tool used them.
+  env = python.withPackages (ps:
+    [ ps.angr ps.ipython ]
+    ++ ps.angr.optional-dependencies.unicorn
+    ++ ps.angr.optional-dependencies.angrDB);
 in
 runCommand "angr-${python.pkgs.angr.version}"
 {
