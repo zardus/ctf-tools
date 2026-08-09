@@ -416,19 +416,26 @@ let
   # rather than exiting and asking for a command to be run -- an MCP client
   # launching this sees only "Transport closed" and never shows the advice.
   #
-  # The venv's own idalib-mcp is the marker: activation copies the console
-  # scripts in only after `import idapro` succeeds, so its presence means a
-  # complete activation and its absence means there is something to redo.
+  # Test the venv by importing the binding, not by looking for files. Builds
+  # before f871e8a stamped activation as successful without installing idapro,
+  # so a venv can hold a full set of console scripts and still be unable to
+  # open a database -- and the stamp then makes a plain --activate-idalib a
+  # no-op. Hence --force below: the only way past a venv that lies about
+  # itself is to rebuild it.
   idalibMcp = writeShellScript "idalib-mcp" ''
     venv="''${XDG_DATA_HOME:-$HOME/.local/share}/ctf-tools/ida/idalib-venv"
-    if [ ! -x "$venv/bin/idalib-mcp" ]; then
-      echo "idalib-mcp: idalib is not activated yet; doing it now (one time, ~a minute)." >&2
+    venv_works() {
+      [ -x "$venv/bin/python" ] && [ -x "$venv/bin/idalib-mcp" ] \
+        && "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1
+    }
+    if ! venv_works; then
+      echo "idalib-mcp: idalib is not usable yet; setting it up now (one time, ~a minute)." >&2
       # ida-native rather than the dispatcher: activation only runs a store
       # python against IDA's script and wheel, so it needs no FHS sandbox, and
       # referring to the dispatcher from here would be a cycle in the join.
-      ${native}/bin/ida-native --activate-idalib >&2 || true
+      ${native}/bin/ida-native --activate-idalib --force >&2 || true
     fi
-    if [ -x "$venv/bin/idalib-mcp" ]; then
+    if venv_works; then
       exec "$venv/bin/idalib-mcp" "$@"
     fi
     echo "idalib-mcp: activation did not complete, so this server can start but cannot load" >&2
