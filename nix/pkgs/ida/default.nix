@@ -358,10 +358,37 @@ let
     echo "     IDA through your own FHS environment. Trying the plain path anyway:" >&2
     exec ${native}/bin/ida-native "$@"
   '';
+  # Upstream's `idalib-mcp` runs against the store python, which has no
+  # `idapro` bindings: IDA's own py-activate-idalib.py pip-installs those, and
+  # it cannot write to the store, so they live in the venv that
+  # `ida --activate-idalib` builds. Prefer that venv when it exists; otherwise
+  # say what to run, rather than failing later with "idalib worker exited
+  # early with code 1", which explains nothing.
+  idalibMcp = writeShellScript "idalib-mcp" ''
+    venv="''${XDG_DATA_HOME:-$HOME/.local/share}/ctf-tools/ida/idalib-venv"
+    if [ -x "$venv/bin/idalib-mcp" ]; then
+      exec "$venv/bin/idalib-mcp" "$@"
+    fi
+    echo "idalib-mcp: idalib is not activated, so this server can start but cannot load a" >&2
+    echo "            binary. Run 'ida --activate-idalib' once -- it installs IDA's idapro" >&2
+    echo "            bindings into $venv -- then re-run this." >&2
+    exec ${idaProMcp}/bin/idalib-mcp "$@"
+  '';
 in
 symlinkJoin {
   name = "ida";
-  paths = [ dispatcher fhs native ];
+  # idaProMcp rides along because the pre-nix ida/install checked out
+  # ida-pro-mcp as part of installing IDA -- `idalib-mcp` and friends were
+  # simply there afterwards. It stays a separate flake output too, for anyone
+  # who wants the MCP servers without this launcher; installing both into one
+  # profile collides on those four names, which is the expected outcome of
+  # asking for the same programs twice.
+  paths = [ dispatcher fhs native idaProMcp ];
+
+  # ... with the venv-aware idalib-mcp in front of the store one.
+  postBuild = ''
+    ln -sf ${idalibMcp} $out/bin/idalib-mcp
+  '';
 
   meta = with lib; {
     description =
