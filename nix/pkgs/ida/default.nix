@@ -119,11 +119,31 @@ let
     cache="''${XDG_CACHE_HOME:-$HOME/.cache}/ctf-tools/ida"
     state="''${XDG_DATA_HOME:-$HOME/.local/share}/ctf-tools/ida"
 
+    # Look for the vendor binary in a directory. Two things this has to get
+    # right, both learned the hard way:
+    #   - `test -x` is true for directories, and IDA 9.x's tarball has a
+    #     *directory* named `ida` at its root. Probing with -x alone picks that
+    #     up and the launcher execs it ("ida: Is a directory"). Every probe here
+    #     insists on a regular file.
+    #   - the binary may be one level down, inside that `ida` directory.
+    # Names: 9.x ships `ida` (GUI) and `idat` (text mode); older releases split
+    # them into 32/64-bit pairs. GUI first, since that is what `ida` implies.
+    ida_bin_in() {
+      local d=$1 n
+      for n in ida ida64 idat idat64; do
+        [ -f "$d/$n" ] && [ -x "$d/$n" ] && { echo "$d/$n"; return 0; }
+      done
+      return 1
+    }
+
     # Tarballs from Hex-Rays unpack to a single directory holding libida.so
     # (this is how the pre-nix ida/install located the payload, too).
     find_unpacked() {
-      for b in "$cache"/*/ida "$cache"/*/ida64 "$cache"/*/*/ida "$cache"/*/*/ida64; do
-        [ -x "$b" ] && { echo "$b"; return 0; }
+      local d
+      for d in "$cache"/*/; do
+        [ -d "$d" ] || continue
+        ida_bin_in "''${d%/}" && return 0
+        ida_bin_in "''${d%/}/ida" && return 0
       done
       return 1
     }
@@ -135,31 +155,37 @@ let
       tarball=$(ls -dt "$HOME"/Downloads/ida*.tar.?z "$HOME"/Downloads/IDA*.tar.?z 2>/dev/null | head -n1)
       [ -n "''${tarball:-}" ] && [ -f "$tarball" ] || return 1
       dest="$cache/$(basename "$tarball" | tr -c 'A-Za-z0-9._-' '_')"
-      [ -d "$dest" ] && return 1   # already unpacked, and find_unpacked missed it
+      # Unpacked, yet find_unpacked came up empty: the tree is laid out in some
+      # way this script does not know about. Say where it is, so the user can
+      # point IDA_HOME at it instead of being told nothing was found at all.
+      unpacked_but_unusable() {
+        echo "ida: $tarball is unpacked in $dest," >&2
+        echo "     but no ida/idat binary turned up there. Set IDA_HOME to the" >&2
+        echo "     directory holding it (or to the binary itself)." >&2
+        return 1
+      }
+      [ -d "$dest" ] && { unpacked_but_unusable; return 1; }
       echo "ida: unpacking $tarball (first run; this takes a while)..." >&2
       rm -rf "$dest.tmp"
       mkdir -p "$dest.tmp" || return 1
       PATH="$unpack_path" tar xf "$tarball" -C "$dest.tmp" || { rm -rf "$dest.tmp"; return 1; }
       mv "$dest.tmp" "$dest" || return 1
-      find_unpacked
+      find_unpacked || { unpacked_but_unusable; return 1; }
     }
 
     find_ida() {
-      # 1. explicit IDA_HOME
+      # 1. explicit IDA_HOME — the install directory, or the binary itself
       if [ -n "''${IDA_HOME:-}" ]; then
-        if [ -x "$IDA_HOME/ida" ]; then echo "$IDA_HOME/ida"; return 0; fi
-        if [ -x "$IDA_HOME/ida64" ]; then echo "$IDA_HOME/ida64"; return 0; fi
-        if [ -x "$IDA_HOME" ]; then echo "$IDA_HOME"; return 0; fi
+        ida_bin_in "$IDA_HOME" && return 0
+        ida_bin_in "$IDA_HOME/ida" && return 0
+        if [ -f "$IDA_HOME" ] && [ -x "$IDA_HOME" ]; then echo "$IDA_HOME"; return 0; fi
       fi
       # 2. ~/.idapro
-      for c in "$HOME/.idapro/ida" "$HOME/.idapro/ida64"; do
-        [ -x "$c" ] && { echo "$c"; return 0; }
-      done
+      ida_bin_in "$HOME/.idapro" && return 0
       # 3. newest ~/ida* directory containing an ida binary
       for d in $(ls -dt "$HOME"/ida* 2>/dev/null); do
-        for b in "$d/ida" "$d/ida64"; do
-          [ -x "$b" ] && { echo "$b"; return 0; }
-        done
+        ida_bin_in "$d" && return 0
+        ida_bin_in "$d/ida" && return 0
       done
       # 4. ida/ida64 already on PATH — but never this package's own `ida`, which
       #    is on $PATH whenever ctf-tools is installed and would make us exec
@@ -172,7 +198,7 @@ let
       IFS=: read -ra path_dirs <<< "$PATH"
       for dir in "''${path_dirs[@]}"; do
         for name in ida64 ida; do
-          [ -x "$dir/$name" ] || continue
+          [ -f "$dir/$name" ] && [ -x "$dir/$name" ] || continue
           p=$(readlink -f "$dir/$name")
           [ "$p" = "$(readlink -f "$0")" ] && continue
           ${gnugrep}/bin/grep -qs ctf-tools-ida-entry-point "$p" && continue
