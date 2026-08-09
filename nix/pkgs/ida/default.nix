@@ -104,6 +104,14 @@ let
     python3.pkgs.pip
   ];
 
+  # Fonts, for the FHS sandbox only. buildFHSEnv bind-mounts the host's
+  # /etc/fonts, so fontconfig's *configuration* comes from the host -- but that
+  # config points at /usr/share/fonts, and inside the sandbox /usr is the FHS
+  # tree, not the host's. With no font package in targetPkgs there is nothing
+  # for fontconfig to find, and IDA draws every glyph as an empty box.
+  # ida-native runs against the host's real /usr and needs none of this.
+  fontPkgs = p: with p; [ dejavu_fonts liberation_ttf ];
+
   libPath = lib.makeLibraryPath (targetLibs pkgs);
 
   # Base interpreter for the idalib venv: python3 with ida-pro-mcp importable,
@@ -283,7 +291,7 @@ let
 
   fhs = buildFHSEnv {
     name = "ida-fhs";
-    targetPkgs = targetLibs;
+    targetPkgs = p: targetLibs p ++ fontPkgs p;
     runScript = launcher;
   };
 
