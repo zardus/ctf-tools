@@ -27,6 +27,7 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | ![Last Build](https://img.shields.io/docker/v/ctftools/evilize?label=built) Tool to create MD5 colliding binaries | <!--tool-->
 | binary | [ida](https://hex-rays.com/ida-free) | Decompilation and reversing tool (proprietary: you download it yourself — drop the Hex-Rays tarball in `~/Downloads`, or set `IDA_HOME` to an unpacked install). | <!--tool-->
 | binary | [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) | MCP server that drives IDA Pro (headless via idalib, or attached to a running IDA; set up with `ida --activate-idalib`). | <!--tool-->
+| binary | [kuna](https://github.com/Noelo-Lab/kuna) | An agent-first decompiler in Rust, originally ported from Ghidra's decompiler. | <!--tool-->
 | binary | [manticore](https://github.com/trailofbits/manticore) | ![Last Build](https://img.shields.io/docker/v/ctftools/manticore?label=built) Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
 | binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for 64- and 32-bit x86). | <!--tool-->
 | binary | [pwndbg](https://github.com/pwndbg/pwndbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwndbg?label=built) Enhanced environment for gdb. Especially for pwning. | <!--tool-->

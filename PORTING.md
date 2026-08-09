@@ -23,7 +23,7 @@ or repairs a runtime/build gap, each commented in that file:
 
 ## Tools with hand-written derivations
 
-51 tools under `nix/pkgs/<name>/default.nix`, each with sources pinned by hash.
+52 tools under `nix/pkgs/<name>/default.nix`, each with sources pinned by hash.
 All build and, where they produce a CLI, were run to confirm they work.
 
 ### Notable / non-obvious ones
@@ -100,6 +100,20 @@ All build and, where they produce a CLI, were run to confirm they work.
   headless). The `idapro` binding headless mode needs only exists inside a
   licensed IDA install, so the `idalib-mcp` on `PATH` hands off to the
   activation venv's copy when there is one, and otherwise says what to run.
+- **kuna** — the only tool here that is not in the pre-nix installer; a Rust
+  decompiler (Ghidra's C++ decompiler ported and then diverged), pinned to the
+  `v1.119` release tag. Two things the derivation does that a plain
+  `buildRustPackage` would not, both from upstream's Makefile: it installs all
+  four workspace binaries, because the `kuna` CLI is a driver that shells out to
+  `decomp_dbg`/`decomp_test_dbg`/`slacomp` and finds them as siblings of its own
+  argv[0]; and it runs the freshly built `slacomp` over the vendored SLEIGH
+  spec tree (`make specs`), since the repo ships only `.slaspec` sources and the
+  decoder cannot disassemble anything without the compiled `.sla`. The compiled
+  tree is installed to `share/kuna/specs` and pointed at with `KUNA_SPECS`
+  (`SLEIGHHOME` for the engine console) — kuna otherwise looks for it three
+  directories above its own binary, which only resolves inside a source
+  checkout. The install check decompiles a function out of a freshly compiled
+  ELF, so a spec tree that failed to build or install fails the build.
 - **cross2** — the 2006-era `binutils-2.21.1` + `gcc-3.4.6` + `newlib-1.20.0`
   toolchain, built from pinned sources (upstream book patches vendored under
   `nix/pkgs/cross2/patch/`).
