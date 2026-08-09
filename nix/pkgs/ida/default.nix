@@ -269,7 +269,7 @@ let
     # activate_idalib [--force] [ida-binary]   (binary defaults to $IDA_BIN,
     # which is not set yet when the first-run unpack path calls this)
     activate_idalib() {
-      local force="" bin ida_dir script venv stamp want w n wheel cand pyenv mcp pyver last_err
+      local force="" bin ida_dir script venv stamp want w n wheel cand pyenv mcp pyver last_err port wlog wpid tries
       [ "''${1:-}" = "--force" ] && { force=1; shift; }
       bin="''${1:-$IDA_BIN}"
       ida_dir=$(dirname "$bin")
@@ -368,6 +368,43 @@ let
         { echo "#!$venv/bin/python"; tail -n +2 "$w"; } > "$venv/bin/$n"
         chmod +x "$venv/bin/$n"
       done
+      # ida-pro-mcp spawns its worker with stderr=DEVNULL, so a worker that dies
+      # takes the reason with it and every client sees the same content-free
+      # "idalib worker exited early with code 1". Run that exact command once,
+      # here, where its output can be shown. A healthy worker stays up and
+      # serves, so "still running" is the pass condition.
+      port=$(pyrun "$venv/bin/python" -c \
+        'import socket;s=socket.socket();s.bind(("127.0.0.1",0));p=s.getsockname()[1];s.close();print(p)' \
+        2>/dev/null) || port=""
+      if [ -n "$port" ]; then
+        wlog="$state/idalib-worker-preflight.log"
+        pyrun "$venv/bin/python" -m ida_pro_mcp.idalib_server \
+          --host 127.0.0.1 --port "$port" >"$wlog" 2>&1 &
+        wpid=$!
+        tries=0
+        while [ "$tries" -lt 60 ]; do
+          kill -0 "$wpid" 2>/dev/null || break
+          pyrun "$venv/bin/python" -c \
+            "import socket,sys;s=socket.socket();s.settimeout(0.3);sys.exit(0 if s.connect_ex(('127.0.0.1',$port))==0 else 1)" \
+            2>/dev/null && break
+          tries=$((tries + 1))
+          sleep 0.5
+        done
+        if kill -0 "$wpid" 2>/dev/null; then
+          kill "$wpid" 2>/dev/null
+          wait "$wpid" 2>/dev/null || true
+        else
+          wait "$wpid" 2>/dev/null || true
+          echo "ida: idalib imports, but its MCP worker exits immediately." >&2
+          echo "     ida-pro-mcp discards the worker's output, so this is what it said:" >&2
+          sed 's/^/       /' "$wlog" >&2
+          echo "     Reproduce it directly with:" >&2
+          echo "       LD_LIBRARY_PATH=\"\$(cat $venv/.ctf-tools-ld-path)\" \\" >&2
+          echo "         $venv/bin/python -m ida_pro_mcp.idalib_server --host 127.0.0.1 --port 8745" >&2
+          return 1
+        fi
+      fi
+
       # The wrapper needs the same loader path when it execs the venv's
       # idalib-mcp (and the workers that server spawns), so record where IDA is.
       echo "$ida_dir" > "$venv/.ctf-tools-ida-dir"
