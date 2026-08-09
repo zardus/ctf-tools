@@ -291,6 +291,18 @@ let
       mkdir -p "$state" || return 1
       wheel=$(ls -t "$ida_dir"/idalib/python/idapro-*.whl 2>/dev/null | head -n1)
 
+      # `import idapro` dlopens $ida_dir/libidalib.so, which links libstdc++
+      # and IDA's own sibling libraries. Nothing puts those on the loader path
+      # for the *python* doing the import -- the launcher's LD_LIBRARY_PATH is
+      # applied to the IDA binary on its way out, which this never reaches --
+      # so the import fails with "libstdc++.so.6: cannot open shared object
+      # file" no matter which interpreter or wheel is used. $ida_dir first so
+      # IDA's libraries win, then ours for libstdc++ and friends.
+      idalib_ld="$ida_dir:${libPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+      # Every python invocation below goes through this; workers spawned by the
+      # MCP server inherit it from the wrapper, which sets the same thing.
+      pyrun() { LD_LIBRARY_PATH="$idalib_ld" "$@"; }
+
       # IDA's idalib binding is built against particular CPython versions, and
       # nixpkgs' default python3 runs ahead of what IDA supports (3.14 vs 9.3's
       # 3.13 ceiling) -- the wheel installs happily and then `import idapro`
@@ -303,23 +315,23 @@ let
         mcp=''${cand##*|}
         rm -rf "$venv"
         "$pyenv/bin/python" -m venv --system-site-packages "$venv" || continue
-        "$venv/bin/python" "$script" >&2 || true
+        pyrun "$venv/bin/python" "$script" >&2 || true
 
         # py-activate-idalib.py used to pip-install the binding; as of IDA 9.3
         # it only writes ~/.idapro/ida-config.json, so install the wheel IDA
         # ships next to it. Conditioned on the import, not the IDA version, so
         # both behaviours work.
-        if ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1 \
+        if ! pyrun "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1 \
            && [ -n "''${wheel:-}" ]; then
           # --no-index first: the wheel is self-contained, so this has to work
           # offline; fall back to a normal install if it has dependencies.
-          "$venv/bin/python" -m pip install -q --disable-pip-version-check \
+          pyrun "$venv/bin/python" -m pip install -q --disable-pip-version-check \
             --no-index "$wheel" >/dev/null 2>&1 \
-            || "$venv/bin/python" -m pip install -q --disable-pip-version-check \
+            || pyrun "$venv/bin/python" -m pip install -q --disable-pip-version-check \
                  "$wheel" >/dev/null 2>&1 || true
         fi
 
-        if "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
+        if pyrun "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
           pyver=$("$venv/bin/python" -c 'import sys; print("%d.%d" % sys.version_info[:2])')
           echo "ida: idalib binding imports under python $pyver" >&2
           break
@@ -327,7 +339,7 @@ let
         # Keep the real reason from the last attempt; without this the failure
         # below can only say "it did not work", which is what made this bug
         # take three rounds to pin down.
-        last_err=$("$venv/bin/python" -c 'import idapro' 2>&1 | tail -3)
+        last_err=$(pyrun "$venv/bin/python" -c 'import idapro' 2>&1 | tail -3)
         mcp=""
       done
 
@@ -336,7 +348,7 @@ let
       # "already activated", and idalib-mcp failed anyway with nothing to
       # suggest re-running it. Leaving it unstamped means the next launch
       # retries.
-      if [ -z "''${mcp:-}" ] || ! "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
+      if [ -z "''${mcp:-}" ] || ! pyrun "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1; then
         echo "ida: activation incomplete -- no available python could import idapro." >&2
         echo "     Wheel: ''${wheel:-<none found>}" >&2
         echo "     Tried: ${candidatePythons}" >&2
@@ -356,6 +368,9 @@ let
         { echo "#!$venv/bin/python"; tail -n +2 "$w"; } > "$venv/bin/$n"
         chmod +x "$venv/bin/$n"
       done
+      # The wrapper needs the same loader path when it execs the venv's
+      # idalib-mcp (and the workers that server spawns), so record where IDA is.
+      echo "$ida_dir" > "$venv/.ctf-tools-ida-dir"
       echo "$want" > "$stamp"
       echo "ida: idalib activated for $ida_dir" >&2
       echo "     headless MCP server: idalib-mcp /path/to/binary (uses $venv)" >&2
@@ -468,8 +483,11 @@ let
   idalibMcp = writeShellScript "idalib-mcp" ''
     venv="''${XDG_DATA_HOME:-$HOME/.local/share}/ctf-tools/ida/idalib-venv"
     venv_works() {
+      local d
+      d=$(cat "$venv/.ctf-tools-ida-dir" 2>/dev/null || true)
       [ -x "$venv/bin/python" ] && [ -x "$venv/bin/idalib-mcp" ] \
-        && "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1
+        && LD_LIBRARY_PATH="''${d:+$d:}${libPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+           "$venv/bin/python" -c 'import idapro' >/dev/null 2>&1
     }
     if ! venv_works; then
       echo "idalib-mcp: idalib is not usable yet; setting it up now (one time, ~a minute)." >&2
@@ -479,6 +497,11 @@ let
       ${native}/bin/ida-native --activate-idalib --force >&2 || true
     fi
     if venv_works; then
+      # libidalib.so links libstdc++ and IDA's sibling libraries, and nothing
+      # else puts them on the loader path for this python. Same list the
+      # activation used; workers the server spawns inherit it.
+      ida_dir=$(cat "$venv/.ctf-tools-ida-dir" 2>/dev/null || true)
+      export LD_LIBRARY_PATH="''${ida_dir:+$ida_dir:}${libPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
       exec "$venv/bin/idalib-mcp" "$@"
     fi
     echo "idalib-mcp: activation did not complete, so this server can start but cannot load" >&2
