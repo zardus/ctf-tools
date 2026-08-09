@@ -410,19 +410,29 @@ let
     exec ${native}/bin/ida-native "$@"
   '';
   # Upstream's `idalib-mcp` runs against the store python, which has no
-  # `idapro` bindings: IDA's own py-activate-idalib.py pip-installs those, and
-  # it cannot write to the store, so they live in the venv that
-  # `ida --activate-idalib` builds. Prefer that venv when it exists; otherwise
-  # say what to run, rather than failing later with "idalib worker exited
-  # early with code 1", which explains nothing.
+  # `idapro` binding: that lives only in the venv the activation builds, since
+  # it is pip-installed from a wheel inside the user's IDA and the store is
+  # read-only. So run the activation ourselves if the venv is not there yet,
+  # rather than exiting and asking for a command to be run -- an MCP client
+  # launching this sees only "Transport closed" and never shows the advice.
+  #
+  # The venv's own idalib-mcp is the marker: activation copies the console
+  # scripts in only after `import idapro` succeeds, so its presence means a
+  # complete activation and its absence means there is something to redo.
   idalibMcp = writeShellScript "idalib-mcp" ''
     venv="''${XDG_DATA_HOME:-$HOME/.local/share}/ctf-tools/ida/idalib-venv"
+    if [ ! -x "$venv/bin/idalib-mcp" ]; then
+      echo "idalib-mcp: idalib is not activated yet; doing it now (one time, ~a minute)." >&2
+      # ida-native rather than the dispatcher: activation only runs a store
+      # python against IDA's script and wheel, so it needs no FHS sandbox, and
+      # referring to the dispatcher from here would be a cycle in the join.
+      ${native}/bin/ida-native --activate-idalib >&2 || true
+    fi
     if [ -x "$venv/bin/idalib-mcp" ]; then
       exec "$venv/bin/idalib-mcp" "$@"
     fi
-    echo "idalib-mcp: idalib is not activated, so this server can start but cannot load a" >&2
-    echo "            binary. Run 'ida --activate-idalib' once -- it installs IDA's idapro" >&2
-    echo "            bindings into $venv -- then re-run this." >&2
+    echo "idalib-mcp: activation did not complete, so this server can start but cannot load" >&2
+    echo "            a binary. Run 'ida --activate-idalib' to see why." >&2
     exec ${idaProMcp}/bin/idalib-mcp "$@"
   '';
 in

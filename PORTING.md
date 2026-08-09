@@ -83,9 +83,16 @@ All build and, where they produce a CLI, were run to confirm they work.
 
   `ida --activate-idalib [--force]` reproduces the pre-nix
   `py-activate-idalib.py` step into a venv under
-  `~/.local/share/ctf-tools/ida`. It also runs by itself, once, right after the
-  first-run `~/Downloads` unpack — as the pre-nix installer did — and is
-  best-effort there: IDA Free ships no idalib, and that must not stop IDA from
+  `~/.local/share/ctf-tools/ida`, and additionally installs IDA's bundled
+  `idalib/python/idapro-*.whl` — as of 9.3 that script only writes
+  `~/.idapro/ida-config.json` and no longer installs the binding itself. The
+  activation stamp is written only after `import idapro` succeeds, so a partial
+  activation retries instead of reporting success forever.
+
+  You do not normally run it: it happens by itself after the first-run
+  `~/Downloads` unpack (as the pre-nix installer did) and on the first
+  `idalib-mcp` launch if the venv is missing. Both are best-effort — IDA Free
+  ships no idalib, and that must stop neither IDA nor the MCP server from
   starting.
 - **ida-pro-mcp** — the MCP server the pre-nix `ida/install` cloned. It is its
   own output *and* is joined into `ida`, because pre-nix it came with IDA
