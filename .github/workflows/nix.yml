@@ -172,7 +172,13 @@ jobs:
     continue-on-error: true
     strategy:
       fail-fast: false
-      max-parallel: 12
+      # Only bites when Cachix has lost these paths and the fleet rebuilds from
+      # source; a cached leg is ~2 minutes. At 12 the rebuild case ran 111 legs
+      # (~3200 job-minutes) twelve at a time — 4.5 hours during which the other
+      # ~28 of the account's 40 concurrent runners sat idle, because `build` and
+      # `docker` had long since finished. 24 keeps half the pool free for them
+      # and roughly halves the rebuild's wall clock.
+      max-parallel: 24
       matrix:
         tool: ${{ fromJSON(needs.tools.outputs.toolchains) }}
     runs-on: ubuntu-latest
@@ -193,6 +199,14 @@ jobs:
         with:
           name: ctftools
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          # Don't cache the per-sample tarball sets (mk-toolchain.nix's `sources`
+          # FOD). They were ~14.5GB of the cache — more than the toolchains they
+          # feed — and nothing reads them on the happy path: when a toolchain
+          # substitutes, Nix never realizes its inputs at all. They are only
+          # wanted during a rebuild, and rebuilding one costs 45s-3min against
+          # the 20-220min build it precedes. Crowding the toolchain outputs out
+          # of the cache to save that is a bad trade.
+          pushFilter: crosstool-ng-sources-
       - name: Build ${{ matrix.tool }} (gcc + libc from source; slow)
         run: nix build -L ".#${{ matrix.tool }}"
 
