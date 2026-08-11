@@ -4,8 +4,17 @@ stdenv.mkDerivation {
   pname = "galois";
   version = "2007-04-05";
 
+  # Plank's home directory moved from ~plank to ~jplank. The old URL still
+  # redirects, but the chain detours through plain http, and the department's
+  # server answers 403 to the final hop for some clients — CI among them. Ask
+  # for the current location directly, and keep a Wayback snapshot of the same
+  # (hash-identical) tarball as a mirror: this is a 2007 paper artifact on one
+  # university web server, with no upstream left to fix it if that goes away.
   src = fetchurl {
-    url = "https://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/galois.tar";
+    urls = [
+      "https://web.eecs.utk.edu/~jplank/plank/papers/CS-07-593/galois.tar"
+      "https://web.archive.org/web/20141117051901id_/http://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/galois.tar"
+    ];
     hash = "sha256-JWVJYvDhh63wr5JSGCLMmXSjWCAHprPROmhzMPICTbE=";
   };
 
@@ -38,7 +47,7 @@ stdenv.mkDerivation {
 
   meta = with lib; {
     description = "James S. Plank's fast Galois Field arithmetic library command-line tools (gf_mult, gf_div, gf_log, etc.)";
-    homepage = "https://web.eecs.utk.edu/~plank/plank/papers/CS-07-593/";
+    homepage = "https://web.eecs.utk.edu/~jplank/plank/papers/CS-07-593/";
     license = licenses.lgpl21Plus;
     platforms = platforms.unix;
     mainProgram = "gf_mult";
