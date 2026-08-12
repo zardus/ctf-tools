@@ -7,7 +7,18 @@ set -eu -o pipefail
 # `nix profile` + `nix eval` so the familiar `manage-tools install <tool>` verbs
 # keep working. There is no longer a per-distro / ./install-script backend.
 
-CTF_TOOLS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Resolve this script's real location, following any chain of symlinks, so the
+# repo root is found no matter where the script is invoked from or symlinked to
+# (e.g. ~/bin/manage-tools -> $REPO/bin/manage-tools). `readlink -f` would be
+# simpler but isn't portable to macOS, so walk the chain by hand.
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -h "$SOURCE" ]]; do
+	dir="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+	SOURCE="$(readlink "$SOURCE")"
+	# a relative symlink target is relative to the dir containing the link
+	[[ "$SOURCE" != /* ]] && SOURCE="$dir/$SOURCE"
+done
+CTF_TOOLS_ROOT="$(cd -P "$(dirname "$SOURCE")/.." >/dev/null 2>&1 && pwd)"
 FLAKE="${CTF_TOOLS_FLAKE:-$CTF_TOOLS_ROOT}"
 
 function usage()
