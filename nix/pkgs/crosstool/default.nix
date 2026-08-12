@@ -94,15 +94,103 @@ let
   # outputs would fail for everyone. See ./samples.nix.
   sampleNames = import ./samples.nix;
 
+  # Turn off CT_GLIBC_LOCALES in a generated .config (see the two ARM samples
+  # in sampleFixes below for why). Written to tolerate the option being absent.
+  disableGlibcLocales = ''
+    sed -i 's/^CT_GLIBC_LOCALES=y$/# CT_GLIBC_LOCALES is not set/' .config
+    grep -q '^# CT_GLIBC_LOCALES is not set$' .config   # the sed must land
+  '';
+
+  # Per-sample fixes (keyed by *sanitized* name), passed straight through to
+  # mk-toolchain.nix -- source patches via ct-ng's local-patches mechanism and
+  # .config tweaks. These exist because the samples pin decades-old component
+  # releases but everything is compiled by/against today's nixpkgs host
+  # toolchain and built inside the Nix sandbox; each fix is a proven CI
+  # failure, not a precaution. The patch headers under ./patch/ carry the
+  # full stories.
+  sampleFixes = {
+    # CT_GLIBC_LOCALES builds the target's locale *archive* as a post-install
+    # step, and to do that it runs the freshly built glibc's own `localedef`
+    # on the build machine, invoked through that same fresh build tree's
+    # ld.so. That loader, and the localedef binary it loads, carry the glibc
+    # default interpreter path /lib64/ld-linux-x86-64.so.2 -- which does not
+    # exist in the Nix build sandbox (no /lib64 at all), so the exec dies
+    # before main() and make reports a bare `Error 127` with no diagnostic.
+    # The two samples that enable it (both hf ARM) are the only ones that hit
+    # this; every other glibc sample here builds the identical library and
+    # passes precisely because it does not run host localedef. The locale
+    # archive is optional target data (a cross *compiler* neither needs nor
+    # uses it; it is only consumed by programs run under qemu-user with a
+    # matching --prefix), so drop just that step and keep the toolchain.
+    # Re-enabling it would require a host localedef whose interpreter resolves
+    # inside the sandbox -- a much larger change for target data nobody here
+    # consumes.
+    "arm-cortexa9_neon-linux-gnueabihf".configTweak = disableGlibcLocales;
+    "armv6-unknown-linux-gnueabihf".configTweak = disableGlibcLocales;
+
+    # glibc <= 2.22's configure probes "same dir as the source?" with a
+    # hardcoded /bin/pwd, which the Nix sandbox does not have, and the check
+    # fails spuriously.
+    "i686-centos7-linux-gnu".localPatches.glibc =
+      [ ./patch/glibc-configure-accept-nix-sandbox-pwd.patch ];
+    "x86_64-centos7-linux-gnu".localPatches.glibc =
+      [ ./patch/glibc-configure-accept-nix-sandbox-pwd.patch ];
+    "x86_64-ubuntu14-04-linux-gnu".localPatches = {
+      glibc = [ ./patch/glibc-configure-accept-nix-sandbox-pwd.patch ];
+      # ... and linux 3.13's host tools (unifdef) use `constexpr` as an
+      # identifier, which GCC 15's default -std=gnu23 rejects.
+      linux = [ ./patch/linux-3.13-host-tools-std-gnu11.patch ];
+    };
+
+    # This sample resolves its cross-gdb to 9.2 -- an old gcc/arch selection
+    # pins it there and the pinned source set carries gdb-9.2 -- and gdb 9.2
+    # does not survive a 2026 host toolchain. It fails in three independent
+    # ways, each past the last: its bundled readline is pre-C99 (empty-parens
+    # prototypes called with args, mismatched sighandler pointer types) and
+    # GCC 15 makes those hard errors; its configure drives `python-config` in a
+    # way CPython 3.13 no longer answers; and gdb's own C++ has const-to-non-
+    # const conversions g++ 15 rejects. The first and third can't even be
+    # flagged away from here -- crosstool-NG records CXXFLAGS on gdb's
+    # top-level configure but the value does not reach the readline subdir or,
+    # empirically, gdb proper's own compile, so --with-system-readline /
+    # -fpermissive get ignored. Every *other* gdb sample in the fleet pins
+    # 16.3, which has none of these problems; only this one is stuck on 9.2.
+    #
+    # So drop cross-gdb for this sample rather than chase an unbounded series of
+    # 2020-gdb-on-2026-host breakages. The deliverable -- the SPARC/LEON
+    # gcc+binutils+uClibc cross toolchain -- builds and links fine; it just
+    # ships without a bundled debugger, the same best-effort tradeoff the
+    # toolchain matrix already makes for ports that don't build at all. If this
+    # sample's gdb is ever bumped to 16.3 (a ctng sample refresh), delete this.
+    # Raw .config edits, not `ct-ng olddefconfig`: the latter would recompute
+    # every symbol from defaults and undo the offline-build settings
+    # mk-toolchain seds in just above (CT_FORBID_DOWNLOAD et al.). So turn off
+    # both gdb symbols the build actually reads -- CT_DEBUG_GDB gates building
+    # the gdb facility (debug.sh keys the facility list on CT_DEBUG_<name>), and
+    # CT_GDB_GDBSERVER is checked *independently* in the finalize step, which
+    # would otherwise try to strip a gdbserver that was never built and fail the
+    # whole toolchain in 'Finalizing the toolchain's directory'.
+    "sparc-leon-linux-uclibc".configTweak = ''
+      sed -i 's/^CT_DEBUG_GDB=y$/# CT_DEBUG_GDB is not set/' .config
+      sed -i 's/^CT_GDB_GDBSERVER=y$/# CT_GDB_GDBSERVER is not set/' .config
+      grep -q '^# CT_DEBUG_GDB is not set$' .config      # the seds must land
+      grep -q '^# CT_GDB_GDBSERVER is not set$' .config
+    '';
+  };
+
   # sanitized attr name -> toolchain derivation, for the full sample set.
   toolchains = lib.listToAttrs (map
-    (sample: {
-      name = sanitizeName sample;
-      value = mkToolchain {
-        inherit sample;
-        sha256 = hashes.${sanitizeName sample} or lib.fakeHash;
-      };
-    })
+    (sample:
+      let name = sanitizeName sample;
+      in {
+        inherit name;
+        value = mkToolchain ({
+          inherit sample;
+          sha256 = hashes.${name} or lib.fakeHash;
+        } // (sampleFixes.${name} or {}));
+        # sampleFixes may carry localPatches/configTweak/extraInputs; mkToolchain
+        # defaults each, so only the affected samples pass any of them.
+      })
     sampleNames);
 
   # Parallel attrset of just the source-download FODs (handy for pinning hashes).

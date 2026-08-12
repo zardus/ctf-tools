@@ -1,0 +1,28 @@
+`make headers_install` for linux 3.13 first compiles two host tools, fixdep
+and unifdef, with the host compiler and the Makefile's HOSTCFLAGS.  GCC 15
+defaults to -std=gnu23, in which `constexpr` is a keyword -- and this
+kernel's scripts/unifdef.c (a 2012 import of FreeBSD unifdef) uses it as an
+ordinary identifier:
+
+    scripts/unifdef.c:206:1: error: 'constexpr' in empty declaration
+    scripts/unifdef.c:880:27: error: expected identifier or '(' before '=' token
+
+which is where the x86_64-ubuntu14.04 sample died on CI.  Pin the host
+tools to gnu11, the dialect this tree was written against.  Nothing else
+changes: HOSTCFLAGS only reaches scripts/ host binaries, never the cross
+toolchain or the exported headers.
+
+Written against linux 3.13.11 (this repo only feeds it to the
+x86_64-ubuntu14.04-linux-gnu sample, whose kernel that is).
+
+--- a/Makefile
++++ b/Makefile
+@@ -244,7 +244,7 @@
+ 
+ HOSTCC       = gcc
+ HOSTCXX      = g++
+-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
++HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu11
+ HOSTCXXFLAGS = -O2
+ 
+ # Decide whether to build built-in, modular, or both.

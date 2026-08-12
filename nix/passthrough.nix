@@ -78,7 +78,24 @@ in
     inherit (pkgs.pdf-parser) version;
   };
 
-  pkcrack              = pkgs.pkcrack;
+  # Peter Conrad's server still serves this tarball, but — exactly like galois
+  # (see nix/pkgs/galois) — it answers the CI runners' IP range with a refusal,
+  # so `nix build .#default` goes red on `pkcrack` whenever cache.nixos.org has
+  # evicted the built path and the source has to be fetched. Add FreeBSD's
+  # ports distfiles mirror as a fallback: it serves the byte-identical tarball
+  # (same sha256 nixpkgs already pins, re-listed here so the override is
+  # self-contained and a drift shows up as a hash mismatch on our copy). The
+  # upstream URL stays first, so nothing changes for anyone who can reach it.
+  # overrideAttrs on src alone: the C build is untouched and still substitutes.
+  pkcrack = pkgs.pkcrack.overrideAttrs (o: {
+    src = pkgs.fetchurl {
+      urls = [
+        "https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack/pkcrack-1.2.3.tar.gz"
+        "http://distcache.freebsd.org/ports-distfiles/pkcrack-1.2.3.tar.gz"
+      ];
+      hash = "sha256-j0n6OHlio3oUyavVSQFnIaY0JREFv0uDfMcvC61BPTg=";
+    };
+  });
 
   # pwninit's whole point is patching the challenge binary to use the provided
   # libc/ld, and it does that by shelling out to `patchelf` (patch_bin.rs runs a

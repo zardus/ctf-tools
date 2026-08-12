@@ -1,0 +1,28 @@
+glibc <= 2.22's configure hardcodes /bin/pwd in its "are we configuring in
+the source directory?" check. The Nix build sandbox has no /bin/pwd (only
+/bin/sh), so both command substitutions expand to the empty string, the two
+"paths" compare equal, and configure aborts with the spurious
+
+    configure: error: you must configure in a separate build directory
+
+even though crosstool-NG always configures glibc in a separate build dir.
+Upstream replaced /bin/pwd with `pwd -P` (shell builtin, POSIX) long before
+2.23 -- which is exactly why the ubuntu16.04 sample (glibc 2.23) builds and
+the centos7 (2.17) / ubuntu14.04 (2.19) samples do not. Backport the builtin.
+
+Applies unchanged to the generated `configure` of glibc 2.17 and 2.19 (the
+hunk context is identical; only the line offset differs, which patch(1)
+handles). configure.ac is left alone: nothing in a ct-ng build regenerates
+configure.
+
+--- a/configure
++++ b/configure
+@@ -3556,7 +3556,7 @@
+ fi
+ 
+ 
+-if test "`cd $srcdir; /bin/pwd`" = "`/bin/pwd`"; then
++if test "`cd $srcdir; pwd -P`" = "`pwd -P`"; then
+   as_fn_error $? "you must configure in a separate build directory" "$LINENO" 5
+ fi
+ 

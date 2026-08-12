@@ -3,6 +3,7 @@
 , ctng
 , ctBuildInputs
 , cacert
+, fetchurl
 }:
 
 # Build a single crosstool-NG sample toolchain (binutils + gcc + libc + ...)
@@ -74,6 +75,33 @@ let
     ct-ng "$sample"
   '';
 
+  # Nix-fetched copies of tarballs whose primary downloads have actually
+  # flaked on CI, for the canonical-set check in the `sources` derivation
+  # below to fall back on. The bytes are pinned here AND digest-checked by
+  # ct-ng against its bundled checksum for this exact filename, so seeding a
+  # file can never change what a source set is supposed to contain -- it only
+  # changes where the bytes come from.
+  seedTarballs = [
+    (fetchurl {
+      # downloads.uclibc-ng.org intermittently refuses the .tar.xz to the CI
+      # runners (the .tar.bz2 fallback then works seconds later, so it is not
+      # plain downtime); this took out all seven uclibc sample legs in one
+      # night. Same sha256 as packages/uClibc-ng/1.0.54/chksum in ct-ng.
+      name = "uClibc-ng-1.0.54.tar.xz";
+      url = "https://downloads.uclibc-ng.org/releases/1.0.54/uClibc-ng-1.0.54.tar.xz";
+      hash = "sha256-0ez2XMIhfdQRik2vwavyfFhbXLV48715kfxkC3lkP/I=";
+    })
+    (fetchurl {
+      # ftpmirror.gnu.org hands out a rotating mirror per request; one bad
+      # mirror is enough for ct-ng to fall through to the .tar.bz2. Nix's
+      # mirror://gnu tries a fixed list instead. Same sha256 as
+      # packages/gmp/6.3.0/chksum in ct-ng.
+      name = "gmp-6.3.0.tar.xz";
+      url = "mirror://gnu/gmp/gmp-6.3.0.tar.xz";
+      hash = "sha256-o8K4AgG4nmhhb0rTC8Zq7kknw85Q4zkpyoGdXENTiJg=";
+    })
+  ];
+
   # ct-ng funnels every sub-build's output into build.log and prints only a
   # short banner on stderr, so a failure otherwise gives you
   # "Build failed in step 'Building C library'" and nothing else -- the actual
@@ -96,7 +124,19 @@ in
 #             the twice-installed binutils, and the before/after link probe --
 #             runs either way, so `.unstripped` differs from the default build
 #             in exactly the one thing its name promises.
-{ sample, sha256 ? lib.fakeHash, strip ? true }:
+# `localPatches`: per-sample source fixes, as { <ct-ng package name> = [ patch
+#             files ]; }, applied through ct-ng's own local-patches mechanism
+#             (CT_PATCH_ORDER="bundled,local") after its bundled set, whatever
+#             version of that package the sample selects. Only the toolchain
+#             derivation is affected: patching happens at extraction, so the
+#             `sources` FOD and its pinned hash never move. See ./patch/ for
+#             what each patch fixes and default.nix for who gets which.
+# `configTweak`: bash run right after the sample is configured, in both
+#             derivations' terms a toolchain-only concern (it runs only in the
+#             toolchain build) -- for .config edits that patches can't express,
+#             e.g. per-package configure flags. Keep it to seds over .config.
+{ sample, sha256 ? lib.fakeHash, strip ? true, localPatches ? {}
+, configTweak ? "" }:
 
 let
   sanitized = sanitizeName sample;
@@ -129,13 +169,61 @@ let
       sed -i "s#^CT_LOCAL_TARBALLS_DIR=.*#CT_LOCAL_TARBALLS_DIR=\"$out\"#" .config
       grep -q '^CT_SAVE_TARBALLS=y' .config || echo 'CT_SAVE_TARBALLS=y' >> .config
 
+      # ct-ng's downloader tries each archive format of a component in the
+      # package's preference order and, within a format, every mirror. So a
+      # flaky or geo-blocking mirror does not fail the fetch -- it silently
+      # switches the set from e.g. uClibc-ng-1.0.54.tar.xz to the .tar.bz2 of
+      # the very same release. Every byte is still digest-verified by ct-ng,
+      # but the *set* no longer matches the pinned output hash; one night of
+      # that took out seven toolchain legs. Since ct-ng carries a checksum for
+      # every (component, format) pair, pinning the filenames back to the
+      # preferred formats pins the bytes: this walks $out, finds each file's
+      # package by its checksum entry, and demands the first format listed in
+      # the package's descriptor that has a checksum. Anything else is deleted
+      # so the retry loop can re-fetch it -- from a Nix-fetched seed copy when
+      # we ship one (see seedTarballs above), from the mirrors otherwise.
+      # (If a pin was ever *made* from a non-preferred format, this turns that
+      # sample's nightly into a clear "non-canonical" failure instead of a
+      # random hash mismatch -- fix by re-pinning, see ./pin-samples.sh.)
+      pkgdb="${ctng}/share/crosstool-ng/packages"
+      canonical_set() {
+        local ok=0 f name chk fmts base want e
+        for f in "$out"/*; do
+          name="''${f##*/}"
+          chk="$(grep -rlF "sha512 $name " "$pkgdb"/*/*/chksum 2>/dev/null \
+                 | head -1)" || true
+          [ -n "$chk" ] || continue     # no checksum entry: not ours to judge
+          fmts="$(sed -n "s/^archive_formats='\(.*\)'$/\1/p" \
+                    "''${chk%/*/chksum}/package.desc")"
+          [ -n "$fmts" ] || continue
+          base="$name"
+          for e in $fmts; do base="''${base%"$e"}"; done
+          want=""
+          for e in $fmts; do
+            if grep -qF "sha512 $base$e " "$chk"; then want="$base$e"; break; fi
+          done
+          [ -n "$want" ] && [ "$name" != "$want" ] || continue
+          echo "=== non-canonical archive format: got $name, want $want" >&2
+          rm -f "$f"
+          case "$want" in
+          ${lib.concatMapStrings (s: ''
+            ${s.name}) cp ${s} "$out/${s.name}"
+                         echo "    seeded the pinned copy of ${s.name}" >&2 ;;
+          '') seedTarballs}
+            *) echo "    no seed for $want; leaving it to the retry" >&2 ;;
+          esac
+          ok=1
+        done
+        return $ok
+      }
+
       # Retry: the upstream mirrors occasionally hand back a truncated file (CI
       # runs a dozen of these concurrently), and ct-ng treats a digest mismatch
       # as fatal -- it deletes the bad tarball and aborts the whole download.
-      # Tarballs already in $out are kept, so a retry only re-fetches what
-      # failed.
+      # Tarballs already in $out are kept (canonical_set above prunes any that
+      # came down in the wrong format), so a retry only re-fetches what failed.
       for attempt in 1 2 3; do
-        if ct-ng build; then break; fi
+        if ct-ng build && canonical_set; then break; fi
         if [ "$attempt" = 3 ]; then
           echo "source download failed after 3 attempts" >&2
           exit 1
@@ -191,6 +279,29 @@ let
       # Don't chmod the install tree read-only; we still need to copy it to $out.
       sed -i 's/^CT_PREFIX_DIR_RO=y/# CT_PREFIX_DIR_RO is not set/' .config
       sed -i 's/^CT_INSTALL_DIR_RO=y/# CT_INSTALL_DIR_RO is not set/' .config
+    ''
+      + lib.optionalString (localPatches != {}) ''
+
+      # Per-sample source fixes, routed through ct-ng's own local-patches
+      # mechanism: with CT_PATCH_ORDER="bundled,local", ct-ng applies
+      # $CT_LOCAL_PATCH_DIR/<package>/*.patch right after its bundled set for
+      # that package -- the un-versioned <package>/ directory applies to
+      # whichever version the sample selects. Extraction happens only in this
+      # derivation, so the sources FOD and its pinned hash are unaffected.
+      ${lib.concatStrings (lib.mapAttrsToList (pkg: patches: ''
+      mkdir -p "$TMPDIR/local-patches/${pkg}"
+      ${lib.concatMapStrings (p: ''
+      cp ${p} "$TMPDIR/local-patches/${pkg}/${baseNameOf (toString p)}"
+      '') patches}'') localPatches)}
+      sed -i 's/^CT_PATCH_ORDER="bundled"$/CT_PATCH_ORDER="bundled,local"/' .config
+      grep -q '^CT_PATCH_ORDER="bundled,local"$' .config   # the sed must land
+      echo "CT_LOCAL_PATCH_DIR=\"$TMPDIR/local-patches\"" >> .config
+    ''
+      + lib.optionalString (configTweak != "") ''
+
+      ${configTweak}
+    ''
+      + ''
 
       ct-ng build
 
