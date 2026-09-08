@@ -34,6 +34,7 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [pwnsh](https://github.com/zardus/pwnsh) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwnsh?label=built) Useful shell scripts for assembly, exploitation, etc. | <!--tool-->
 | binary | [qiling](https://github.com/qilingframework/qiling) | A dynamic binary instrumentation framework. Entry point is `qltool`. | <!--tool-->
 | binary | [qira](http://qira.me) | ![Last Build](https://img.shields.io/docker/v/ctftools/qira?label=built) Parallel, timeless debugger. | <!--tool-->
+| binary | [reko](https://github.com/uxmal/reko) | General-purpose machine-code decompiler. Entry point is `reko`. | <!--tool-->
 | binary | [shellnoob](https://github.com/reyammer/shellnoob) | ![Last Build](https://img.shields.io/docker/v/ctftools/shellnoob?label=built) Shellcode writing helper. | <!--tool-->
 | binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | ![Last Build](https://img.shields.io/docker/v/ctftools/taintgrind?label=built) A valgrind taint analysis tool. Builds and runs, but upstream's IR translator aborts on many binaries (`tnt_translate: expr2vbits_Unop`). | <!--tool-->
 | binary | [villoc](https://github.com/wapiflapi/villoc) | ![Last Build](https://img.shields.io/docker/v/ctftools/villoc?label=built) Visualization of heap operations. | <!--tool-->
