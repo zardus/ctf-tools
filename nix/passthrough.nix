@@ -144,8 +144,10 @@ in
   # transparent/TPROXY proxyspec aborts at startup, which is sslsplit's primary
   # mode. Pre-nix it built against a distro's linux-libc-dev and always got the
   # feature. Nothing else appends to FEATURES on the Linux path, so setting it
-  # outright is safe.
+  # outright is safe. libevent 2.1.13 puts libevent_openssl in a separate output;
+  # add that cached output explicitly so cc-wrapper supplies its library path.
   sslsplit = pkgs.sslsplit.overrideAttrs (o: {
+    buildInputs = (o.buildInputs or [ ]) ++ [ pkgs.libevent.openssl ];
     makeFlags = (o.makeFlags or [ ]) ++ [ "FEATURES=-DHAVE_NETFILTER" ];
   });
 
