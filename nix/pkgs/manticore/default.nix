@@ -28,37 +28,6 @@ let
     pythonImportsCheck = [ "wasm" ];
   };
 
-  # nixpkgs' intervaltree pulls a docs toolchain (sphinx) that no longer
-  # evaluates on python3.11; build the (pure-python) package directly.
-  intervaltree = py.buildPythonPackage rec {
-    pname = "intervaltree";
-    version = "3.1.0";
-    format = "setuptools";
-    src = py.fetchPypi {
-      inherit pname version;
-      extension = "tar.gz";
-      sha256 = "sha256-kCsbiJNpGPmyoZ4OXrfMtDCuRc3k856ks2kykg0zlS0=";
-    };
-    propagatedBuildInputs = [ py.sortedcontainers ];
-    doCheck = false;
-    pythonImportsCheck = [ "intervaltree" ];
-  };
-
-  # manticore imports `sha3` (keccak). Upstream `pysha3` fails to build on
-  # modern CPython; `safe-pysha3` is the maintained drop-in fork.
-  safe-pysha3 = py.buildPythonPackage rec {
-    pname = "safe-pysha3";
-    version = "1.0.4";
-    format = "setuptools";
-    src = py.fetchPypi {
-      inherit pname version;
-      extension = "tar.gz";
-      sha256 = "sha256-5CkUax7dGYssqTSiBGplZWxdMbDsiUu9YFUSf03q/xc=";
-    };
-    doCheck = false;
-    pythonImportsCheck = [ "sha3" ];
-  };
-
 in
 py.buildPythonApplication rec {
   pname = "manticore";

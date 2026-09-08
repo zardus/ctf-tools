@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # cross2 and crosstool are intentionally excluded from global upgrades.
+    # Keep their whole package scope on the last validated nixpkgs revision.
+    nixpkgs-toolchains.url =
+      "github:NixOS/nixpkgs/104240a772428cc2e20d8fd86c9ddbb886bbaff2";
     # Pinned older nixpkgs that still ships a working CPython 2.7 (python27)
     # and its package set (virtualenv/pip/distorm3/pycrypto/...). Used to build
     # the Python-2-only tools faithfully (volatility 2, featherduster, qira, and
@@ -22,7 +26,7 @@
     extra-trusted-public-keys = [ "ctftools.cachix.org-1:sBvy7vTAU6dLkJJizYtgYh4/NzpxjwRBrBGJLrVAzgA=" ];
   };
 
-  outputs = { self, nixpkgs, nixpkgs-py2 }:
+  outputs = { self, nixpkgs, nixpkgs-toolchains, nixpkgs-py2 }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" ];
       lib = nixpkgs.lib;
@@ -109,8 +113,12 @@
       # nix/passthrough.nix (PORTING.md quotes this set).
       ciPassthroughTargets = passthroughNames;
 
-      packages = forAll ({ pkgs, pkgsPy2, ... }:
+      packages = forAll ({ system, pkgs, pkgsPy2, ... }:
         let
+          pkgsToolchains = import nixpkgs-toolchains {
+            inherit system;
+            config.allowUnfree = true;
+          };
           # tools we take straight from nixpkgs (see nix/passthrough.nix)
           passthrough = import ./nix/passthrough.nix { inherit pkgs; };
           # tools with a hand-written derivation under nix/pkgs/<name>/default.nix.
@@ -120,7 +128,13 @@
           # override instead would error ("unexpected argument") on every tool
           # that doesn't take it.
           callPkg = lib.callPackageWith (pkgs // { inherit pkgsPy2; });
-          custom = lib.genAttrs customNames (n: callPkg (pkgDir + "/${n}") { });
+          callPkgToolchains = pkgsToolchains.lib.callPackageWith
+            (pkgsToolchains // { inherit pkgsPy2; });
+          custom = lib.genAttrs customNames (n:
+            (if builtins.elem n [ "cross2" "crosstool" ]
+             then callPkgToolchains
+             else callPkg)
+              (pkgDir + "/${n}") { });
           # crosstool builds a whole fleet of per-sample cross toolchains; surface
           # each pinned/buildable one as its own top-level `crosstool-ng-<sample>`
           # output (so they land in the CI/Cachix build matrix individually).

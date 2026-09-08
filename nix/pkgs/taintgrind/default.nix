@@ -23,11 +23,14 @@ let
 in
 stdenv.mkDerivation {
   pname = "taintgrind";
-  version = "3.25.1";
+  version = "3.27.1";
 
   src = fetchurl {
-    url = "https://sourceware.org/pub/valgrind/valgrind-3.25.1.tar.bz2";
-    hash = "sha256-Yd640HJ7RcJo79wbO2yeZ5zZfL9e5LKNHerXyLeica8=";
+    urls = [
+      "https://sourceware.org/pub/valgrind/valgrind-3.27.1.tar.bz2"
+      "https://mirrors.kernel.org/sourceware/valgrind/valgrind-3.27.1.tar.bz2"
+    ];
+    hash = "sha256-XViRUuuAccAv6rjOarcZ5DGh+8PisXAPVDJjKouSZNw=";
   };
 
   nativeBuildInputs = [ autoconf automake libtool perl python3 makeWrapper ];

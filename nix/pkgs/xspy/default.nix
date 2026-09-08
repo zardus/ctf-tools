@@ -1,8 +1,8 @@
-{ lib, stdenv, fetchFromGitLab, xorg }:
+{ lib, stdenv, fetchFromGitLab, libx11 }:
 
 stdenv.mkDerivation {
   pname = "xspy";
-  version = "unstable-2024";
+  version = "unstable-2025-12-10";
 
   src = fetchFromGitLab {
     owner = "kalilinux/packages";
@@ -11,7 +11,7 @@ stdenv.mkDerivation {
     hash = "sha256-Vwjnb0SBxiXsOKz50slws37z/RfCWWanEUN7btaO2vc=";
   };
 
-  buildInputs = [ xorg.libX11 ];
+  buildInputs = [ libx11 ];
 
   buildPhase = ''
     runHook preBuild

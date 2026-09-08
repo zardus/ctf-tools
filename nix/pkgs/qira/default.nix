@@ -154,7 +154,7 @@ let
 
   qiraTracer = stdenv.mkDerivation {
     pname = "qira-qemu-tracer";
-    version = "unstable-2018";
+    version = "unstable-2019-03-24";
     src = qemuSrc;
     patches = [ ./qemu.patch ];
     nativeBuildInputs = [
@@ -189,7 +189,7 @@ let
   };
 
   qiraSrc = fetchFromGitHub {
-    owner = "BinaryAnalysisPlatform";
+    owner = "geohot";
     repo = "qira";
     rev = "5f34406410aa492bc491fe0e579dbe103390a432";
     hash = "sha256-+sz25WPdXXyDnGUYXW3AQoMsk4zYUzfB4ckmkhvcqOY=";
@@ -200,7 +200,7 @@ let
   # against the same glibc as the python27 interpreter that loads it.
   qiradb = pkgsPy2.stdenv.mkDerivation {
     pname = "qiradb";
-    version = "unstable-2018";
+    version = "unstable-2022-07-02";
     src = qiraSrc;
     nativeBuildInputs = [ pyPkgs.cython py ];
     buildPhase = ''
@@ -222,7 +222,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "qira";
-  version = "1.3-unstable-2018";
+  version = "1.3-unstable-2022-07-02";
   src = qiraSrc;
 
   nativeBuildInputs = [ makeWrapper ];
@@ -258,7 +258,7 @@ EOF
 
   meta = {
     description = "QIRA: timeless debugging / instrumenting reverse-analysis platform (Python 2 frontend + QEMU tracer)";
-    homepage = "https://github.com/BinaryAnalysisPlatform/qira";
+    homepage = "https://github.com/geohot/qira";
     license = lib.licenses.mit;
     mainProgram = "qira";
     platforms = lib.platforms.linux;

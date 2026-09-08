@@ -9,7 +9,7 @@
 }:
 
 # Dwarf Fortress (Bay 12 Games) — shipped as a prebuilt Linux ELF tarball.
-# The ctf-tools installer downloads df_51_06_linux.tar.bz2, extracts it, and
+# The ctf-tools installer downloads the Linux tarball, extracts it, and
 # drops a bin/dwarf_fortress launcher that cd's into the game directory and
 # runs the game binary. We reproduce that: patchelf the prebuilt binaries and
 # expose a bin/dwarf_fortress launcher. The game directory it runs from has
@@ -17,11 +17,11 @@
 # copy instead of chdir'ing into the store.
 stdenv.mkDerivation rec {
   pname = "dwarf-fortress";
-  version = "51.06";
+  version = "53.16";
 
   src = fetchurl {
-    url = "https://www.bay12games.com/dwarves/df_51_06_linux.tar.bz2";
-    hash = "sha256-/fksG+hpS6UnNXoRIKgeU2mpGJtaBGGTChbJSLkSrzI=";
+    url = "https://www.bay12games.com/dwarves/df_${lib.replaceStrings [ "." ] [ "_" ] version}_linux.tar.bz2";
+    hash = "sha256-L5wBNLJGXMy3BbjT4yLN/wffc3T/v6//6PmC8u9+fn0=";
   };
 
   # Tarball extracts flat (no top-level directory).

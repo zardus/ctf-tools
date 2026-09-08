@@ -17,8 +17,8 @@
 #             and it installs the libpyvex headers/library that angr's
 #             unicornlib links against.
 #   claripy   an exact z3-solver pin, dropped in favour of the z3 nixpkgs ships.
-#   cle       uefi-firmware, which nixpkgs lacks and which is built below, and
-#             pyxdia, which is dropped (see the comment on cle).
+#   cle       nixpkgs' uefi-firmware, and pyxdia, which is dropped (see the
+#             comment on cle).
 #   angr      three build steps in one: setuptools-rust builds the `rustylib`
 #             cdylib, `make` builds native/unicornlib against pyvex's headers,
 #             and grpc_tools.protoc generates angr/protos/*_pb2.py. Plus
@@ -33,6 +33,7 @@
 , python312
 , fetchPypi
 , fetchFromGitHub
+, fetchpatch
 , rustPlatform
 , cargo
 , rustc
@@ -43,7 +44,7 @@
 let
   # The angr family releases in lockstep and pins itself `==` across packages,
   # so one version string drives archinfo/pyvex/claripy/cle/angr together.
-  version = "9.3.2";
+  version = "9.3.4";
 in
 python312.override {
   packageOverrides = self: super: {
@@ -58,7 +59,7 @@ python312.override {
       src = fetchPypi {
         pname = "archinfo";
         inherit version;
-        hash = "sha256-vhN3ixMWV8VtOrXZSXD03KplnxtIO6SSeIx4xpMIUTI=";
+        hash = "sha256-4n8g/nYP3d7eCqy1aAfLPUoZyL9TlUxFngBTJZ7AtNo=";
       };
 
       build-system = [ self.setuptools ];
@@ -82,7 +83,7 @@ python312.override {
       src = fetchPypi {
         pname = "pyvex";
         inherit version;
-        hash = "sha256-NNnGUCVwAMuDUgvh2wBobAdDE6L87NZSE0KvELjmHI0=";
+        hash = "sha256-EMbyPzusTFMasWxEK74jkSZlTlFyn5l6mEcUhwa+d2c=";
       };
 
       # 9.3 builds libpyvex (and the vendored VEX) with CMake through
@@ -123,7 +124,7 @@ python312.override {
       src = fetchPypi {
         pname = "claripy";
         inherit version;
-        hash = "sha256-zxsx5Pa4pgGitu3lZuiWQW8U+BQCp+VjY7bplZP5HUU=";
+        hash = "sha256-K+cIrkBb2Kf3jA8sHZzVgaUrL+WdSAQz42M866Sylv0=";
       };
 
       build-system = [ self.setuptools ];
@@ -158,7 +159,7 @@ python312.override {
       src = fetchPypi {
         pname = "cle";
         inherit version;
-        hash = "sha256-ARvUSwLuOJc1FS0jj4KsTKNBvRGwgdTemFZgQeQV2/k=";
+        hash = "sha256-HfjwpyCzMa3zCvw8sgiY+9YT1EJrgAjtHGC+OFLA1BQ=";
       };
 
       build-system = [ self.setuptools ];
@@ -207,14 +208,14 @@ python312.override {
       src = fetchPypi {
         pname = "angr";
         inherit version;
-        hash = "sha256-C0AyMypVEF2qmGIBWMmz7crv5/f4YpcKVtJ9rgZY4V8=";
+        hash = "sha256-v4nRMivmjGH2NnaBpMGJwJNWXg/k0O3f4naAVvEPTOU=";
       };
 
       # angr.rustylib, built by setuptools-rust out of the workspace at the
       # sdist root (native/angr).
       cargoDeps = rustPlatform.fetchCargoVendor {
         inherit (finalAttrs) src;
-        hash = "sha256-zdOpD3llDK+us5OripMv+kuvqkL7kUDjSKswbolzb2o=";
+        hash = "sha256-KFkp+WCv3j4wWJR22K/0gAaXpRt9b33g3WBFzTX3sgg=";
       };
 
       nativeBuildInputs = [ rustPlatform.cargoSetupHook cargo rustc ];
@@ -325,48 +326,22 @@ python312.override {
       };
     };
 
-    # cle's UEFI firmware backend.
-    uefi-firmware = self.buildPythonPackage {
-      pname = "uefi_firmware";
-      version = "1.16";
-      pyproject = true;
-
-      src = fetchPypi {
-        pname = "uefi_firmware";
-        version = "1.16";
-        hash = "sha256-Fia5kwsQBvnsELde+In/wXxjLgtDpKugehCQ2QIxM+o=";
-      };
-
-      build-system = [ self.setuptools self.setuptools-scm ];
-
-      dependencies = [ self.future ];
-
-      pythonImportsCheck = [ "uefi_firmware" ];
-
-      meta = {
-        description = "Parser for UEFI firmware volumes, capsules and PE32+ images";
-        homepage = "https://github.com/theopolis/uefi-firmware-parser";
-        license = lib.licenses.bsd3;
-      };
-    };
-
     # ----------------------------------------------- version-bumped nixpkgs ---
 
-    # libbs (via binsync) is an angr-management dependency, and nixpkgs' 3.3.0
-    # does not survive the pycparser nixpkgs itself ships: its C-type parser
-    # calls `pycparser.ply.yacc`, and pycparser 3.00 replaced ply with a
-    # hand-written parser, so every test that touches the type parser dies on
-    # "module 'pycparser' has no attribute 'ply'".
-    #
-    # Note what is *not* available as a fix here. Holding pycparser at 2.x --
-    # what this file used to do for angr 9.2 -- is no longer possible: angr 9.3
-    # requires `pycparser~=3.0`. Upstream's own fix was to drop pycparser from
-    # libbs entirely in 3.8, but that release depends on declib, which pulls in
-    # pyghidra/wordfreq and a binsync bump behind it; that is a lot of new
-    # packaging for a collaboration plugin. So the tests are skipped and the
-    # breakage stays where nixpkgs has it: binsync's "parse this C type" path
-    # inside angr-management raises, and nothing else does.
+    # libbs (via binsync) is an angr-management dependency. nixpkgs' 3.3.0 calls
+    # through pycparser's old vendored PLY namespace, which pycparser 3 removed.
+    # Apply libbs' own pycparser-3 compatibility fix from v3.4.1; the affected
+    # file is otherwise identical between 3.3.0 and the parent of this commit.
     libbs = super.libbs.overridePythonAttrs (old: {
+      patches = (old.patches or [ ]) ++ [
+        (fetchpatch {
+          url = "https://github.com/binsync/libbs/commit/e8ece1a5398d0ad7be12914f294cbc73c9b1ef4b.patch";
+          includes = [ "libbs/api/type_parser.py" ];
+          hash = "sha256-TkErkb23x0UkCGeJXNXwOm2iFfEPo+0ZDObNXyQ8cL4=";
+        })
+      ];
+      # These integration tests require an external Ghidra installation and
+      # abort when GHIDRA_INSTALL_DIR is absent from the build sandbox.
       disabledTestPaths = (old.disabledTestPaths or [ ]) ++ [
         "tests/test_client_server.py"
       ];

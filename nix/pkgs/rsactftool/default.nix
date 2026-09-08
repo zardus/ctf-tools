@@ -48,14 +48,14 @@ let
 in
 python3Packages.buildPythonApplication rec {
   pname = "rsactftool";
-  version = "unstable-2026-08-04";
+  version = "unstable-2026-08-12";
   format = "pyproject";
 
   src = fetchFromGitHub {
-    owner = "Ganapati";
+    owner = "RsaCtfTool";
     repo = "RsaCtfTool";
-    rev = "7c98848f1945de3e67a420871e8672f5ad9aa5d5";
-    hash = "sha256-Yq0VvO6qZtTXPRmPvP+tr83B0gwIAwl49EL/Ucc919k=";
+    rev = "af87bb487666b1bf3070e1bb058d97b78a342808";
+    hash = "sha256-1Igd+1z5vAb3Tqi40efdH+afeQ6GuIKtp/0i4LPrPFw=";
   };
 
   # Upstream's package-data only lists `data/*`, so setuptools copies the .py

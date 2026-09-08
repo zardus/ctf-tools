@@ -18,19 +18,19 @@
 # left to users who need it.)
 
 let
+  version = "0-unstable-2026-09-02";
   src = fetchFromGitHub {
     owner = "zardus";
     repo = "preeny";
-    rev = "2c2743d64a42c60327b8b50ec9427f3e27eec2c2";
-    hash = "sha256-QKq2l2kgT6CQ7RW9wJ69a7UJ4AaUg3dgRXB8I699MuY=";
+    rev = "eff2887db0a2da697eb0350e80e8bc5ce9b435e1";
+    hash = "sha256-3LZuaBxoyxdK9yy+xJQaggh8msBxfyfMH4AtBoysxlo=";
   };
 
   # Build the module set with a given (arch-specific) stdenv + deps.
   buildModules = { stdenv, libseccomp, ding-libs, tag }:
     stdenv.mkDerivation {
       pname = "preeny-modules-${tag}";
-      version = "0-unstable-2024";
-      inherit src;
+      inherit version src;
       buildInputs = [ libseccomp ding-libs ];
       buildPhase = ''
         runHook preBuild
@@ -60,7 +60,7 @@ let
     tag = "i686";
   };
 in
-runCommand "preeny-0-unstable-2024"
+runCommand "preeny-${version}"
   {
     meta = {
       description = "Collection of LD_PRELOAD tricks to ease CTF binary analysis (32- and 64-bit modules)";

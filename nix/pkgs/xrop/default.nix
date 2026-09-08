@@ -34,7 +34,7 @@
 
 stdenv.mkDerivation {
   pname = "xrop";
-  version = "unstable-2024";
+  version = "unstable-2024-08-16";
 
   src = fetchFromGitHub {
     owner = "acama";

@@ -44,13 +44,13 @@
 # reachable from anywhere, as it was with the installer's single checkout.
 stdenvNoCC.mkDerivation {
   pname = "libc-database";
-  version = "unstable-2024-291b0eb";
+  version = "unstable-2026-08-09";
 
   src = fetchFromGitHub {
     owner = "niklasb";
     repo = "libc-database";
-    rev = "291b0ebf126de9961cd2f8dd1cea2654c57a594a";
-    hash = "sha256-Zysjhr76TenMarnoKo+M8DrTNbsnaXSoFZO1puPVoxU=";
+    rev = "b7e948f7324cde8ac5cdb26bc4d58fbeeb1fbb5c";
+    hash = "sha256-JedB0UZo9vU59zPAk0/Nravu6Ae5AOY6AyEyTOayiIM=";
   };
 
   nativeBuildInputs = [ makeWrapper perl gnused ];
@@ -63,6 +63,12 @@ stdenvNoCC.mkDerivation {
 
     perl -i -0pe 's/\(rpm2cpio pkg\.rpm \|\| die "rpm2cpio failed"\) \| \\\n\s+\(cpio -id --quiet \|\| die "cpio failed"\)/bash "\$SCRIPT_DIR\/common\/extract_rpm.sh" pkg.rpm || die "rpm extraction failed"/g' common/libc.sh
     sed -i '1a SCRIPT_DIR="$(cd "$(dirname "''${BASH_SOURCE[0]}")/.." && pwd)"' common/libc.sh
+
+    # `find` extracts the libc ID from grep's filename prefix. GNU grep omits
+    # that prefix when the database contains exactly one symbols file.
+    substituteInPlace find \
+      --replace-fail 'grep -i -e "^$name .*$addr_last12$" db/*.symbols' \
+                     'grep -H -i -e "^$name .*$addr_last12$" db/*.symbols'
   '';
 
   dontConfigure = true;

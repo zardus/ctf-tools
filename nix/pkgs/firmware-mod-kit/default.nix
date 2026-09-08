@@ -50,7 +50,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "firmware-mod-kit";
-  version = "unstable-2024";
+  version = "unstable-2026-02-17";
 
   src = fetchFromGitHub {
     owner = "rampageX";

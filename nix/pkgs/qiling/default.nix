@@ -23,30 +23,26 @@ let
   rootfs = fetchFromGitHub {
     owner = "qilingframework";
     repo = "rootfs";
-    rev = "df3fa4dfc0b9d4164f8678699d8923df847eb3d2";
-    hash = "sha256-xDEvm5vABUpjjVkFeIGcJHX4rD7uZOKgh2hjlfwPEDg=";
+    rev = "f71f45fe1a39d58d8b8cae717f55cebeb37f63c7";
+    hash = "sha256-i+9+/qtBn8TrHUBN96Y18U2F4V+V3Pcaa9Zn9MwdfLc=";
   };
 in
 py.buildPythonApplication rec {
   pname = "qiling";
-  version = "1.4.10";
+  version = "1.4.11";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "qilingframework";
     repo = "qiling";
-    tag = version;
-    hash = "sha256-EX0Zd9T6Hioy5AytV2IE/sppdhwELnBwIvzVutdGJ58=";
+    tag = "v${version}";
+    hash = "sha256-HTlp6zSxeYEytXR085kLQadZKX+xaJ8u9XpWCLxI4Eg=";
   };
 
-  # `qltool examples` builds its sample command lines from
-  # `os.path.basename(__file__)`. wrapPythonPrograms renames the real script to
-  # `.qltool-wrapped` and puts a shell wrapper at `bin/qltool`, so every printed
-  # example would tell the user to run `.qltool-wrapped`. Hardcode the name the
-  # user actually types.
+  # Keep help and examples stable when Nix renames the Python entry point.
   postPatch = ''
-    substituteInPlace qltool \
-      --replace-fail 'prog = os.path.basename(__file__)' "prog = 'qltool'"
+    substituteInPlace qiling/cli.py \
+      --replace-fail 'parser = argparse.ArgumentParser()' "parser = argparse.ArgumentParser(prog='qltool')"
   '';
 
   # Upstream pins `unicorn = "2.1.3"` exactly; nixpkgs ships 2.1.4.
@@ -69,21 +65,12 @@ py.buildPythonApplication rec {
     unicorn
   ];
 
-  # qltool and qltui.py live at the repo root and are not declared as poetry
-  # scripts, so the wheel does not carry them. Install them by hand: qltool is
-  # the CLI (postInstall runs before wrapPythonPrograms, so it gets its shebang
-  # rewritten and PYTHONPATH injected like a normal entry point), while qltui.py
-  # is a plain module that `qltool qltui` does `import qltui` on — it belongs on
-  # sys.path, not in bin, which is where the pre-nix installer put it too.
-  #
+  # Upstream now includes qltool and qltui.py in the wheel.
   # The example scripts resolve their guest images through the relative path
   # `rootfs/...`, so they only run from inside $out/share/qiling/examples. The
   # rootfs itself is symlinked rather than copied: it is ~400 MB, and a copy
   # would double that in the store for no benefit.
   postInstall = ''
-    install -Dm755 qltool -t $out/bin
-    install -Dm644 qltui.py -t $out/${py.python.sitePackages}
-
     mkdir -p $out/share/qiling
     cp -r examples $out/share/qiling/examples
     chmod -R u+w $out/share/qiling/examples
@@ -100,7 +87,7 @@ py.buildPythonApplication rec {
   meta = {
     description = "Qiling Advanced Binary Emulation Framework";
     homepage = "https://qiling.io/";
-    changelog = "https://github.com/qilingframework/qiling/releases/tag/${version}";
+    changelog = "https://github.com/qilingframework/qiling/releases/tag/v${version}";
     license = lib.licenses.gpl2Only;
     mainProgram = "qltool";
   };

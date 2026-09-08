@@ -17,14 +17,14 @@ python3Packages.buildPythonApplication rec {
   pname = "ida-pro-mcp";
   # 2.0.0 (vendored zeromcp, no `mcp` dependency) has no release tag yet; the
   # pre-nix installer tracked the default branch unpinned, so pin its tip.
-  version = "2.0.0-unstable-2026-08-05";
+  version = "2.0.0-unstable-2026-08-28";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "mrexodia";
     repo = "ida-pro-mcp";
-    rev = "2ca65ed8f505c912bb921fd8873e7d757bdf627b";
-    hash = "sha256-SW8Dkfru+YIeTejglaprmtbHgCy0nUp3nLHPkoPKO9Y=";
+    rev = "3c97954d74d70063ba076411570a33118a9d691f";
+    hash = "sha256-LqPEs0QvR6/GBFfuMxf69OdHNp53BBiQDfDRq4Zer1Y=";
   };
 
   build-system = [ python3Packages.setuptools ];

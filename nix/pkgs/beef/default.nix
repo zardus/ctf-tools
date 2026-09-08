@@ -5,7 +5,6 @@
 , ruby
 , makeWrapper
 , coreutils
-, sqlite
 , espeak
 }:
 
@@ -15,15 +14,15 @@
 # geckodriver-helper, curb, capybara, ...), runs `bundle install`, and
 # drops a bin/beef wrapper that sets GEM_HOME/GEM_PATH and execs ./beef.
 #
-# We reproduce that here: the checked-in Gemfile/Gemfile.lock have the
-# :test group already removed (the lock was regenerated with bundler),
-# and gemset.nix was produced from that lock with bundix. bundlerEnv
+# We reproduce that here: the checked-in Gemfile/Gemfile.lock omit the :test
+# group and the top-level RuboCop development dependency, and gemset.nix was
+# produced from that lock with bundix. bundlerEnv
 # builds the exact gem closure; our launcher runs the repo's ./beef under
 # the wrapped ruby (which sets BUNDLE_GEMFILE etc.) from a writable
 # per-user copy of the app directory, which BeEF requires at runtime.
 
 let
-  rev = "7f4d40432f84b82098433008d5dc6d9be64053df";
+  rev = "1b4dc8421f40248d61bebc899d111f2905b55296";
 
   gems = bundlerEnv {
     name = "beef-gems";
@@ -39,7 +38,7 @@ stdenv.mkDerivation {
     owner = "beefproject";
     repo = "beef";
     inherit rev;
-    hash = "sha256-wneR0h9VyYgvmCP0oENs5ZKrSJfVPPM4Om8bWMZB1CE=";
+    hash = "sha256-lrYt2L7VG/eoixipFwtX5QBmNrUmT+ygJ3rYFJsGJnE=";
   };
 
   nativeBuildInputs = [ makeWrapper ];

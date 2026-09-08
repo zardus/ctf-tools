@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation {
   pname = "elfparser-ng";
-  version = "unstable-2024";
+  version = "unstable-2025-07-01";
 
   src = fetchFromGitHub {
     owner = "mentebinaria";

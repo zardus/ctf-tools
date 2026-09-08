@@ -11,11 +11,11 @@
 # fight the bundle's own loader/library resolution mechanism.
 stdenv.mkDerivation rec {
   pname = "pwndbg";
-  version = "2025.02.19";
+  version = "2026.07.29";
 
   src = fetchurl {
     url = "https://github.com/pwndbg/pwndbg/releases/download/${version}/pwndbg_${version}_x86_64-portable.tar.xz";
-    hash = "sha256-Vta4sD70jEhcusWoHlmRI0pHltN9gctfXCJJ7kbTpGQ=";
+    hash = "sha256-Y8OLdr+LrrRLS8AYxz6gsFuHLCq6IF7VaAiS8tZa2wM=";
   };
 
   # The tarball root is ./pwndbg/{bin,exe,lib,share}; strip that one component.

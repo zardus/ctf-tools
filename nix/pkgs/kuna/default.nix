@@ -34,20 +34,22 @@ rustPlatform.buildRustPackage (finalAttrs: {
   pname = "kuna";
   # Upstream's version is `VERSION` + the commit count (scripts/version.sh), so
   # tags are v1.<n>; this is the latest release tag.
-  version = "1.119";
+  version = "1.355";
 
   src = fetchFromGitHub {
     owner = "Noelo-Lab";
     repo = "kuna";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-A1kkGhsWmqum3XknBjE7J0eOpcKavRG86ezP2VUJQVA=";
+    hash = "sha256-PDwxZnjZLAXL3DUDgKUG5jx+T41dD6GNVNEZ+aV8L1Q=";
   };
 
   # The cargo workspace is decompiler/, not the repo root (which is a plain
   # Makefile tree holding the specs, tests and docs alongside it).
   cargoRoot = "decompiler";
   buildAndTestSubdir = "decompiler";
-  cargoHash = "sha256-kanKRqb40Ps2D2aoWwdeaPn/sosRHD860XVqCyJpIWM=";
+  cargoHash = "sha256-9Ko9ZCVJFcGOaKuTXpjnL1YCAw+1uvMYVaeaPkrZF7Q=";
+
+  env.KUNA_VERSION = finalAttrs.version;
 
   nativeBuildInputs = [ makeWrapper ];
 
