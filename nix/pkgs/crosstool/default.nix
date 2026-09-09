@@ -197,7 +197,7 @@ let
   sources = lib.mapAttrs (_: tc: tc.sources) toolchains;
 
   # Samples whose *toolchain build* is known to currently fail (source still
-  # pins fine; kept out of the surfaced outputs so CI stays green). See PORTING.md.
+  # pins fine; kept out of the surfaced outputs so CI stays green).
   brokenBuild = [ "avr" ];
 
   # Samples whose source set has a real (pinned) hash in ./hashes.nix and that

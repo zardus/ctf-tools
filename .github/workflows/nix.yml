@@ -1,8 +1,8 @@
 name: Nix build & cache
 
-# Builds our own tool derivations (`.#ciTargets`), pushes them to the `ctftools`
-# Cachix cache, and (on non-PR events) builds a per-tool Docker image that
-# installs the tool with Nix.
+# Builds our own tool derivations and locally overridden passthroughs
+# (`.#ciTargets`), pushes them to the `ctftools` Cachix cache, and (on non-PR
+# events) builds a per-tool Docker image that installs the tool with Nix.
 #
 # The nixpkgs passthroughs (nix/passthrough.nix) are not rebuilt here —
 # cache.nixos.org already serves them — but they are not unchecked either: the
@@ -56,6 +56,14 @@ jobs:
         # failure is an eval error naming the attribute and its line in
         # nix/passthrough.nix.
         run: nix eval --raw .#ciPassthroughCheck.x86_64-linux
+      - name: ARM package set evaluates (builds remain local and uncached)
+        # Force every exposed aarch64 package to a drvPath so unsupported
+        # packages cannot break ARM users unnoticed. This is evaluation only:
+        # this job has no authenticated cachix-action and uploads no store path.
+        # The generated cross2/crosstool-ng toolchain fleet is x86_64-only.
+        run: |
+          nix eval --json .#packages.aarch64-linux \
+            --apply 'ps: builtins.mapAttrs (_: p: p.drvPath) ps' >/dev/null
 
   listcheck:
     name: README tool table matches the flake

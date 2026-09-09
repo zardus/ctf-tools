@@ -9,7 +9,7 @@
 # below with what it repairs; the long-term fix for all of them is to land the
 # same change in nixpkgs and shrink the entry back to a bare re-export.
 #
-# Validated present in nixpkgs-unstable (2026-08). If nixpkgs renames or drops
+# Validated present in nixpkgs-unstable (2026-09). If nixpkgs renames or drops
 # one of these, move it into nix/pkgs/<tool>/default.nix as a real derivation --
 # but then delete the entry here: flake.nix computes `passthrough // custom`, so
 # a name defined in both places resolves to nix/pkgs and the attribute here
@@ -30,6 +30,13 @@ let
   });
 in
 {
+  aflplusplus          = pkgs.aflplusplus;
+  apktool              = pkgs.apktool;
+  autopsy              = pkgs.autopsy;
+  bettercap            = pkgs.bettercap;
+  binwalk              = pkgs.binwalk;
+  checksec             = pkgs.checksec;
+
   # Restores `commix.py`, the only name the pre-nix installer put on PATH.
   # symlinkJoin rather than overrideAttrs so the nixpkgs build still substitutes
   # from cache.nixos.org; it drops meta/version unless they are passed through.
@@ -40,7 +47,28 @@ in
     inherit (pkgs.commix) meta version;
   };
 
+  dex2jar              = pkgs.dex2jar;
+  dirb                 = pkgs.dirb;
+
+  # dirsearch 0.4.3 imports pkg_resources both while building and at runtime.
+  # Current setuptools has removed that module, while nixpkgs keeps
+  # setuptools_80 specifically for compatibility. Keep the nixpkgs derivation
+  # and swap only that dependency until upstream stops using pkg_resources.
+  dirsearch = py.dirsearch.overridePythonAttrs (old: {
+    build-system = [ py.setuptools_80 ];
+    dependencies = map
+      (dep: if (dep.pname or "") == "setuptools" then py.setuptools_80 else dep)
+      (old.dependencies or [ ]);
+  });
+
+  dislocker            = pkgs.dislocker;
+  dsniff               = pkgs.dsniff;
   elfkickers           = pkgs.elfkickers;
+  exiftool             = pkgs.exiftool;
+  feroxbuster          = pkgs.feroxbuster;
+  ffuf                 = pkgs.ffuf;
+  foremost             = pkgs.foremost;
+  frida-tools          = pkgs.frida-tools;
 
   # Deliberately *not* `.override { withGuile = true; }`. The pre-nix
   # gdb/install configured --with-guile=guile-2.2, and nixpkgs builds
@@ -63,9 +91,16 @@ in
     '';
   });
 
+  hashcat              = pkgs.hashcat;
   honggfuzz            = pkgs.honggfuzz;
+  hydra                = pkgs.hydra;
+  imhex                = pkgs.imhex;
+  jadx                 = pkgs.jadx;
+  john                 = pkgs.john;
   mitmproxy            = pkgs.mitmproxy;
   msieve               = pkgs.msieve;
+  nikto                = pkgs.nikto;
+  nmap                 = pkgs.nmap;
   one_gadget           = pkgs.one_gadget;
 
   # Upstream ships `pdf-parser.py`; the pre-nix installer renamed it to
@@ -97,6 +132,9 @@ in
     };
   });
 
+  pngtools             = pkgs.pngtools;
+  poke                 = pkgs.poke;
+
   # pwninit's whole point is patching the challenge binary to use the provided
   # libc/ld, and it does that by shelling out to `patchelf` (patch_bin.rs runs a
   # bare `Command::new("patchelf")`). nixpkgs wraps it with elfutils only and
@@ -118,7 +156,9 @@ in
 
   pwntools             = py.pwntools;
   qemu                 = pkgs.qemu;
+  radare2              = pkgs.radare2;
   rappel               = pkgs.rappel;
+  rizin                = pkgs.rizin;
   ropper               = py.ropper;
 
   # nixpkgs installs the binary as `rp` (and sets mainProgram to match); `rp++`
@@ -136,7 +176,17 @@ in
       ln -s ${lib.getExe pkgs.rp} $out/bin/rp
     '';
 
+  rr                   = pkgs.rr;
+  sage                 = pkgs.sage;
   seccomp-tools        = pkgs.rubyPackages.seccomp-tools;
+  sherlock             = pkgs.sherlock;
+  sleuthkit            = pkgs.sleuthkit;
+  socat                = pkgs.socat;
+
+  # Preserve the spelling used by the old apt-oriented README while forwarding
+  # to nixpkgs' upstream/British package name.
+  sonic-visualizer     = pkgs.sonic-visualiser;
+  sqlmap               = pkgs.sqlmap;
 
   # sslsplit's GNUmakefile picks its NAT engines by wildcard-testing the literal
   # path /usr/include/linux/netfilter.h, which no buildInput can satisfy inside
@@ -152,10 +202,17 @@ in
   });
 
   stegsolve            = pkgs.stegsolve;
+  testdisk             = pkgs.testdisk;
+  tshark               = pkgs.tshark;
   tor-browser          = pkgs.tor-browser;
+  upx                  = pkgs.upx;
   valgrind             = pkgs.valgrind;
   volatility3          = pkgs.volatility3;
+  wcc                  = pkgs.wcc;
+  wfuzz                = pkgs.wfuzz;
   xortool              = pkgs.xortool;
+  yara                 = pkgs.yara;
+  z3                   = pkgs.z3;
 
   # Two repairs in one derivation: expose all four binstubs (see zstegUnwrapped
   # above), and put file(1) on PATH -- zsteg runs `file` on every candidate by

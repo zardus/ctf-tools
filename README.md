@@ -2,7 +2,7 @@
 
 This is a Nix flake packaging various security research tools.
 Of course, this isn't a hard problem, but it's really nice to have them in one place that's easily deployable to new machines and so forth.
-The packages are checked every once in a while, so things should hopefully have a decent chance of working!
+CI evaluates the catalog and builds the repository-packaged x86_64 tools every day, so breakage should be caught quickly.
 
 The following tools are included. The first table lists tools packaged in this repo (under `nix/pkgs/`); the second lists tools taken from nixpkgs.
 
@@ -40,14 +40,15 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [villoc](https://github.com/wapiflapi/villoc) | ![Last Build](https://img.shields.io/docker/v/ctftools/villoc?label=built) Visualization of heap operations. | <!--tool-->
 | binary | [xrop](https://github.com/acama/xrop) | ![Last Build](https://img.shields.io/docker/v/ctftools/xrop?label=built) Gadget finder. | <!--tool-->
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | ![Last Build](https://img.shields.io/docker/v/ctftools/firmware-mod-kit?label=built) Tools for firmware packing/unpacking. | <!--tool-->
+| forensics | [origami-pdf](https://github.com/gdelugre/origami) | Ruby framework and command-line tools for parsing and manipulating PDF files. | <!--tool-->
 | forensics | [peepdf](https://github.com/cert-ee/peepdf) | ![Last Build](https://img.shields.io/docker/v/ctftools/peepdf?label=built) Powerful Python tool to analyze PDF documents. | <!--tool-->
 | forensics | [scrdec18](https://gist.github.com/bcse/1834878) | ![Last Build](https://img.shields.io/docker/v/ctftools/scrdec18?label=built) A decoder for encoded Windows Scripts. | <!--tool-->
-| forensics | [volatility](https://github.com/volatilityfoundation/volatility) | ![Last Build](https://img.shields.io/docker/v/ctftools/volatility?label=built) Analyzer for system memory dumps (classic python2 version; requires python2 tool). | <!--tool-->
+| forensics | [volatility](https://github.com/volatilityfoundation/volatility) | ![Last Build](https://img.shields.io/docker/v/ctftools/volatility?label=built) Analyzer for system memory dumps (classic Python 2 version with its runtime included). | <!--tool-->
 | crypto | [codext](https://github.com/dhondta/python-codext) | ![Last Build](https://img.shields.io/docker/v/ctftools/codext?label=built) Python codecs extension featuring CLI tools for encoding/decoding anything including AI-based guessing mode. | <!--tool-->
 | crypto | [cribdrag](https://github.com/SpiderLabs/cribdrag) | ![Last Build](https://img.shields.io/docker/v/ctftools/cribdrag?label=built) Interactive crib dragging tool (for crypto). | <!--tool-->
 | crypto | [fastcoll](https://www.win.tue.nl/hashclash/) | ![Last Build](https://img.shields.io/docker/v/ctftools/fastcoll?label=built) An md5sum collision generator. | <!--tool-->
 | crypto | [foresight](https://github.com/ALSchwalm/foresight) | ![Last Build](https://img.shields.io/docker/v/ctftools/foresight?label=built) A tool for predicting the output of random number generators. To run, launch "foresee". | <!--tool-->
-| crypto | [featherduster](https://github.com/nccgroup/featherduster) | ![Last Build](https://img.shields.io/docker/v/ctftools/featherduster?label=built)  An automated, modular cryptanalysis tool. WARNING: needs python2 (which can be installed with ctf-tools). | <!--tool-->
+| crypto | [featherduster](https://github.com/nccgroup/featherduster) | ![Last Build](https://img.shields.io/docker/v/ctftools/featherduster?label=built) An automated, modular cryptanalysis tool. Its Python 2 runtime is included in the package. | <!--tool-->
 | crypto | [galois](http://web.eecs.utk.edu/~plank/plank/papers/CS-07-593) | ![Last Build](https://img.shields.io/docker/v/ctftools/galois?label=built) A fast galois field arithmetic library/toolkit. | <!--tool-->
 | crypto | [hashpump-partialhash](https://github.com/mheistermann/HashPump-partialhash) | Hashpump, supporting partially-unknown hashes. | <!--tool-->
 | crypto | [libc-database](https://github.com/niklasb/libc-database) | ![Last Build](https://img.shields.io/docker/v/ctftools/libc-database?label=built) Build a database of libc offsets to simplify exploitation. Ships the scripts only: run `libc-database-get all` once to populate the database. | <!--tool-->
@@ -55,7 +56,7 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | crypto | [pemcrack](https://github.com/robertdavidgraham/pemcrack) | ![Last Build](https://img.shields.io/docker/v/ctftools/pemcrack?label=built) SSL PEM file cracker. | <!--tool-->
 | crypto | [reveng](http://reveng.sourceforge.net/) | ![Last Build](https://img.shields.io/docker/v/ctftools/reveng?label=built) CRC finder. | <!--tool-->
 | crypto | [rsactftool](https://github.com/RsaCtfTool/RsaCtfTool) | ![Last Build](https://img.shields.io/docker/v/ctftools/rsactftool?label=built) RSA attack tool. | <!--tool-->
-| crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | ![Last Build](https://img.shields.io/docker/v/ctftools/ssh_decoder?label=built) A tool for decoding ssh traffic. You will need `ruby1.8` from `https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng` to run this. Run with `ssh_decoder --help` for help, as running it with no arguments causes it to crash. | <!--tool-->
+| crypto | [ssh_decoder](https://github.com/jjyg/ssh_decoder) | ![Last Build](https://img.shields.io/docker/v/ctftools/ssh_decoder?label=built) A tool for decoding SSH traffic from hosts affected by the Debian OpenSSL PRNG bug. Its Ruby runtime is included. | <!--tool-->
 | crypto | [yafu](http://sourceforge.net/projects/yafu/) | ![Last Build](https://img.shields.io/docker/v/ctftools/yafu?label=built) Automated integer factorization. | <!--tool-->
 | web | [burpsuite](http://portswigger.net/burp) | Web proxy to do naughty web stuff. | <!--tool-->
 | web | [subbrute](https://github.com/TheRook/subbrute) | ![Last Build](https://img.shields.io/docker/v/ctftools/subbrute?label=built) A DNS meta-query spider that enumerates DNS records, and subdomains. | <!--tool-->
@@ -75,32 +76,73 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| binary | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | A set of utilities for working with ELF files. | <!--tool-->
-| binary | [gdb](http://www.gnu.org/software/gdb/) | Up-to-date gdb with python2 bindings. | <!--tool-->
-| binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for gdb. | <!--tool-->
+| binary | [aflplusplus](https://aflplus.plus/) | Modern coverage-guided fuzzer. | <!--tool-->
+| binary | [checksec](https://github.com/slimm609/checksec) | Reports executable hardening features. | <!--tool-->
+| binary | [elfkickers](http://www.muppetlabs.com/~breadbox/software/elfkickers.html) | Utilities for manipulating ELF files. | <!--tool-->
+| binary | [gdb](https://www.gnu.org/software/gdb/) | GDB with Python 3 scripting and support for many targets. | <!--tool-->
+| binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for GDB. | <!--tool-->
 | binary | [ghidra](https://ghidra-sre.org/) | Open-source reverse engineering and decompilation tool. | <!--tool-->
-| binary | [honggfuzz](https://github.com/google/honggfuzz) | A general-purpose, easy-to-use fuzzer with interesting analysis options. | <!--tool-->
-| binary | [one_gadget](https://github.com/david942j/one_gadget) | Magic gadget search for libc. | <!--tool--> 
-| binary | [pwninit](https://github.com/io12/pwninit) | Script to automate starting pwning challenges. | <!--tool-->
-| binary | [pwntools](https://github.com/Gallopsled/pwntools) | Useful CTF utilities. | <!--tool-->
-| binary | [qemu](http://qemu.org) | Latest version of qemu! | <!--tool-->
-| binary | [rappel](https://github.com/yrp604/rappel) | A linux-based assembly REPL. | <!--tool-->
-| binary | [ropper](https://github.com/sashs/Ropper) | Another gadget finder. | <!--tool-->
-| binary | [rp++](https://github.com/0vercl0k/rp) | Another gadget finder. | <!--tool-->
-| binary | [seccomp-tools](https://github.com/david942j/seccomp-tools) | Provides powerful tools for seccomp analysis | <!--tool-->
-| binary | [valgrind](http://valgrind.org) | A Dynamic Binary Instrumentation framework with some built-in tools. | <!--tool-->
-| forensics | [pdf-parser](http://blog.didierstevens.com/programs/pdf-tools/) | Tool for digging in PDF files | <!--tool-->
-| forensics | [volatility3](https://github.com/volatilityfoundation/volatility3) | Analyzer for system memory dumps (latest version). | <!--tool-->
-| crypto | [hash-identifier](https://code.google.com/p/hash-identifier/source/checkout) | Simple hash algorithm identifier. | <!--tool-->
-| crypto | [msieve](http://sourceforge.net/projects/msieve/) | Msieve is a C library implementing a suite of algorithms to factor large integers. | <!--tool-->
-| crypto | [pkcrack](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) | PkZip encryption cracker. | <!--tool-->
-| crypto | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS MITM. | <!--tool-->
-| crypto | [xortool](https://github.com/hellman/xortool) | XOR analysis tool. | <!--tool-->
-| web | [commix](https://github.com/stasinopoulos/commix) | Command injection and exploitation tool. | <!--tool-->
-| web | [mitmproxy](https://mitmproxy.org/) | CLI Web proxy and python library.  | <!--tool-->
-| stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image stenography solver. | <!--tool-->
-| stego | [zsteg](https://github.com/zed-0xff/zsteg) | detect stegano-hidden data in PNG & BMP. | <!--tool-->
-| web | [tor-browser](https://www.torproject.org/projects/torbrowser.html.en) | Useful when you need to hit a web challenge from different IPs. | <!--tool-->
+| binary | [honggfuzz](https://github.com/google/honggfuzz) | General-purpose security-oriented fuzzer. | <!--tool-->
+| binary | [imhex](https://imhex.werwolv.net/) | Extensible graphical hex editor. | <!--tool-->
+| binary | [one_gadget](https://github.com/david942j/one_gadget) | Finds one-shot code-execution gadgets in libc. | <!--tool-->
+| binary | [poke](https://www.jemarch.net/poke) | Extensible editor for structured binary data. | <!--tool-->
+| binary | [pwninit](https://github.com/io12/pwninit) | Automates preparing binary-exploitation challenges. | <!--tool-->
+| binary | [pwntools](https://github.com/Gallopsled/pwntools) | Python framework and utilities for exploit development. | <!--tool-->
+| binary | [qemu](https://www.qemu.org/) | Full-system and user-mode machine emulator. | <!--tool-->
+| binary | [radare2](https://rada.re/n/) | Reverse-engineering framework and command-line toolkit. | <!--tool-->
+| binary | [rappel](https://github.com/yrp604/rappel) | Linux assembly REPL. | <!--tool-->
+| binary | [rizin](https://rizin.re/) | Reverse-engineering framework forked from radare2. | <!--tool-->
+| binary | [ropper](https://github.com/sashs/Ropper) | ROP gadget finder and binary analysis utility. | <!--tool-->
+| binary | [rp++](https://github.com/0vercl0k/rp) | Fast ROP gadget finder. | <!--tool-->
+| binary | [rr](https://rr-project.org/) | Record-and-replay debugger. | <!--tool-->
+| binary | [seccomp-tools](https://github.com/david942j/seccomp-tools) | Utilities for seccomp analysis. | <!--tool-->
+| binary | [upx](https://upx.github.io/) | Executable packer and unpacker. | <!--tool-->
+| binary | [valgrind](https://valgrind.org/) | Dynamic instrumentation framework and debugging tools. | <!--tool-->
+| binary | [wcc](https://github.com/endrazine/wcc) | Witchcraft Compiler Collection for binary analysis. | <!--tool-->
+| mobile | [apktool](https://apktool.org/) | Decodes and rebuilds Android APK resources. | <!--tool-->
+| mobile | [dex2jar](https://github.com/pxb1988/dex2jar) | Tools for Android DEX and Java class files. | <!--tool-->
+| mobile | [frida-tools](https://frida.re/) | Command-line tools for Frida dynamic instrumentation. | <!--tool-->
+| mobile | [jadx](https://github.com/skylot/jadx) | Dex-to-Java decompiler with CLI and GUI frontends. | <!--tool-->
+| forensics | [autopsy](https://www.autopsy.com/) | Graphical digital-forensics platform. | <!--tool-->
+| forensics | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware and embedded-file analysis tool. | <!--tool-->
+| forensics | [dislocker](https://github.com/Aorimn/dislocker) | Reads BitLocker-encrypted volumes. | <!--tool-->
+| forensics | [exiftool](https://exiftool.org/) | Reads and writes file metadata. | <!--tool-->
+| forensics | [foremost](https://foremost.sourceforge.net/) | File carver based on headers and footers. | <!--tool-->
+| forensics | [pdf-parser](https://blog.didierstevens.com/programs/pdf-tools/) | Inspects objects and streams in PDF files. | <!--tool-->
+| forensics | [sleuthkit](https://www.sleuthkit.org/) | Filesystem and disk-image analysis toolkit. | <!--tool-->
+| forensics | [testdisk](https://www.cgsecurity.org/wiki/TestDisk) | Partition recovery and file undelete tools. | <!--tool-->
+| forensics | [volatility3](https://github.com/volatilityfoundation/volatility3) | Current memory-forensics framework. | <!--tool-->
+| forensics | [yara](https://virustotal.github.io/yara/) | Pattern-matching engine for malware and forensic artifacts. | <!--tool-->
+| crypto | [hash-identifier](https://github.com/blackploit/hash-identifier) | Identifies likely hash algorithms. | <!--tool-->
+| crypto | [hashcat](https://hashcat.net/hashcat/) | GPU-accelerated password recovery tool. | <!--tool-->
+| crypto | [hydra](https://github.com/vanhauser-thc/thc-hydra) | Parallel network-login cracker. | <!--tool-->
+| crypto | [john](https://www.openwall.com/john/) | John the Ripper password cracker. | <!--tool-->
+| crypto | [msieve](https://sourceforge.net/projects/msieve/) | Integer factorization library and application. | <!--tool-->
+| crypto | [pkcrack](https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html) | Classic PKZIP known-plaintext attack. | <!--tool-->
+| crypto | [sage](https://www.sagemath.org/) | Mathematics system useful for cryptanalysis and algebra. | <!--tool-->
+| crypto | [xortool](https://github.com/hellman/xortool) | Repeating-key XOR analysis tool. | <!--tool-->
+| crypto | [z3](https://github.com/Z3Prover/z3) | SMT theorem prover and constraint solver. | <!--tool-->
+| networking | [bettercap](https://www.bettercap.org/) | Network reconnaissance and attack framework. | <!--tool-->
+| networking | [dsniff](https://www.monkey.org/~dugsong/dsniff/) | Network auditing and traffic-analysis tools. | <!--tool-->
+| networking | [nmap](https://nmap.org/) | Network discovery and port scanner. | <!--tool-->
+| networking | [socat](http://www.dest-unreach.org/socat/) | Bidirectional relay for sockets and many other streams. | <!--tool-->
+| networking | [sslsplit](https://github.com/droe/sslsplit) | SSL/TLS interception proxy. | <!--tool-->
+| networking | [tshark](https://www.wireshark.org/docs/man-pages/tshark.html) | Command-line packet analyzer from Wireshark. | <!--tool-->
+| web | [commix](https://github.com/commixproject/commix) | Command-injection discovery and exploitation tool. | <!--tool-->
+| web | [dirb](https://dirb.sourceforge.net/) | Web content scanner. | <!--tool-->
+| web | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. | <!--tool-->
+| web | [feroxbuster](https://github.com/epi052/feroxbuster) | Fast recursive content-discovery tool. | <!--tool-->
+| web | [ffuf](https://github.com/ffuf/ffuf) | Fast web fuzzer. | <!--tool-->
+| web | [mitmproxy](https://mitmproxy.org/) | Interactive HTTP interception proxy and Python library. | <!--tool-->
+| web | [nikto](https://github.com/sullo/nikto) | Web-server scanner. | <!--tool-->
+| web | [sqlmap](https://sqlmap.org/) | SQL-injection detection and exploitation engine. | <!--tool-->
+| web | [tor-browser](https://www.torproject.org/download/) | Tor-enabled browser bundle. | <!--tool-->
+| web | [wfuzz](https://github.com/xmendez/wfuzz) | Web application fuzzer. | <!--tool-->
+| stego | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | Utilities for inspecting PNG files. | <!--tool-->
+| stego | [sonic-visualizer](https://www.sonicvisualiser.org/) | Audio visualization and analysis application. | <!--tool-->
+| stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. | <!--tool-->
+| stego | [zsteg](https://github.com/zed-0xff/zsteg) | Detects data hidden in PNG and BMP images. | <!--tool-->
+| osint | [sherlock](https://github.com/sherlock-project/sherlock) | Finds accounts by username across social networks. | <!--tool-->
 
 ## Usage
 
@@ -134,9 +176,22 @@ manage-tools search preload
 
 Tools install into your Nix profile, and uninstalling removes them cleanly.
 
+### Platform support
+
+The ordinary package set is available on both `x86_64-linux` and
+`aarch64-linux`. Packages that nixpkgs or their upstream binary releases mark
+as unsupported are omitted from the ARM package set instead of making the
+whole profile fail to evaluate.
+
+The generated `cross2-*` and `crosstool-ng-*` toolchain outputs are x86_64-only.
+ARM packages are evaluated by CI, but are not built or uploaded to the
+size-limited ctftools Cachix cache; ARM users build repository-packaged tools
+locally. Tools forwarded unchanged from nixpkgs can still substitute from
+`cache.nixos.org` on either architecture.
+
 ### Cross-compiler toolchains (`cross2`, `crosstool`)
 
-Two of the tools are toolchain *builders* rather than single programs, so they
+On x86_64, two of the tools are toolchain *builders* rather than single programs, so they
 expose one output per target instead of one output overall. Install only the
 target you need — each is an independent package.
 
@@ -205,12 +260,18 @@ Maybe some kind soul will help!
 
 ## Binary cache
 
-CI builds the tools packaged in this repo and pushes them to a public [Cachix](https://cachix.org) cache, so installs download prebuilt binaries instead of compiling.
+CI builds the x86_64 tools packaged in this repo and pushes them to a public [Cachix](https://cachix.org) cache, so x86_64 installs download prebuilt binaries instead of compiling.
 Trusted Nix users pick this up automatically from the flake's `nixConfig`; otherwise run `cachix use ctftools` once (or pass `--accept-flake-config`).
+
+ARM outputs are deliberately not pushed to this cache. Unchanged tools in the
+"From nixpkgs" table use the official `cache.nixos.org` binary cache and do not
+consume space in the ctftools cache. `dirsearch` is the exception on x86_64:
+our setuptools compatibility override produces a distinct output, so CI caches
+it alongside the tools packaged in this repository.
 
 ## Dockerized Tools
 
-You can get the tools packaged in this repo in prebuilt containers from [dockerhub](https://hub.docker.com/r/ctftools).
+You can get the tools packaged in this repo in prebuilt x86_64 containers from [dockerhub](https://hub.docker.com/r/ctftools).
 For example:
 
 ```console
@@ -243,31 +304,7 @@ There's a curated list of CTF tools, but without installers, here: https://githu
 
 There's a Vagrant config with a lot of the bigger frameworks here: https://github.com/thebarbershopper/epictreasure.
 
-## Useful CTF tools in apt repos
-
-As tools get officially packaged, we switch to just suggesting that you apt install them!
-
-| Category | Source | Tool | Description |
-|----------|--------|------|-------------|
-| binary | apt | [aflplusplus](https://github.com/AFLplusplus/AFLplusplus) | State-of-the-art fuzzer. |
-| binary | apt | [checksec](https://github.com/slimm609/checksec.sh) | Check binary hardening settings. |
-| binary | apt | [radare2](http://www.radare.org/) | Some crazy thing crowell likes. |
-| binary | apt | [rr](http://rr-project.org) | Record and Replay Debugging Framework |
-| binary | apt | [wcc](https://github.com/endrazine/wcc) |  The Witchcraft Compiler Collection is a collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. |
-| forensics | apt | [binwalk](https://github.com/ReFirmLabs/binwalk) | Firmware (and arbitrary file) analysis tool. |
-| forensics | apt | [foremost](http://foremost.sourceforge.net/) | File carver. |
-| forensics | apt | [dislocker](http://www.hsc.fr/ressources/outils/dislocker/) | Tool for reading Bitlocker encrypted partitions. |
-| forensics | apt | [origami-pdf](http://github.com/gdelugre/origami) | PDF manipulator. |
-| forensics | apt | [testdisk](http://www.cgsecurity.org/wiki/TestDisk) | Testdisk and photorec for file recovery. |
-| web | apt | [dirb](http://dirb.sourceforge.net/) | Web path scanner. |
-| web | apt | [dirsearch](https://github.com/maurosoria/dirsearch) | Web path scanner. |
-| web | apt | [sqlmap](http://sqlmap.org/) | SQL injection automation engine. |
-| stego | apt | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | PNG's analysis tool. |
-| stego | apt | [sonic-visualizer](http://www.sonicvisualiser.org/) | Audio file visualization. |
-| networking | apt | [dsniff](http://www.monkey.org/~dugsong/dsniff/) | Grabs passwords and other data from pcaps/network streams. |
-| networking | apt | [bettercap](https://www.bettercap.org/) | Network shenanigans swiss army knife. |
-| misc | apt | [z3](https://github.com/Z3Prover/z3) | Theorem prover from Microsoft Research. |
-| osint | apt | [sherlock](https://github.com/sherlock-project/sherlock) | Tools for Hunt down social media accounts by username across 400+ social networks . |
+The old apt-only tool list has been fully migrated to Nix outputs.
 
 ## Useful CTF tools in docker images
 
