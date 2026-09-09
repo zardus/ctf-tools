@@ -23,12 +23,15 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [crosstool](http://crosstool-ng.org/) | ![Last Build](https://img.shields.io/docker/v/ctftools/crosstool?label=built) Cross-compilers and cross-architecture tools. | <!--tool-->
 | binary | [cross2](http://kozos.jp/books/asm/asm.html) | A set of cross-compilation tools from a Japanese book on C. | <!--tool-->
 | binary | [decomp2dbg](https://github.com/mahaloz/decomp2dbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/decomp2dbg?label=built)  A plugin to introduce interactive symbols into your debugger from your decompiler. | <!--tool-->
+| binary | [deepmage](https://github.com/mmiszczyk/deepmage) | Terminal hex editor for bit-level and non-octet-oriented data. | <!--tool-->
 | binary | [elfparser](https://github.com/mentebinaria/elfparser-ng) | ![Last Build](https://img.shields.io/docker/v/ctftools/elfparser?label=built) Multiplatform CLI and GUI tool to show information about ELF files. | <!--tool-->
 | binary | [evilize](http://www.mathstat.dal.ca/~selinger/md5collision/) | ![Last Build](https://img.shields.io/docker/v/ctftools/evilize?label=built) Tool to create MD5 colliding binaries | <!--tool-->
+| binary | [forkever](https://github.com/haxkor/forkever) | Debugger with fork-based checkpoints for exploit development. | <!--tool-->
 | binary | [ida](https://hex-rays.com/ida-free) | Decompilation and reversing tool (proprietary: you download it yourself — drop the Hex-Rays tarball in `~/Downloads`, or set `IDA_HOME` to an unpacked install). | <!--tool-->
 | binary | [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) | MCP server that drives IDA Pro (headless via idalib, or attached to a running IDA; set up with `ida --activate-idalib`). | <!--tool-->
 | binary | [kuna](https://github.com/Noelo-Lab/kuna) | An agent-first decompiler in Rust, originally ported from Ghidra's decompiler. | <!--tool-->
 | binary | [manticore](https://github.com/trailofbits/manticore) | ![Last Build](https://img.shields.io/docker/v/ctftools/manticore?label=built) Manticore is a prototyping tool for dynamic binary analysis, with support for symbolic execution, taint analysis, and binary instrumentation. | <!--tool-->
+| binary | [patchkit](https://github.com/lunixbochs/patchkit) | Python toolkit for patching ELF binaries. | <!--tool-->
 | binary | [preeny](https://github.com/zardus/preeny) | ![Last Build](https://img.shields.io/docker/v/ctftools/preeny?label=built) A collection of helpful preloads (compiled for 64- and 32-bit x86). | <!--tool-->
 | binary | [pwndbg](https://github.com/pwndbg/pwndbg) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwndbg?label=built) Enhanced environment for gdb. Especially for pwning. | <!--tool-->
 | binary | [pwnsh](https://github.com/zardus/pwnsh) | ![Last Build](https://img.shields.io/docker/v/ctftools/pwnsh?label=built) Useful shell scripts for assembly, exploitation, etc. | <!--tool-->
@@ -39,6 +42,7 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [taintgrind](https://github.com/wmkhoo/taintgrind) | ![Last Build](https://img.shields.io/docker/v/ctftools/taintgrind?label=built) A valgrind taint analysis tool. Builds and runs, but upstream's IR translator aborts on many binaries (`tnt_translate: expr2vbits_Unop`). | <!--tool-->
 | binary | [villoc](https://github.com/wapiflapi/villoc) | ![Last Build](https://img.shields.io/docker/v/ctftools/villoc?label=built) Visualization of heap operations. | <!--tool-->
 | binary | [xrop](https://github.com/acama/xrop) | ![Last Build](https://img.shields.io/docker/v/ctftools/xrop?label=built) Gadget finder. | <!--tool-->
+| mobile | [frick](https://github.com/iGio90/frick) | Interactive debugger built on Frida. | <!--tool-->
 | forensics | [firmware-mod-kit](https://code.google.com/p/firmware-mod-kit/) | ![Last Build](https://img.shields.io/docker/v/ctftools/firmware-mod-kit?label=built) Tools for firmware packing/unpacking. | <!--tool-->
 | forensics | [origami-pdf](https://github.com/gdelugre/origami) | Ruby framework and command-line tools for parsing and manipulating PDF files. | <!--tool-->
 | forensics | [peepdf](https://github.com/cert-ee/peepdf) | ![Last Build](https://img.shields.io/docker/v/ctftools/peepdf?label=built) Powerful Python tool to analyze PDF documents. | <!--tool-->
@@ -82,6 +86,7 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | binary | [gdb](https://www.gnu.org/software/gdb/) | GDB with Python 3 scripting and support for many targets. | <!--tool-->
 | binary | [gef](https://github.com/hugsy/gef) | Enhanced environment for GDB. | <!--tool-->
 | binary | [ghidra](https://ghidra-sre.org/) | Open-source reverse engineering and decompilation tool. | <!--tool-->
+| binary | [grap](https://github.com/QuoSecGmbH/grap) | Defines and matches graph patterns in binaries. | <!--tool-->
 | binary | [honggfuzz](https://github.com/google/honggfuzz) | General-purpose security-oriented fuzzer. | <!--tool-->
 | binary | [imhex](https://imhex.werwolv.net/) | Extensible graphical hex editor. | <!--tool-->
 | binary | [one_gadget](https://github.com/david942j/one_gadget) | Finds one-shot code-execution gadgets in libc. | <!--tool-->
@@ -138,6 +143,7 @@ Trust me, I was as skeptical as you are for years, but it is the way.
 | web | [sqlmap](https://sqlmap.org/) | SQL-injection detection and exploitation engine. | <!--tool-->
 | web | [tor-browser](https://www.torproject.org/download/) | Tor-enabled browser bundle. | <!--tool-->
 | web | [wfuzz](https://github.com/xmendez/wfuzz) | Web application fuzzer. | <!--tool-->
+| web | [xsstrike](https://github.com/s0md3v/XSStrike) | Cross-site scripting detection and exploitation suite. | <!--tool-->
 | stego | [pngtools](https://launchpad.net/ubuntu/+source/pngtools) | Utilities for inspecting PNG files. | <!--tool-->
 | stego | [sonic-visualizer](https://www.sonicvisualiser.org/) | Audio visualization and analysis application. | <!--tool-->
 | stego | [stegsolve](http://www.caesum.com/handbook/stego.htm) | Image steganography solver. | <!--tool-->
@@ -175,6 +181,29 @@ manage-tools search preload
 ```
 
 Tools install into your Nix profile, and uninstalling removes them cleanly.
+
+### Downloads outside Nix
+
+Package inputs are downloaded by Nix and pinned by SHA-256, including the two
+legacy plain-HTTP sources (`steganabara` and `pkcrack`'s fallback mirror). A
+server or network attacker can make those fetches unavailable, but cannot make
+Nix accept different bytes under the recorded hash.
+
+The exceptions are:
+
+- `libc-database-get all` downloads the multi-gigabyte libc corpus into the
+  user's data directory after installation.
+- IDA itself is downloaded by the user from Hex-Rays. The `ida` wrapper can
+  unpack that local archive and activate the vendor's bundled `idapro` wheel;
+  activation tries an offline install first, with PyPI only as a fallback if
+  that wheel declares an unavailable dependency.
+- Running the `crosstool` package's `ct-ng` driver directly downloads the
+  sources selected by the user's configuration. The prebuilt
+  `crosstool-ng-*` flake outputs instead fetch a hash-pinned source set during
+  the Nix build and compile offline.
+
+Network scanners and clients naturally contact targets when run; that is tool
+operation, not package installation.
 
 ### Platform support
 

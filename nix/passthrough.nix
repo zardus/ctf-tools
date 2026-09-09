@@ -81,6 +81,7 @@ in
 
   gef                  = pkgs.gef;
   ghidra               = pkgs.ghidra;
+  grap                 = pkgs.grap;
 
   # `hash_id.py` was the only name the pre-nix installer put on PATH. postFixup,
   # not postInstall: it runs after wrapPythonPrograms, so the alias points at
@@ -210,6 +211,7 @@ in
   volatility3          = pkgs.volatility3;
   wcc                  = pkgs.wcc;
   wfuzz                = pkgs.wfuzz;
+  xsstrike             = pkgs.xsstrike;
   xortool              = pkgs.xortool;
   yara                 = pkgs.yara;
   z3                   = pkgs.z3;
