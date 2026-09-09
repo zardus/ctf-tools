@@ -178,9 +178,19 @@ manage-tools list                 # list the available tools
 manage-tools install pwntools
 manage-tools uninstall gdb
 manage-tools search preload
+manage-tools list -t              # list generated cross-toolchains
+
+manage-tools install all          # every catalogued tool
+manage-tools install all-toolchains
+manage-tools install everything   # catalog + toolchains
 ```
 
 Tools install into your Nix profile, and uninstalling removes them cleanly.
+The three aggregate names install as single profile entries, so Nix shares
+common dependencies and does not activate a partial set if a build fails.
+`manage-tools` prints Nix's download/build plan before installing an aggregate.
+On ARM, `all` contains every supported catalog tool; the generated toolchain
+aggregates are x86_64-only.
 
 ### Downloads outside Nix
 
@@ -242,7 +252,7 @@ toolchain (say, `arm-none-eabi-gcc`) instead of spending an hour building one:
 # a bare-metal ARM toolchain: arm-none-eabi-gcc, -gdb, -objdump, ...
 nix profile install github:zardus/ctf-tools#crosstool-ng-arm-none-eabi
 
-# a full Linux/glibc cross toolchain, with sysroot
+# a full Linux/musl cross toolchain, with sysroot
 nix profile install github:zardus/ctf-tools#crosstool-ng-aarch64-unknown-linux-musl
 
 # see all of them (bare-metal newlib/picolibc plus Linux

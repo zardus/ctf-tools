@@ -124,7 +124,22 @@ jobs:
         run: |
           ./bin/manage-tools list | tee /tmp/tools.txt
           grep -qx pwntools /tmp/tools.txt
-          test "$(wc -l < /tmp/tools.txt)" -gt 50
+          test "$(wc -l < /tmp/tools.txt)" \
+            -eq "$(nix eval --json .#catalogTargets.x86_64-linux | jq length)"
+          if grep -q '^cross2-arm-elf$' /tmp/tools.txt; then
+            exit 1
+          fi
+
+          ./bin/manage-tools list -t | tee /tmp/toolchains.txt
+          grep -qx cross2-arm-elf /tmp/toolchains.txt
+          grep -qx crosstool-ng-arm-none-eabi /tmp/toolchains.txt
+          test "$(wc -l < /tmp/toolchains.txt)" \
+            -eq "$(nix eval --json .#toolchainTargets.x86_64-linux | jq length)"
+      - name: aggregate profiles evaluate
+        run: |
+          nix eval --raw .#packages.x86_64-linux.all.drvPath
+          nix eval --raw .#packages.x86_64-linux.all-toolchains.drvPath
+          nix eval --raw .#packages.x86_64-linux.everything.drvPath
       - name: search
         run: ./bin/manage-tools search stego | grep -qi steg
       - name: install / list -i / uninstall round-trip

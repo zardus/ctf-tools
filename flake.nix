@@ -79,6 +79,11 @@
       passthroughNames =
         builtins.attrNames (import ./nix/passthrough.nix { pkgs = { }; });
 
+      # Human-facing tools, as distinct from the generated cross-toolchain
+      # variants and aggregate profile outputs.
+      catalogNames = lib.sort (a: b: a < b)
+        (lib.unique (customNames ++ passthroughNames));
+
       # What goes into the `default` aggregate profile (see `packages.default`).
       # Keep this set explicit: adding a nixpkgs forward should not silently add
       # several GiB to every bare `nix profile install .`. These are the original
@@ -108,23 +113,34 @@
       cross2Targets = import ./nix/pkgs/cross2/targets.nix;
       ctHashes = import ./nix/pkgs/crosstool/hashes.nix;
       ctBrokenBuild = [ "avr" ];
+      toolchainNames =
+        (map (t: "cross2-${t}") cross2Targets)
+        ++ map (n: "crosstool-ng-${n}")
+             (lib.subtractLists ctBrokenBuild (builtins.attrNames ctHashes));
     in {
       # Plain list of attr names for the CI build/docker matrices.
       ciTargets = lib.sort (a: b: a < b)
         (lib.subtractLists ciExclude customNames ++ ciOverriddenPassthroughs);
 
       # Heavy toolchain outputs for the (separate) toolchains CI matrix.
-      ciToolchainTargets =
-        (map (t: "cross2-${t}") cross2Targets)
-        ++ map (n: "crosstool-ng-${n}")
-             (lib.subtractLists ctBrokenBuild (builtins.attrNames ctHashes));
+      ciToolchainTargets = toolchainNames;
 
       # The tools the README's `<!--tool-->` table is supposed to list: one row
       # per installable tool, i.e. every hand-written derivation plus every
       # nixpkgs passthrough — but not the per-target `cross2-*`/`crosstool-ng-*`
       # outputs or the `default` aggregate. CI diffs the table against this
       # (see the listcheck job), so the two can't drift apart unnoticed.
-      readmeTargets = lib.sort (a: b: a < b) (lib.unique (customNames ++ passthroughNames));
+      readmeTargets = catalogNames;
+
+      # System-specific lists for manage-tools. Unlike readmeTargets, these
+      # omit packages filtered out by platform metadata (for example, x86-only
+      # tools on ARM). Aggregate outputs are not members of either list.
+      catalogTargets = lib.mapAttrs
+        (_: ps: lib.intersectLists catalogNames (builtins.attrNames ps))
+        self.packages;
+      toolchainTargets = lib.mapAttrs
+        (_: ps: lib.intersectLists toolchainNames (builtins.attrNames ps))
+        self.packages;
 
       # The tools sourced from nixpkgs, including thin local overrides. This is
       # not generally a build matrix — CI checks them with ciPassthroughCheck
@@ -177,15 +193,23 @@
           # nixpkgs. ARM outputs are intentionally not pushed to our Cachix
           # cache: see the evaluation-only guard in .github/workflows/nix.yml.
           unfiltered = passthrough // custom // toolchainOutputs;
-          all = lib.filterAttrs (n: pkg:
+          available = lib.filterAttrs (n: pkg:
             (system == "x86_64-linux" || n != "cross2")
             && (system != "aarch64-linux" || !(builtins.elem n aarch64Unsupported))
             && lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
           ) unfiltered;
-          supportedDefaultNames = lib.intersectLists defaultNames (builtins.attrNames all);
-        in all // {
+          availableNames = builtins.attrNames available;
+          supportedDefaultNames = lib.intersectLists defaultNames availableNames;
+          supportedCatalogNames = lib.intersectLists catalogNames availableNames;
+          supportedToolchainNames = lib.intersectLists toolchainNames availableNames;
+          aggregate = name: names: pkgs.buildEnv {
+            inherit name;
+            paths = builtins.attrValues (lib.getAttrs names available);
+            ignoreCollisions = true;
+          };
+        in available // {
           # `nix profile install .` — the curated general-purpose profile from
-          # defaultNames. Names are resolved through `all`, so a tool we have
+          # defaultNames. Names are resolved through `available`, so a tool we have
           # since taken over resolves to our derivation, not to nixpkgs'.
           # Collisions tolerated (many tools ship their own gdb/python/etc).
           #
@@ -195,9 +219,19 @@
           # either of those pulled in by a bare `nix profile install .`.
           default = pkgs.buildEnv {
             name = "ctf-tools";
-            paths = builtins.attrValues (lib.getAttrs supportedDefaultNames all);
+            paths = builtins.attrValues (lib.getAttrs supportedDefaultNames available);
             ignoreCollisions = true;
           };
+
+          # Every catalogued tool as one atomic profile entry. The generated
+          # cross-toolchain variants are separate because they dwarf the rest
+          # of the catalog and are useful as a group in their own right.
+          all = aggregate "ctf-tools-all" supportedCatalogNames;
+        } // lib.optionalAttrs (supportedToolchainNames != [ ]) {
+          "all-toolchains" = aggregate
+            "ctf-tools-all-toolchains" supportedToolchainNames;
+          everything = aggregate "ctf-tools-everything"
+            (supportedCatalogNames ++ supportedToolchainNames);
         });
 
       # Evaluation-only CI guard for the passthroughs: forcing this string

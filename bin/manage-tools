@@ -24,7 +24,7 @@ FLAKE="${CTF_TOOLS_FLAKE:-$CTF_TOOLS_ROOT}"
 function usage()
 {
 	cat <<END
-Usage: $(basename $0) [-vf] (list|install|uninstall|reinstall|upgrade|search|setup) [tool]
+Usage: $(basename "$0") [-vf] (list|install|uninstall|reinstall|upgrade|search|setup) [tool]
 
 Everything is backed by Nix. Tools live in the flake at:
     $FLAKE
@@ -33,19 +33,25 @@ so anything below is equivalent to the underlying \`nix\` command shown.
 Where:
     -v      verbose mode (pass -L / show nix build logs)
     -f      force: on install, remove an existing copy first
-    tool    the name of the tool. if "all", acts on all tools.
+    tool    a tool name, or one of the aggregate names below.
 
 Actions:
-    list            list all available tools   (-i: only installed, -u: only uninstalled)
+    list            list catalogued tools (-i: installed, -u: uninstalled,
+                    -t: generated cross-toolchains)
     install  TOOL   nix profile install $FLAKE#TOOL
     uninstall TOOL  nix profile remove  TOOL
     reinstall TOOL  remove then install
-    upgrade [TOOL]  nix profile upgrade TOOL   (no TOOL / "all" => upgrade everything)
+    upgrade [TOOL]  nix profile upgrade TOOL   (no TOOL => upgrade every profile entry)
     search   TERM   search tool names + README descriptions
     setup           print how the Nix profile puts tools on your PATH
 
+Aggregates:
+    all             every catalogued tool
+    all-toolchains  every generated cross2 and crosstool-ng toolchain
+    everything      both of the above
+
 Examples:
-    $(basename $0) install qira
+    $(basename "$0") install qira
     nix profile install $FLAKE#qira        # ... is all the above really does
     nix run $FLAKE#pwntools
 END
@@ -56,7 +62,7 @@ FORCE=0
 
 function tool_log()
 {
-	echo "$(tput setaf 4 2>/dev/null)TOOLS | ${TOOL:-*} |$(tput sgr0 2>/dev/null) $@"
+	echo "$(tput setaf 4 2>/dev/null)TOOLS | ${TOOL:-*} |$(tput sgr0 2>/dev/null) $*"
 }
 
 function nix_cmd()
@@ -67,20 +73,36 @@ function nix_cmd()
 # nix system double, e.g. x86_64-linux
 SYSTEM="$(nix_cmd eval --impure --raw --expr 'builtins.currentSystem')"
 
-# newline-separated list of every tool the flake exposes (minus the "default" env)
+# Newline-separated catalog tools available on this system. Generated
+# cross-toolchains and aggregate profile outputs have their own lists.
 function all_tools()
 {
-	nix_cmd eval --raw "$FLAKE#packages.$SYSTEM" \
-		--apply 'ns: builtins.concatStringsSep "\n" (builtins.filter (n: n != "default") (builtins.attrNames ns))'
+	nix_cmd eval --raw "$FLAKE#catalogTargets.$SYSTEM" \
+		--apply 'ns: if ns == [ ] then "" else (builtins.concatStringsSep "\n" ns) + "\n"'
+}
+
+function all_toolchains()
+{
+	nix_cmd eval --raw "$FLAKE#toolchainTargets.$SYSTEM" \
+		--apply 'ns: if ns == [ ] then "" else (builtins.concatStringsSep "\n" ns) + "\n"'
 }
 
 # best-effort: tool names currently present in the active nix profile
 function installed_tools()
 {
-	nix_cmd profile list 2>/dev/null \
+	local attrs
+	attrs=$(nix_cmd profile list 2>/dev/null \
 		| grep -oE "packages\.$SYSTEM\.[^ ]+" \
 		| sed "s/packages\.$SYSTEM\.//" \
-		| sort -u
+		| sort -u || true)
+	{
+		printf '%s\n' "$attrs"
+		# An aggregate is one profile entry, but list -i should still report
+		# the catalog tools it represents.
+		if grep -qxE 'all|everything' <<<"$attrs"; then
+			all_tools
+		fi
+	} | sed '/^$/d' | sort -u
 }
 
 function is_tool()
@@ -90,15 +112,24 @@ function is_tool()
 
 function require_tool()
 {
+	local requested
 	if [[ -z "${TOOL:-}" ]]; then
-		TOOL="$ACTION" tool_log "must provide a tool name (see: $(basename $0) list)"
+		TOOL="$ACTION" tool_log "must provide a tool name (see: $(basename "$0") list)"
 		exit 1
 	fi
-	if [[ "$TOOL" == "all" ]]; then
-		return 0
-	fi
+	case "$TOOL" in
+		all|all-toolchains|everything)
+			if nix_cmd eval --raw "$FLAKE#packages.$SYSTEM.$TOOL.drvPath" >/dev/null 2>&1; then
+				return 0
+			fi
+			requested="$TOOL"
+			TOOL="$ACTION" tool_log "aggregate '$requested' is not available on $SYSTEM"
+			exit 1
+			;;
+	esac
 	if ! is_tool "$TOOL"; then
-		TOOL="$ACTION" tool_log "unknown tool '$TOOL' (see: $(basename $0) list)"
+		requested="$TOOL"
+		TOOL="$ACTION" tool_log "unknown tool '$requested' (see: $(basename "$0") list)"
 		exit 1
 	fi
 }
@@ -106,6 +137,12 @@ function require_tool()
 function do_install()
 {
 	local t="$1"
+	case "$t" in
+		all|all-toolchains|everything)
+			TOOL="$t" tool_log "Nix download/build plan:"
+			nix_cmd build --dry-run --no-link "$FLAKE#$t"
+			;;
+	esac
 	[[ "$FORCE" -eq 1 ]] && nix_cmd profile remove "$t" >/dev/null 2>&1 || true
 	TOOL="$t" tool_log "nix profile install $FLAKE#$t"
 	if [[ "$VERBOSE" -eq 1 ]]; then
@@ -239,26 +276,19 @@ case "$ACTION" in
 			"")   all_tools ;;
 			-i)   comm -12 <(all_tools | sort) <(installed_tools) ;;
 			-u)   comm -23 <(all_tools | sort) <(installed_tools) ;;
+			-t|--toolchains) all_toolchains ;;
 			*)    usage; exit 1 ;;
 		esac
 		;;
 
 	install)
 		require_tool
-		if [[ "$TOOL" == "all" ]]; then
-			for t in $(all_tools); do do_install "$t" || tool_log "FAILED: $t"; done
-		else
-			do_install "$TOOL"
-		fi
+		do_install "$TOOL"
 		;;
 
 	uninstall)
 		require_tool
-		if [[ "$TOOL" == "all" ]]; then
-			for t in $(installed_tools); do do_uninstall "$t"; done
-		else
-			do_uninstall "$TOOL"
-		fi
+		do_uninstall "$TOOL"
 		;;
 
 	reinstall)
@@ -268,13 +298,13 @@ case "$ACTION" in
 		;;
 
 	upgrade)
-		if [[ -z "${TOOL:-}" || "$TOOL" == "all" ]]; then
+		if [[ -z "${TOOL:-}" ]]; then
 			TOOL="all" tool_log "updating flake + upgrading all installed tools"
 			nix_cmd flake update --flake "$FLAKE" || true
 			nix_cmd profile upgrade --all
 		else
 			require_tool
-			TOOL="$TOOL" tool_log "nix profile upgrade $TOOL"
+			tool_log "nix profile upgrade $TOOL"
 			nix_cmd profile upgrade "$TOOL"
 		fi
 		;;
