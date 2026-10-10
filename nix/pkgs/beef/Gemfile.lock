@@ -71,6 +71,7 @@ GEM
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2026.0701)
+    mini_portile2 (2.8.9)
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
@@ -138,7 +139,8 @@ GEM
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (2.9.5)
+    sqlite3 (2.9.6)
+      mini_portile2 (~> 2.8.0)
     sync (0.5.0)
     term-ansicolor (1.11.3)
       tins (~> 1)
