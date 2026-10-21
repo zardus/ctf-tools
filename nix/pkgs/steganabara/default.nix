@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   version = "1.1.1";
 
   src = fetchurl {
-    url = "http://www.caesum.com/handbook/steganabara-${version}.tar.gz";
+    url = "https://web.archive.org/web/20160315100038id_/http://caesum.com/handbook/steganabara-${version}.tar.gz";
     hash = "sha256-NZhX+CE0x/L7W+CQLaHO/XmlpfXhQegj3W26NekDek4=";
   };
 
